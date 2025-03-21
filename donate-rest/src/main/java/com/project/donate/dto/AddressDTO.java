@@ -1,6 +1,7 @@
 package com.project.donate.dto;
 
 import com.project.donate.model.City;
+import com.project.donate.model.Region;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,6 +30,6 @@ public class AddressDTO {
     @Size(min = 5, max = 10, message = "ZipCode must be between 5 and 10 characters")
     private String zipCode;
 
-    @NotBlank(message = "City is mandatory")
-    private City city;
+    @NotBlank(message = "Region is mandatory")
+    private Region region;
 }
