@@ -19,9 +19,6 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String aaasdfb;
-    private String c;
-    private String abdullah;
 
     @Column(nullable = false, length = 100)
     private String name;
