@@ -17,7 +17,7 @@ public class AddressDTO {
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
-    @Size(min = 5, max = 80, message = "Name must be between 5 and 80 characters")
+    @Size(min = 3, max = 80, message = "Name must be between 3 and 80 characters")
     private String name;
 
     @NotNull(message = "Latitude is mandatory")

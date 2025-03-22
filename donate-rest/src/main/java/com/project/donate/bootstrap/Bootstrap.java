@@ -5,6 +5,7 @@ import com.project.donate.model.City;
 import com.project.donate.model.Region;
 import com.project.donate.repository.CityRepository;
 import com.project.donate.repository.RegionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -15,16 +16,12 @@ import java.util.List;
 @Component
 @Profile("bootstrap")
 @Transactional
+@RequiredArgsConstructor
 public class Bootstrap implements CommandLineRunner {
 
 
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
-
-    public Bootstrap(CityRepository cityRepository, RegionRepository regionRepository) {
-        this.cityRepository = cityRepository;
-        this.regionRepository = regionRepository;
-    }
 
 
     @Override

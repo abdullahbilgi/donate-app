@@ -15,7 +15,7 @@ public class RegionDTO {
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
-    @Size(min = 5, max = 60, message = "Name must be between 5 and 60 characters")
+    @Size(min = 1, max = 60, message = "Name must be between 1 and 60 characters")
     private String name;
 
     @NotBlank(message = "City is mandatory")
