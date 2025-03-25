@@ -4,10 +4,12 @@ import com.project.donate.dto.CategoryDTO;
 import com.project.donate.mapper.CategoryMapper;
 import com.project.donate.model.Category;
 import com.project.donate.repository.CategoryRepository;
+import com.project.donate.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-
+    private final ProductRepository productRepository;
 
     @Override
     public List<CategoryDTO> getAllCategories() {
@@ -52,8 +54,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        getCategoryById(id);
-        categoryRepository.deleteById(id);
+        CategoryDTO categoryDto = getCategoryById(id);
+        if (!Objects.isNull(categoryDto)) {
+            Category category = categoryMapper.mapDto(categoryDto);
+
+            productRepository.findByCategory(category).forEach(product -> {
+                product.setCategory(null);
+                productRepository.save(product);
+            });
+
+            categoryRepository.deleteById(id);
+        }
     }
 
     private CategoryDTO saveAndMap(Category category) {

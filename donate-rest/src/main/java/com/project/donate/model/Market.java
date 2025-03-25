@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -43,9 +45,14 @@ public class Market {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @ManyToMany
+    @JoinTable(
+            name = "market_product",
+            joinColumns = @JoinColumn(name = "market_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    @Builder.Default
+    private Set<Product> products = new HashSet<>();
 
 
 }
