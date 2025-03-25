@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,8 +32,10 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
+    @Column(updatable = false)
     private LocalDateTime productionDate;
 
+    @Column(updatable = false)
     private LocalDateTime expiryDate;
 
     private Double price;
@@ -45,11 +49,17 @@ public class Product {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private ProductStatus productStatus; //todo: fill it
+    private ProductStatus productStatus;
+
+    @Builder.Default
+    private Boolean isActive = true;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private Category category;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Market> markets = new HashSet<>();
 
 
 }

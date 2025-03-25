@@ -1,6 +1,5 @@
 package com.project.donate.dto;
 
-import com.project.donate.enums.ProductStatus;
 import com.project.donate.model.Category;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +20,7 @@ public class ProductDTO {
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
-    @Size(min = 5, max = 60, message = "Name must be between 5 and 60 characters")
+    @Size(min = 1, max = 60, message = "Name must be between 1 and 60 characters")
     private String name;
 
     @NotNull(message = "ProductionDate is mandatory")
@@ -34,11 +33,11 @@ public class ProductDTO {
     @Min(value = 0,message = "Price must be least 0 ")
     private Double price;
 
-    @NotNull(message = "DiscountedPrice is mandatory")
+    //@NotNull(message = "DiscountedPrice is mandatory")
     @Min(value = 0,message = "DiscountedPrice must be least 0 ")
     private Double discountedPrice;
 
-    @NotNull(message = "Discount is mandatory")
+    //@NotNull(message = "Discount is mandatory")
     @Min(value = 1,message = "Discount must be least 1 ")
     private Integer discount;
 
@@ -47,11 +46,14 @@ public class ProductDTO {
     private Integer quantity;
 
     @NotBlank(message = "Name is Description")
-    @Size(min = 1, max = 60, message = "Dame must be between 5 and 60 characters")
+    @Size(min = 1, max = 80, message = "Dame must be between 1 and 80 characters")
     private String description;
 
-    @NotBlank(message = "ProductStatus is mandatory")
+    //@NotBlank(message = "ProductStatus is mandatory")
     private String productStatus;
+
+    //@NotBlank(message = "ProductStatus is mandatory")
+    private Boolean isActive;
 
     @NotBlank(message = "Category is mandatory")
     private Category category;
