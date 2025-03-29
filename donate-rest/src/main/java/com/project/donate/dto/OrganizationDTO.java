@@ -31,4 +31,6 @@ public class OrganizationDTO {
 
     @NotBlank(message = "Address is mandatory")
     private Address address;
+
+    private Boolean isActive;
 }

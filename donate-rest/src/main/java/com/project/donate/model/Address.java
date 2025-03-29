@@ -36,7 +36,7 @@ public class Address {
 
     private String zipCode;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 

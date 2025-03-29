@@ -1,5 +1,6 @@
 package com.project.donate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.donate.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -59,6 +60,7 @@ public class Product {
     private Category category;
 
     @ManyToMany(mappedBy = "products")
+    @JsonIgnore
     private Set<Market> markets = new HashSet<>();
 
 

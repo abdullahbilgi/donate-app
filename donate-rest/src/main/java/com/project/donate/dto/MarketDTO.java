@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -25,7 +27,7 @@ public class MarketDTO {
     @Size(min = 5, max = 20, message = "TaxNumber must be between 5 and 20 characters")
     private String taxNumber;
 
-    @NotBlank(message = "Status is mandatory")
+    //@NotBlank(message = "Status is mandatory")
     private String status;
 
     @NotBlank(message = "User is mandatory")
@@ -33,6 +35,10 @@ public class MarketDTO {
 
     @NotBlank(message = "Address is mandatory")
     private Address address;
+
+    private Boolean isActive;
+
+    private Set<Product> products;
 
 
 
