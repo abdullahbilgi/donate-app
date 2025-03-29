@@ -1,5 +1,6 @@
 package com.project.donate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.donate.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,13 +36,17 @@ public class Market {
     private String taxNumber;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.PENDING;
+
+    @Builder.Default
+    private Boolean isActive = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
@@ -51,6 +56,7 @@ public class Market {
             joinColumns = @JoinColumn(name = "market_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @JsonIgnore
     @Builder.Default
     private Set<Product> products = new HashSet<>();
 

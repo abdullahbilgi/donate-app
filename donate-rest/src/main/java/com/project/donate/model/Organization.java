@@ -33,13 +33,17 @@ public class Organization {
     private String taxNumber;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.PENDING;
+
+    @Builder.Default
+    private Boolean isActive = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 }
