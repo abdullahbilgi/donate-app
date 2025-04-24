@@ -4,13 +4,14 @@ import com.project.donate.enums.Role;
 import com.project.donate.model.Address;
 
 import jakarta.validation.constraints.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
     private Long id;
@@ -47,7 +48,7 @@ public class UserDTO {
     private Integer age;
 
     @NotBlank(message = "Role is mandatory")
-    private String role;
+    private List<String> roles;
 
     @NotBlank(message = "Address is mandatory")
     private Address address;

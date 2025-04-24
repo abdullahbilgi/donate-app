@@ -30,7 +30,6 @@ public class City {
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
-
     public City(String city) {
         this.name = city;
     }
