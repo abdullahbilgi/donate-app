@@ -3,6 +3,7 @@ package com.project.donate.service;
 
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.ProductStatus;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Product;
 import com.project.donate.repository.ProductRepository;
@@ -41,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::map)
                 .orElseThrow(() -> {
                     log.error("{} product not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new RuntimeException("Product not found id: " + id);
+                    return new ResourceNotFoundException("Product not found id: " + id);
                 });
     }
 

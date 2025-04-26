@@ -2,6 +2,7 @@ package com.project.donate.service;
 
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
 import com.project.donate.repository.AddressRepository;
@@ -37,9 +38,10 @@ public class AddressServiceImpl implements AddressService {
                 .map(addressMapper::map)
                 .orElseThrow(() -> {
                     log.error("{} Address not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new RuntimeException("Address not found id: " + id);
+                    return new ResourceNotFoundException("Address not found id: " + id);
 
                 });
+
     }
 
     @Override

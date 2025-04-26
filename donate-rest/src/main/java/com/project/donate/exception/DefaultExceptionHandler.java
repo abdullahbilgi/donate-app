@@ -39,6 +39,27 @@ public class DefaultExceptionHandler {
 
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(OutOfStockException.class)
+    public ResponseEntity<ApiError> handleException(OutOfStockException e, HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(ResourceNotActiveException.class)
+    public ResponseEntity<ApiError> handleException(ResourceNotActiveException e,
+                                                    HttpServletRequest request){
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ApiError> handleException(TokenExpiredException e,
                                                     HttpServletRequest request){

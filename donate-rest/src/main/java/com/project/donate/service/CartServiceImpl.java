@@ -2,6 +2,9 @@ package com.project.donate.service;
 
 import com.project.donate.dto.CartDTO;
 import com.project.donate.enums.Status;
+import com.project.donate.exception.OutOfStockException;
+import com.project.donate.exception.ResourceNotActiveException;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.Product;
@@ -109,7 +112,7 @@ public class CartServiceImpl implements CartService {
             Product product = productRepository.findById(item.productId())
                     .orElseThrow(() -> {
                         log.error("{} Product not found id: {}", GeneralUtil.extractUsername(), item.productId());
-                        return new RuntimeException("Product not found id: " + item.productId());
+                        return new ResourceNotFoundException("Product not found id: " + item.productId());
                     });
 
             if (!product.getIsActive()) {
@@ -120,7 +123,7 @@ public class CartServiceImpl implements CartService {
             if (product.getQuantity() < item.quantity()) {
                 log.warn("Not enough stock for product id: {} (requested: {}, available: {})",
                         item.productId(), item.quantity(), product.getQuantity());
-                throw new RuntimeException("Not enough stock for product id: " + item.productId());
+                throw new OutOfStockException("Not enough stock for product id: " + item.productId());
             }
 
             product.setQuantity(product.getQuantity() - item.quantity());
@@ -137,7 +140,7 @@ public class CartServiceImpl implements CartService {
             Product product = productRepository.findById(item.productId())
                     .orElseThrow(() -> {
                         log.error("{} Product not found id: {}", GeneralUtil.extractUsername(), item.productId());
-                        return new RuntimeException("Product not found while restoring: " + item.productId());
+                        return new ResourceNotFoundException("Product not found while restoring: " + item.productId());
                     });
 
             product.setQuantity(product.getQuantity() + item.quantity());
