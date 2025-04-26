@@ -3,6 +3,7 @@ package com.project.donate.service;
 
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.ProductStatus;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Product;
 import com.project.donate.repository.ProductRepository;
@@ -35,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::map)
-                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + id));
     }
 
     @Override

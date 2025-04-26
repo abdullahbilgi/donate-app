@@ -3,6 +3,9 @@ package com.project.donate.service;
 import com.project.donate.dto.CartDTO;
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.Status;
+import com.project.donate.exception.OutOfStockException;
+import com.project.donate.exception.ResourceNotActiveException;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.Category;
@@ -40,7 +43,7 @@ public class CartServiceImpl implements CartService {
     public CartDTO getCartById(Long id) {
         return cartRepository.findById(id)
                 .map(cartMapper::map)
-                .orElseThrow(() -> new RuntimeException("Cart not found id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found id: " + id));
     }
 
     @Override
@@ -68,7 +71,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDTO updateCart(Long id, CartDTO cartDTO) {
         Cart existingCart = cartRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart not found id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found id: " + id));
 
         // Eski ürünlerin stoklarını geri ver
         restoreProductQuantities(existingCart.getProductItems());
@@ -99,18 +102,18 @@ public class CartServiceImpl implements CartService {
 
         for (ProductItem item : productItems) {
             Product product = productRepository.findById(item.productId())
-                    .orElseThrow(() -> new RuntimeException("Product not found id: " + item.productId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + item.productId()));
 
             if (!product.getIsActive()) {
                 throw new RuntimeException("Product is not active");
             }
 
             if (!product.getPrice().equals(item.productPrice())) {
-                throw new RuntimeException("Product price is incorrect for product id: " + item.productId());
+                throw new ResourceNotActiveException("Product price is incorrect for product id: " + item.productId());
             }
 
             if (product.getQuantity() < item.quantity()) {
-                throw new RuntimeException("Not enough stock for product id: " + item.productId());
+                throw new OutOfStockException("Not enough stock for product id: " + item.productId());
             }
 
             product.setQuantity(product.getQuantity() - item.quantity());
@@ -127,7 +130,7 @@ public class CartServiceImpl implements CartService {
     private void restoreProductQuantities(List<ProductItem> productItems) {
         for (ProductItem item : productItems) {
             Product product = productRepository.findById(item.productId())
-                    .orElseThrow(() -> new RuntimeException("Product not found while restoring: " + item.productId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found while restoring: " + item.productId()));
 
             product.setQuantity(product.getQuantity() + item.quantity());
             productRepository.save(product);

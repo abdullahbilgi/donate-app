@@ -2,6 +2,7 @@ package com.project.donate.service;
 
 import com.project.donate.dto.OrganizationDTO;
 import com.project.donate.enums.Status;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.OrganizationMapper;
 import com.project.donate.model.Organization;
 import com.project.donate.repository.OrganizationRepository;
@@ -30,7 +31,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationDTO getOrganizationById(Long id) {
         return organizationRepository.findById(id)
                 .map(organizationMapper::map)
-                .orElseThrow(() -> new RuntimeException("Organization not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Organization not found: " + id));
     }
 
 

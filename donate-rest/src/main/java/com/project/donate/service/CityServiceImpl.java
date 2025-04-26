@@ -1,6 +1,7 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CityDTO;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CityMapper;
 import com.project.donate.model.City;
 import com.project.donate.repository.CityRepository;
@@ -28,7 +29,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDTO getCityById(Long id) {
-        return cityRepository.findById(id).map(cityMapper::map).orElseThrow(() -> new RuntimeException("City not found id: " + id));
+        return cityRepository.findById(id).map(cityMapper::map).orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
     }
 
     @Override

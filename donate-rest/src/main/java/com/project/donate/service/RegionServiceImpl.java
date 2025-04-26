@@ -2,6 +2,7 @@ package com.project.donate.service;
 
 
 import com.project.donate.dto.RegionDTO;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.RegionMapper;
 import com.project.donate.model.Region;
 import com.project.donate.repository.RegionRepository;
@@ -31,7 +32,7 @@ public class RegionServiceImpl implements RegionService {
     public RegionDTO getRegionById(Long id) {
         return regionRepository.findById(id)
                 .map(regionMapper::map)
-                .orElseThrow(() -> new RuntimeException("Region not found id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.project.donate.service;
 import com.project.donate.dto.MarketDTO;
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.Status;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.MarketMapper;
 import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Market;
@@ -35,7 +36,7 @@ public class MarketServiceImpl implements MarketService {
     public MarketDTO getMarketById(Long id) {
         return marketRepository.findById(id)
                 .map(marketMapper::map)
-                .orElseThrow(() -> new RuntimeException("Market not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Market not found: " + id));
     }
 
 

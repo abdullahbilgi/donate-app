@@ -1,6 +1,7 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CategoryDTO;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CategoryMapper;
 import com.project.donate.model.Category;
 import com.project.donate.repository.CategoryRepository;
@@ -32,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO getCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .map(categoryMapper::map)
-                .orElseThrow(() -> new RuntimeException("Category not found id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found id: " + id));
     }
 
     @Override
