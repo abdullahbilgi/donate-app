@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.project.donate.enums.Role.*;
 
-
+/**
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -57,9 +57,9 @@ public class SecurityFilterChainConfig {
                 .build();
     }
 }
+ **/
 
 
-/**
  @Configuration
  @EnableWebSecurity
  @RequiredArgsConstructor
@@ -84,4 +84,4 @@ public class SecurityFilterChainConfig {
  .build();
  }
  }
- **/
+
