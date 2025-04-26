@@ -14,6 +14,11 @@ public interface ProductService {
 
     ProductDTO getProductById(Long id);
 
+    ProductDTO increaseQuantity(Long id, int amount);
+
+    ProductDTO decreaseQuantity(Long id, int amount);
+
+
     void deleteProduct(Long id);
 }
 
