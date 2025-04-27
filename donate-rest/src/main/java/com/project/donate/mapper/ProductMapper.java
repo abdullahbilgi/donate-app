@@ -5,12 +5,16 @@ import com.project.donate.enums.ProductStatus;
 import com.project.donate.model.Product;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
+
 @Component
 public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
 
     @Override
     public ProductDTO map(Product product) {
-        return ProductDTO.builder()
+        if (product == null) return null;
+
+        ProductDTO.ProductDTOBuilder builder = ProductDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .productionDate(product.getProductionDate())
@@ -20,10 +24,15 @@ public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
                 .discount(product.getDiscount())
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
-                .productStatus(product.getProductStatus().toString())
+                .productStatus(product.getProductStatus() != null ? product.getProductStatus().toString() : null)
                 .isActive(product.getIsActive())
-                .category(product.getCategory())
-                .build();
+                .category(product.getCategory());
+
+        if (product.getImage() != null) {
+            builder.imageBase64(Base64.getEncoder().encodeToString(product.getImage()));
+        }
+
+        return builder.build();
     }
 
     @Override
@@ -40,6 +49,8 @@ public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
                 .description(productDTO.getDescription())
                 .productStatus(productDTO.getProductStatus() != null ? ProductStatus.valueOf(productDTO.getProductStatus()) : ProductStatus.REAL)
                 .category(productDTO.getCategory())
+                .image(productDTO.getImage())
                 .build();
     }
+
 }

@@ -56,6 +56,9 @@ public class Product {
     @Builder.Default
     private Boolean isActive = true;
 
+    @Lob
+    private byte[] image;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
@@ -63,6 +66,5 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     @JsonIgnore
     private Set<Market> markets = new HashSet<>();
-
-
 }
+
