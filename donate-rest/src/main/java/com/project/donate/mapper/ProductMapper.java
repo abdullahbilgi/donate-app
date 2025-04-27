@@ -26,11 +26,9 @@ public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
                 .description(product.getDescription())
                 .productStatus(product.getProductStatus() != null ? product.getProductStatus().toString() : null)
                 .isActive(product.getIsActive())
-                .category(product.getCategory());
+                .category(product.getCategory())
+                .imageUrl(product.getImageUrl());
 
-        if (product.getImage() != null) {
-            builder.imageBase64(Base64.getEncoder().encodeToString(product.getImage()));
-        }
 
         return builder.build();
     }
@@ -49,7 +47,7 @@ public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
                 .description(productDTO.getDescription())
                 .productStatus(productDTO.getProductStatus() != null ? ProductStatus.valueOf(productDTO.getProductStatus()) : ProductStatus.REAL)
                 .category(productDTO.getCategory())
-                .image(productDTO.getImage())
+                .imageUrl(productDTO.getImageUrl())
                 .build();
     }
 

@@ -26,17 +26,20 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
+    // Resim Upload
+    @PostMapping("/image/{id}")
+    public ResponseEntity<String> uploadImage(@PathVariable Long id,@RequestParam("file") MultipartFile file) {
+        String imageUrl = productService.uploadImage(file);
+        productService.updateProductImage(id,imageUrl);
+        return ResponseEntity.ok(imageUrl);
+    }
 
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ProductDTO> createProduct(
-            @RequestPart("product") ProductDTO productDTO,
-            @RequestPart(value = "image", required = false) MultipartFile image
-    ) throws IOException {
-        if (image != null) {
-            productDTO.setImage(image.getBytes());
-        }
+
+    @PostMapping
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {

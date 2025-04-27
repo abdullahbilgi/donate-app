@@ -56,8 +56,7 @@ public class Product {
     @Builder.Default
     private Boolean isActive = true;
 
-    @Lob
-    private byte[] image;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
