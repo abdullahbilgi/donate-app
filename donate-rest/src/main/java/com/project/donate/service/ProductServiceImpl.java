@@ -1,6 +1,8 @@
 package com.project.donate.service;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.ProductStatus;
 import com.project.donate.exception.ResourceNotFoundException;
@@ -10,10 +12,13 @@ import com.project.donate.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final Cloudinary cloudinary;
 
 
     @Override
@@ -64,6 +70,24 @@ public class ProductServiceImpl implements ProductService {
         product.setIsActive(false);
         saveAndMap(product);
 
+    }
+
+    @Override
+    public String uploadImage(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return (String) uploadResult.get("secure_url"); // https link!
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
+    }
+
+    @Override
+    public void updateProductImage(Long productId, String imageUrl) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + productId));
+        product.setImageUrl(imageUrl);
+        productRepository.save(product);
     }
 
     /**

@@ -51,12 +51,8 @@ public class ProductDTO {
 
     private Boolean isActive;
 
-    @NotNull(message = "Category is mandatory")
+    @NotNull(message = "Category is mandatoryA")
     private Category category;
 
-    // Resmi byte dizisi olarak tutuyoruz (DB için)
-    private byte[] image;
-
-    // Resmi base64 olarak tutuyoruz (client'a göstermek için)
-    private String imageBase64;
+    private String imageUrl;
 }
