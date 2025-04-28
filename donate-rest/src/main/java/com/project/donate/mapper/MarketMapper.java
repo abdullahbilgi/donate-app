@@ -10,7 +10,7 @@ public class MarketMapper implements ObjectMapper<Market, MarketDTO>{
     public MarketDTO map(Market market) {
         return MarketDTO.builder()
                 .id(market.getId())
-                .user(market.getUser())
+                .userId(market.getUser().getId())
                 .address(market.getAddress())
                 .name(market.getName())
                 .status(String.valueOf(market.getStatus()))

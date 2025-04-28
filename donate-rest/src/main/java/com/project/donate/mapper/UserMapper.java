@@ -27,12 +27,7 @@ public class UserMapper {
         userDto.setAddress(user.getAddress());
         userDto.setPhone(user.getPhone());
         userDto.setAge(user.getAge());
-        userDto.setRoles(
-                user.getAuthorities()
-                        .stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList())
-        );
+        userDto.setRole(user.getRole());
         return userDto;
     }
 
