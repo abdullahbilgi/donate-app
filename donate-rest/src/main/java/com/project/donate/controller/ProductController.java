@@ -3,6 +3,10 @@ package com.project.donate.controller;
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +22,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProduct());
+    public ResponseEntity<Page<ProductDTO>> getAllProducts(
+            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
     }
 
     @GetMapping("/{id}")

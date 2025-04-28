@@ -10,6 +10,8 @@ import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Product;
 import com.project.donate.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,9 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO getProductById(Long id) {
-        return productRepository.findById(id)
-                .map(productMapper::map)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + id));
+        return productMapper.map(getProductEntityById(id));
     }
 
     @Override
@@ -163,6 +163,17 @@ public class ProductServiceImpl implements ProductService {
         return saveAndMap(product);
     }
 
+    @Override
+    public Product getProductEntityById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + id));
+    }
+
+    @Override
+    public Page<ProductDTO> getAllProductsPageable(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(productMapper::map);
+    }
 
 
     private ProductDTO saveAndMap(Product product) {

@@ -10,6 +10,8 @@ import com.project.donate.model.Market;
 import com.project.donate.model.Product;
 import com.project.donate.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,21 +24,18 @@ public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
     private final MarketMapper marketMapper;
     private final ProductService productService;
-    private final ProductMapper productMapper;
 
 
     @Override
     public List<MarketDTO> getAllMarket() {
-        return marketRepository.findAll()
+        return marketRepository.findByIsActiveTrue()
                 .stream().map(marketMapper::map)
                 .collect(Collectors.toList());
     }
 
     @Override
     public MarketDTO getMarketById(Long id) {
-        return marketRepository.findById(id)
-                .map(marketMapper::map)
-                .orElseThrow(() -> new ResourceNotFoundException("Market not found: " + id));
+        return marketMapper.map(getMarketEntityById(id));
     }
 
 
@@ -44,6 +43,12 @@ public class MarketServiceImpl implements MarketService {
     public MarketDTO createMarket(MarketDTO marketDTO) {
         Market market = marketMapper.mapDto(marketDTO);
         return saveAndMap(market);
+    }
+
+    @Override
+    public Market getMarketEntityById(Long id) {
+        return marketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Market not found: " + id));
     }
 
     @Override
@@ -58,24 +63,21 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public void enabledMarket(Long id) {
-        MarketDTO marketDTO = getMarketById(id);
-        Market market = marketMapper.mapDto(marketDTO);
+        Market market = getMarketEntityById(id);
         market.setStatus(Status.APPROVED);
-        market.setIsActive(true);
         marketRepository.save(market);
-
     }
+
+    //TODO  reject market ve cancel market eklenecek
 
     @Override
     public void assignProduct(Long marketId, Long productId) {
 
-        Market market = marketMapper.mapDto(getMarketById(marketId));
-        Product product = productMapper.mapDto(productService.getProductById(productId));
+        Market market = getMarketEntityById(marketId);
+        Product product = productService.getProductEntityById(productId);
         market.getProducts().add(product);
-        market.setIsActive(true);
         market.setStatus(Status.APPROVED);
         marketRepository.save(market);
-
     }
 
     @Override
@@ -85,6 +87,19 @@ public class MarketServiceImpl implements MarketService {
         market.setIsActive(false);
         saveAndMap(market);
 
+    }
+
+    @Override
+    public Page<MarketDTO> getMarketsByStatusPageable(Status status, Pageable pageable) {
+        return marketRepository.getMarketsByStatusAndIsActiveTrue(status,pageable)
+                .map(marketMapper::map);
+    }
+
+    @Override
+    public List<MarketDTO> getMarketsByStatus(Status status) {
+        return marketRepository.getMarketsByStatusAndIsActiveTrue(status)
+                .stream().map(marketMapper::map)
+                .collect(Collectors.toList());
     }
 
     private MarketDTO saveAndMap(Market market) {

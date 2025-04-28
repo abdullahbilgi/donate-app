@@ -40,7 +40,7 @@ public class Market {
     private Status status = Status.PENDING;
 
     @Builder.Default
-    private Boolean isActive = false;
+    private Boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
