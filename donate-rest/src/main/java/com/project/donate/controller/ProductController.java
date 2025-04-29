@@ -36,17 +36,19 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/increase")
-    public ResponseEntity<ProductDTO> increaseProductQuantity(
+    public ResponseEntity<Void> increaseProductQuantity(
             @PathVariable Long id,
             @RequestParam int amount) {
-        return ResponseEntity.ok(productService.increaseQuantity(id, amount));
+        productService.increaseQuantity(id, amount);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/decrease")
-    public ResponseEntity<ProductDTO> decreaseProductQuantity(
+    public ResponseEntity<Void> decreaseProductQuantity(
             @PathVariable Long id,
             @RequestParam int amount) {
-        return ResponseEntity.ok(productService.decreaseQuantity(id, amount));
+        productService.decreaseQuantity(id, amount);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -5,6 +5,7 @@ import com.project.donate.mapper.CityMapper;
 import com.project.donate.model.City;
 import com.project.donate.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;

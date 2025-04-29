@@ -6,7 +6,9 @@ import com.project.donate.enums.ProductStatus;
 import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Product;
 import com.project.donate.repository.ProductRepository;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -33,16 +36,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO getProductById(Long id) {
+        log.info("{} - looked product with id: {}", GeneralUtil.extractUsername(), id);
         return productRepository.findById(id)
                 .map(productMapper::map)
-                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} product not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Product not found id: " + id);
+                });
     }
 
     @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product product = productMapper.mapDto(productDTO);
         calculateDiscountPrice(product);
-        return saveAndMap(product);
+        return saveAndMap(product,"save");
     }
 
     @Override
@@ -53,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         savingProduct.setId(id);
         calculateDiscountPrice(savingProduct);
 
-        return saveAndMap(savingProduct);
+        return saveAndMap(savingProduct,"update");
     }
 
     @Override
@@ -61,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = getProductById(id);
         Product product = productMapper.mapDto(productDTO);
         product.setIsActive(false);
-        saveAndMap(product);
+        saveAndMap(product,"delete");
 
     }
 
@@ -75,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
             calculateDiscountPrice(product);
             productRepository.save(product);
         }
-        //todo: use log
-        System.out.println("Updated active products! [" + LocalDateTime.now() + "]");
+
+        log.info("All product discounts updated");
     }
 
     private void calculateDiscountPrice(Product product) {
@@ -110,38 +117,54 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO increaseQuantity(Long id, int amount) {
+    public void increaseQuantity(Long id, int amount) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} Product not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Product not found id: " + id);
+                });
 
         if (amount <= 0) {
+            log.warn("Amount must be greater than 0.");
             throw new IllegalArgumentException("Amount must be greater than 0.");
         }
-        product.setQuantity(product.getQuantity()+amount);
-        return saveAndMap(product);
+        product.setQuantity(product.getQuantity() + amount);
+        log.info("{} increase Quantity product with id: {}", GeneralUtil.extractUsername(), id);
+        productRepository.save(product);
     }
 
     @Override
-    public ProductDTO decreaseQuantity(Long id, int amount) {
+    public void decreaseQuantity(Long id, int amount) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} Product not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Product not found id: " + id);
+                });
 
         if (amount <= 0) {
+            log.warn("Amount must be greater than 0.");
             throw new IllegalArgumentException("Amount must be greater than 0.");
         }
         if (product.getQuantity() - amount < 0) {
+            log.warn("Product quantity must be greater than 0.");
             throw new IllegalStateException("Product quantity must be greater than 0.");
         }
 
-        product.setQuantity(product.getQuantity()-amount);
+        product.setQuantity(product.getQuantity() - amount);
 
-        return saveAndMap(product);
+        log.info("{} decrease Quantity product with id: {}", GeneralUtil.extractUsername(), id);
+        productRepository.save(product);
     }
 
 
-
-    private ProductDTO saveAndMap(Product product) {
+    private ProductDTO saveAndMap(Product product,String status) {
         Product savedProduct = productRepository.save(product);
+
+        switch (status) {
+            case "save" -> log.info("{} Created product: {}", GeneralUtil.extractUsername(), product);
+            case "update" -> log.info("{} Updated product: {}", GeneralUtil.extractUsername(), product);
+            case "delete" -> log.info("{} Deleted product: {}", GeneralUtil.extractUsername(), product);
+        }
 
         return productMapper.map(savedProduct);
     }

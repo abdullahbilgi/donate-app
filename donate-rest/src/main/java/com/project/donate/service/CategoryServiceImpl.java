@@ -5,7 +5,9 @@ import com.project.donate.mapper.CategoryMapper;
 import com.project.donate.model.Category;
 import com.project.donate.repository.CategoryRepository;
 import com.project.donate.repository.ProductRepository;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -30,16 +33,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryById(Long id) {
+        log.info("{} looked category with id: {}", GeneralUtil.extractUsername(), id);
         return categoryRepository.findById(id)
                 .map(categoryMapper::map)
-                .orElseThrow(() -> new RuntimeException("Category not found id: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} Category not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Category not found id: " + id);
+                });
     }
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.mapDto(categoryDTO);
 
-        return saveAndMap(category);
+        return saveAndMap(category,"save");
     }
 
     @Override
@@ -49,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category savingCategory = categoryMapper.mapDto(categoryDTO);
         savingCategory.setId(id);
 
-        return saveAndMap(savingCategory);
+        return saveAndMap(savingCategory,"update");
     }
 
     @Override
@@ -62,13 +69,21 @@ public class CategoryServiceImpl implements CategoryService {
                 product.setCategory(null);
                 productRepository.save(product);
             });
-
+            log.info("{} Category deleted: {}", GeneralUtil.extractUsername(), id);
             categoryRepository.deleteById(id);
         }
     }
 
-    private CategoryDTO saveAndMap(Category category) {
+    private CategoryDTO saveAndMap(Category category, String status) {
         Category savedCategory = categoryRepository.save(category);
+
+        if (status.equals("save")) {
+            log.info("{} Created category: {}", GeneralUtil.extractUsername(), category);
+        } else if (status.equals("update")) {
+            log.info("{} Updated category: {}", GeneralUtil.extractUsername(), category);
+        } else {
+            log.info("{} Deleted category: {}", GeneralUtil.extractUsername(), category);
+        }
 
         return categoryMapper.map(savedCategory);
     }

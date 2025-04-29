@@ -6,6 +6,7 @@ import com.project.donate.model.Region;
 import com.project.donate.repository.CityRepository;
 import com.project.donate.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.List;
 @Component
 @Profile("bootstrap")
 @Transactional
+@Log4j2
 @RequiredArgsConstructor
 public class Bootstrap implements CommandLineRunner {
 
@@ -114,6 +116,8 @@ public class Bootstrap implements CommandLineRunner {
             );
 
             cityRepository.saveAll(cities);
+
+            log.info("Saved Cities by Bootstrap");
 
         }
 
@@ -1096,6 +1100,8 @@ public class Bootstrap implements CommandLineRunner {
 
             regionRepository.saveAll(regions);
         }
+
+        log.info("Saved Regions by Bootstrap");
 
 
     }

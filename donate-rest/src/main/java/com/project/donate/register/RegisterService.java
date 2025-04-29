@@ -5,13 +5,14 @@ import com.project.donate.model.Address;
 import com.project.donate.model.User;
 import com.project.donate.repository.AddressRepository;
 import com.project.donate.repository.UserRepository;
-import com.project.donate.service.AddressService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class RegisterService {
 
     private final UserRepository userRepository;
@@ -34,5 +35,7 @@ public class RegisterService {
                 .address(address)
                 .build();
         userRepository.save(user);
+
+        log.info("User registered - {}", user.getUsername() );
     }
 }

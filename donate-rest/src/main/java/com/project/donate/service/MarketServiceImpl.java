@@ -8,7 +8,9 @@ import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Market;
 import com.project.donate.model.Product;
 import com.project.donate.repository.MarketRepository;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class MarketServiceImpl implements MarketService {
 
     private final MarketRepository marketRepository;
@@ -33,16 +36,20 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public MarketDTO getMarketById(Long id) {
+        log.info("{} - looked market with id: {}", GeneralUtil.extractUsername(), id);
         return marketRepository.findById(id)
                 .map(marketMapper::map)
-                .orElseThrow(() -> new RuntimeException("Market not found: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} market not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Market not found: " + id);
+                });
     }
 
 
     @Override
     public MarketDTO createMarket(MarketDTO marketDTO) {
         Market market = marketMapper.mapDto(marketDTO);
-        return saveAndMap(market);
+        return saveAndMap(market, "save");
     }
 
     @Override
@@ -52,7 +59,7 @@ public class MarketServiceImpl implements MarketService {
         savingMarket.setId(id);
         savingMarket.setStatus(Status.valueOf(dto.getStatus()));
         savingMarket.setIsActive(dto.getIsActive());
-        return saveAndMap(savingMarket);
+        return saveAndMap(savingMarket, "update");
     }
 
     @Override
@@ -61,6 +68,8 @@ public class MarketServiceImpl implements MarketService {
         Market market = marketMapper.mapDto(marketDTO);
         market.setStatus(Status.APPROVED);
         market.setIsActive(true);
+
+        log.info("{} enabled market", GeneralUtil.extractUsername());
         marketRepository.save(market);
 
     }
@@ -73,6 +82,8 @@ public class MarketServiceImpl implements MarketService {
         market.getProducts().add(product);
         market.setIsActive(true);
         market.setStatus(Status.APPROVED);
+
+        log.info("{} assigned product", GeneralUtil.extractUsername());
         marketRepository.save(market);
 
     }
@@ -82,12 +93,18 @@ public class MarketServiceImpl implements MarketService {
         MarketDTO marketDTO = getMarketById(id);
         Market market = marketMapper.mapDto(marketDTO);
         market.setIsActive(false);
-        saveAndMap(market);
+        saveAndMap(market, "delete");
 
     }
 
-    private MarketDTO saveAndMap(Market market) {
+    private MarketDTO saveAndMap(Market market, String status) {
         Market savedMarket = marketRepository.save(market);
+
+        switch (status) {
+            case "save" -> log.info("{} Created market: {}", GeneralUtil.extractUsername(), market);
+            case "update" -> log.info("{} Updated market: {}", GeneralUtil.extractUsername(), market);
+            case "delete" -> log.info("{} Deleted market: {}", GeneralUtil.extractUsername(), market);
+        }
 
         return marketMapper.map(savedMarket);
     }

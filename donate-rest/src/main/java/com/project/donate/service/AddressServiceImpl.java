@@ -5,7 +5,9 @@ import com.project.donate.dto.AddressDTO;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
 import com.project.donate.repository.AddressRepository;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
@@ -29,15 +32,20 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO getAddressById(Long id) {
+        log.info("{} looked address with id: {}", GeneralUtil.extractUsername(), id);
         return addressRepository.findById(id)
                 .map(addressMapper::map)
-                .orElseThrow(() -> new RuntimeException("Address not found id: " + id));
+                .orElseThrow(() -> {
+                    log.error("{} Address not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new RuntimeException("Address not found id: " + id);
+
+                });
     }
 
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO) {
         Address address = addressMapper.mapDto(addressDTO);
-        return saveAndMap(address);
+        return saveAndMap(address, "save");
     }
 
     @Override
@@ -47,7 +55,7 @@ public class AddressServiceImpl implements AddressService {
         Address savingAddress = addressMapper.mapDto(addressDTO);
         savingAddress.setId(id);
 
-        return saveAndMap(savingAddress);
+        return saveAndMap(savingAddress, "update");
     }
 
     @Override
@@ -58,8 +66,16 @@ public class AddressServiceImpl implements AddressService {
 
     }
 
-    private AddressDTO saveAndMap(Address address) {
+    private AddressDTO saveAndMap(Address address, String status) {
         Address savedAddress = addressRepository.save(address);
+
+        if (status.equals("save")) {
+            log.info("{} Created address: {}", GeneralUtil.extractUsername(), address);
+        } else if (status.equals("update")) {
+            log.info("{} Updated address: {}", GeneralUtil.extractUsername(), address);
+        } else {
+            log.info("{} Deleted address: {}", GeneralUtil.extractUsername(), address);
+        }
 
         return addressMapper.map(savedAddress);
     }
