@@ -109,6 +109,36 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public ProductDTO increaseQuantity(Long id, int amount) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0.");
+        }
+        product.setQuantity(product.getQuantity()+amount);
+        return saveAndMap(product);
+    }
+
+    @Override
+    public ProductDTO decreaseQuantity(Long id, int amount) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found id: " + id));
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0.");
+        }
+        if (product.getQuantity() - amount < 0) {
+            throw new IllegalStateException("Product quantity must be greater than 0.");
+        }
+
+        product.setQuantity(product.getQuantity()-amount);
+
+        return saveAndMap(product);
+    }
+
+
 
     private ProductDTO saveAndMap(Product product) {
         Product savedProduct = productRepository.save(product);

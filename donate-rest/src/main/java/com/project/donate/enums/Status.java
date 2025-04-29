@@ -1,5 +1,5 @@
 package com.project.donate.enums;
 
 public enum Status {
-    PENDING, APPROVED
+    PENDING, APPROVED , REJECTED ,CANCELED
 }
