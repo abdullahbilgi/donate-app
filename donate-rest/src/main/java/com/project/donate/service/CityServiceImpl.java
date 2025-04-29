@@ -29,7 +29,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDTO getCityById(Long id) {
-        return cityRepository.findById(id).map(cityMapper::map).orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
+        return cityMapper.map(getCityEntityById(id));
     }
 
     @Override
@@ -53,6 +53,12 @@ public class CityServiceImpl implements CityService {
     public void deleteCity(Long id) {
         getCityById(id);
         cityRepository.deleteById(id);
+    }
+
+    @Override
+    public City getCityEntityById(Long id) {
+        return cityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
     }
 
     private CityDTO saveAndMap(City city) {

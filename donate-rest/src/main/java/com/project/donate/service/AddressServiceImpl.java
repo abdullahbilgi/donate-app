@@ -5,6 +5,7 @@ import com.project.donate.dto.AddressDTO;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
+import com.project.donate.model.Region;
 import com.project.donate.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final RegionService regionService;
 
 
     @Override
@@ -30,14 +32,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO getAddressById(Long id) {
-        return addressRepository.findById(id)
-                .map(addressMapper::map)
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found id: " + id));
+        return addressMapper.map(getAddressEntityById(id));
     }
 
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO) {
         Address address = addressMapper.mapDto(addressDTO);
+        Region region = regionService.getRegionEntityById(addressDTO.getRegionId());
+        address.setRegion(region);
         return saveAndMap(address);
     }
 
@@ -57,6 +59,12 @@ public class AddressServiceImpl implements AddressService {
         getAddressById(id);
         addressRepository.deleteById(id);
 
+    }
+
+    @Override
+    public Address getAddressEntityById(Long id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found id: " + id));
     }
 
     private AddressDTO saveAndMap(Address address) {

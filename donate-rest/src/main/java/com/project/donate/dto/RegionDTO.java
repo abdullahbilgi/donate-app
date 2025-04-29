@@ -20,4 +20,6 @@ public class RegionDTO {
 
     @NotBlank(message = "City is mandatory")
     private City city;
+
+    private Long cityId;
 }

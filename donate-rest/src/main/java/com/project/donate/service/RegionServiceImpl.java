@@ -4,6 +4,7 @@ package com.project.donate.service;
 import com.project.donate.dto.RegionDTO;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.RegionMapper;
+import com.project.donate.model.City;
 import com.project.donate.model.Region;
 import com.project.donate.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
     private final RegionMapper regionMapper;
+    private final CityService cityService;
 
 
     @Override
@@ -30,14 +32,14 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public RegionDTO getRegionById(Long id) {
-        return regionRepository.findById(id)
-                .map(regionMapper::map)
-                .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
+        return regionMapper.map(getRegionEntityById(id));
     }
 
     @Override
     public RegionDTO createRegion(RegionDTO regionDTO) {
         Region region = regionMapper.mapDto(regionDTO);
+        City city = cityService.getCityEntityById(regionDTO.getCityId());
+        region.setCity(city);
         return saveAndMap(region);
     }
 
@@ -53,10 +55,14 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public void deleteRegion(Long id) {
-
         getRegionById(id);
         regionRepository.deleteById(id);
+    }
 
+    @Override
+    public Region getRegionEntityById(Long id) {
+        return regionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
     }
 
     private RegionDTO saveAndMap(Region region) {
