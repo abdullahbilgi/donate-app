@@ -55,4 +55,6 @@ public class ProductDTO {
     private Category category;
 
     private String imageUrl;
+
+    private Long categoryId;
 }

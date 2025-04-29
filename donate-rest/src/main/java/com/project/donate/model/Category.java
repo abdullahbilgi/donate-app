@@ -29,4 +29,7 @@ public class Category {
 
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
+
+    @Builder.Default
+    private Boolean isActive = true;
 }

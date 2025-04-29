@@ -35,18 +35,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO getCategoryById(Long id) {
         log.info("{} looked category with id: {}", GeneralUtil.extractUsername(), id);
-        return categoryRepository.findById(id)
-                .map(categoryMapper::map)
-                .orElseThrow(() -> {
-                    log.error("{} Category not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new ResourceNotFoundException("Category not found id: " + id);
-                });
+        return categoryMapper.map(getCategoryEntityById(id));
     }
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.mapDto(categoryDTO);
-
         return saveAndMap(category,"save");
     }
 
@@ -62,17 +56,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        CategoryDTO categoryDto = getCategoryById(id);
-        if (!Objects.isNull(categoryDto)) {
-            Category category = categoryMapper.mapDto(categoryDto);
-
+        Category category = getCategoryEntityById(id);
+        if (!Objects.isNull(category)) {
             productRepository.findByCategory(category).forEach(product -> {
                 product.setCategory(null);
                 productRepository.save(product);
             });
             log.info("{} Category deleted: {}", GeneralUtil.extractUsername(), id);
-            categoryRepository.deleteById(id);
+            category.setIsActive(false);
         }
+        log.info("{} Deleted category: {}", GeneralUtil.extractUsername(), category);
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public Category getCategoryEntityById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("{} Category not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new ResourceNotFoundException("Category not found id: " + id);
+                });
     }
 
     private CategoryDTO saveAndMap(Category category, String status) {
@@ -80,12 +83,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (status.equals("save")) {
             log.info("{} Created category: {}", GeneralUtil.extractUsername(), category);
-        } else if (status.equals("update")) {
-            log.info("{} Updated category: {}", GeneralUtil.extractUsername(), category);
         } else {
-            log.info("{} Deleted category: {}", GeneralUtil.extractUsername(), category);
+            log.info("{} Updated category: {}", GeneralUtil.extractUsername(), category);
         }
-
         return categoryMapper.map(savedCategory);
     }
 }

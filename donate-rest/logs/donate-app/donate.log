@@ -381,3 +381,88 @@
 2025-04-29 19:03:05 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-04-29 19:03:06 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.845 seconds (process running for 6.812)
 2025-04-29 19:03:06 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 19:47:58 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 18244 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 19:47:58 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 19:47:58 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 19:48:04 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 19:48:05 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.479 seconds (process running for 9.141)
+2025-04-29 19:48:05 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 20:11:15 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 12092 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 20:11:15 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 20:11:15 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 20:11:20 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 20:11:20 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.959 seconds (process running for 7.03)
+2025-04-29 20:11:20 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 20:33:24 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 10868 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 20:33:24 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 20:33:24 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 20:33:29 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 20:33:29 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.793 seconds (process running for 6.917)
+2025-04-29 20:33:30 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 20:35:23 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Created address: Address(id=6, name=Test 9, createdDate=2025-04-29T20:35:23.027883, lastModifiedDate=2025-04-29T20:35:23.027883, latitude=37.7749, longitude=-122.4194, zipCode=86524, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 20:35:56 INFO   [getAddressById]   c.p.d.s.AddressServiceImpl : anonymousUser looked address with id: 6
+2025-04-29 20:35:56 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Updated address: Address(id=6, name=tunnnn, createdDate=null, lastModifiedDate=null, latitude=37.7749, longitude=-122.4194, zipCode=86524, region=Region(id=200, name=null, createdDate=null, lastModifiedDate=null, city=null))
+2025-04-29 20:37:16 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 13744 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 20:37:16 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 20:37:16 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 20:37:21 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 20:37:21 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.795 seconds (process running for 6.931)
+2025-04-29 20:37:21 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 20:37:44 INFO   [getAddressById]   c.p.d.s.AddressServiceImpl : anonymousUser looked address with id: 6
+2025-04-29 20:37:44 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Updated address: Address(id=6, name=tunnnn, createdDate=null, lastModifiedDate=null, latitude=37.7749, longitude=-122.4194, zipCode=86524, region=Region(id=4, name=FEKE, createdDate=2025-04-27T17:10:09.607571, lastModifiedDate=2025-04-27T17:10:09.607571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 20:54:55 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 17056 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 20:54:55 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 20:54:55 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 20:55:00 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 20:55:01 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.959 seconds (process running for 7.174)
+2025-04-29 20:55:01 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 20:58:52 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Created address: Address(id=7, name=Test 9, createdDate=2025-04-29T20:58:52.505835, lastModifiedDate=2025-04-29T20:58:52.505835, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=null, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:00:43 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 12204 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:00:43 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:00:43 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:00:51 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:00:52 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.595 seconds (process running for 11.134)
+2025-04-29 21:00:52 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:01:04 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Created address: Address(id=8, name=Test 12, createdDate=2025-04-29T21:01:04.404434, lastModifiedDate=2025-04-29T21:01:04.404434, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=true, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:01:18 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Deleted address: Address(id=8, name=Test 12, createdDate=2025-04-29T21:01:04.404434, lastModifiedDate=2025-04-29T21:01:18.773105, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=false, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:02:53 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 15640 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:02:53 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:02:53 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:02:58 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:02:59 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.361 seconds (process running for 7.911)
+2025-04-29 21:02:59 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:04:08 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Created address: Address(id=9, name=Test 14, createdDate=2025-04-29T21:04:08.715805, lastModifiedDate=2025-04-29T21:04:08.715805, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=true, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:04:14 INFO   [deleteAddress]   c.p.d.s.AddressServiceImpl : anonymousUser Deleted address: Address(id=9, name=Test 14, createdDate=2025-04-29T21:04:08.715805, lastModifiedDate=2025-04-29T21:04:08.715805, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=false, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:08:43 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 8272 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:08:43 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:08:43 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:08:49 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:08:49 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.644 seconds (process running for 8.247)
+2025-04-29 21:08:50 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:09:15 INFO   [saveAndMap]   c.p.d.s.AddressServiceImpl : anonymousUser Created address: Address(id=10, name=Test 14, createdDate=2025-04-29T21:09:15.339183, lastModifiedDate=2025-04-29T21:09:15.339183, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=true, region=Region(id=11, name=SARIÇAM, createdDate=2025-04-27T17:10:09.615571, lastModifiedDate=2025-04-27T17:10:09.615571, city=City(id=1, name=ADANA, createdDate=2025-04-27T17:10:09.514027, lastModifiedDate=2025-04-27T17:10:09.514027)))
+2025-04-29 21:19:42 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 7788 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:19:42 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:19:42 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:19:48 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:19:48 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.885 seconds (process running for 8.522)
+2025-04-29 21:19:48 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:21:07 INFO   [saveAndMap]   c.p.d.s.ProductServiceImpl : anonymousUser Created product: Product(id=6, name=urun testttt, createdDate=2025-04-29T21:21:07.668117, lastModifiedDate=2025-04-29T21:21:07.668117, productionDate=2023-03-15T00:00, expiryDate=2025-09-25T00:00, price=100.0, discountedPrice=98.0, discount=2, quantity=100, description=Fresh test8 organic atermelon from local farm, productStatus=DISCOUNT, isActive=true, imageUrl=null, category=Category(id=1, name=WWW, createdDate=2025-04-27T17:10:23.552587, lastModifiedDate=2025-04-27T17:10:23.552587, isActive=null), markets=null)
+2025-04-29 21:22:24 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 6352 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:22:24 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:22:24 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:22:30 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:22:31 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.671 seconds (process running for 8.648)
+2025-04-29 21:22:31 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:23:26 INFO   [saveAndMap]   c.p.d.s.CategoryServiceImpl : anonymousUser Created category: Category(id=3, name=category 2, createdDate=2025-04-29T21:23:26.009791, lastModifiedDate=2025-04-29T21:23:26.009791, isActive=true)
+2025-04-29 21:24:09 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 17
+2025-04-29 21:24:09 ERROR  [lambda$getProductEntityById$3]   c.p.d.s.ProductServiceImpl : anonymousUser product not found id: 17
+2025-04-29 21:24:13 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 6
+2025-04-29 21:24:13 INFO   [saveAndMap]   c.p.d.s.ProductServiceImpl : anonymousUser Updated product: Product(id=6, name=Organic qqq, createdDate=null, lastModifiedDate=null, productionDate=2023-03-15T00:00, expiryDate=2025-09-25T00:00, price=200.0, discountedPrice=196.0, discount=2, quantity=100, description=Fresh qqq organic atermelon from local farm, productStatus=DISCOUNT, isActive=true, imageUrl=null, category=Category(id=3, name=category 2, createdDate=2025-04-29T21:23:26.009791, lastModifiedDate=2025-04-29T21:23:26.009791, isActive=true), markets=null)
+2025-04-29 21:29:01 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 21572 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-04-29 21:29:01 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-29 21:29:01 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-04-29 21:29:07 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-04-29 21:29:07 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.153 seconds (process running for 7.093)
+2025-04-29 21:29:07 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-04-29 21:30:36 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 6
+2025-04-29 21:30:36 INFO   [deleteProduct]   c.p.d.s.ProductServiceImpl : anonymousUser Deleted product: Product(id=6, name=Organic qqq, createdDate=null, lastModifiedDate=null, productionDate=2023-03-15T00:00, expiryDate=2025-09-25T00:00, price=200.0, discountedPrice=196.0, discount=2, quantity=100, description=Fresh qqq organic atermelon from local farm, productStatus=DISCOUNT, isActive=false, imageUrl=null, category=Category(id=3, name=category 2, createdDate=2025-04-29T21:23:26.009791, lastModifiedDate=2025-04-29T21:23:26.009791, isActive=true), markets=null)

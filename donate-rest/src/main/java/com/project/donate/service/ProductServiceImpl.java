@@ -7,7 +7,9 @@ import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.ProductStatus;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.ProductMapper;
+import com.project.donate.model.Category;
 import com.project.donate.model.Product;
+import com.project.donate.repository.CategoryRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final Cloudinary cloudinary;
+    private final CategoryService categoryService;
 
 
     @Override
@@ -50,16 +53,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
+        Category category =categoryService.getCategoryEntityById(productDTO.getCategoryId());
         Product product = productMapper.mapDto(productDTO);
+        product.setCategory(category);
         calculateDiscountPrice(product);
         return saveAndMap(product,"save");
     }
 
     @Override
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
-
         getProductById(id);
         Product savingProduct = productMapper.mapDto(productDTO);
+        Category category = categoryService.getCategoryEntityById(productDTO.getCategoryId());
+        savingProduct.setCategory(category);
         savingProduct.setId(id);
         calculateDiscountPrice(savingProduct);
 
@@ -71,8 +77,8 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = getProductById(id);
         Product product = productMapper.mapDto(productDTO);
         product.setIsActive(false);
-        saveAndMap(product,"delete");
-
+        log.info("{} Deleted product: {}", GeneralUtil.extractUsername(), product);
+        productRepository.save(product);
     }
 
     @Override
@@ -98,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Scheduled(cron = "0 0 0 * * ?") // Her gün 00:00:00'da çalışır
     public void updateAllProductDiscounts() {
-        List<Product> products = productRepository.findAllByIsActiveTrue();
+        List<Product> products = productRepository.findAll();
         for (Product product : products) {
             calculateDiscountPrice(product);
             productRepository.save(product);
@@ -190,19 +196,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDTO> getAllProductsPageable(Pageable pageable) {
-        return productRepository.findAll(pageable)
+        return productRepository.findAllByIsActiveTrue(pageable)
                 .map(productMapper::map);
     }
 
     private ProductDTO saveAndMap(Product product,String status) {
         Product savedProduct = productRepository.save(product);
-
-        switch (status) {
-            case "save" -> log.info("{} Created product: {}", GeneralUtil.extractUsername(), product);
-            case "update" -> log.info("{} Updated product: {}", GeneralUtil.extractUsername(), product);
-            case "delete" -> log.info("{} Deleted product: {}", GeneralUtil.extractUsername(), product);
+        if (status.equals("save")) {
+            log.info("{} Created product: {}", GeneralUtil.extractUsername(), product);
+        } else{
+            log.info("{} Updated product: {}", GeneralUtil.extractUsername(), product);
         }
-
         return productMapper.map(savedProduct);
     }
 }

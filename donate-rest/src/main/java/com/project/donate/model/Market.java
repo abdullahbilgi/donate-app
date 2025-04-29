@@ -60,6 +60,4 @@ public class Market {
     @JsonIgnore
     @Builder.Default
     private Set<Product> products = new HashSet<>();
-
-
 }

@@ -97,8 +97,8 @@ public class MarketServiceImpl implements MarketService {
         MarketDTO marketDTO = getMarketById(id);
         Market market = marketMapper.mapDto(marketDTO);
         market.setIsActive(false);
-        saveAndMap(market, "delete");
-
+        log.info("{} Deleted address: {}", GeneralUtil.extractUsername(), market);
+        marketRepository.save(market);
     }
 
     @Override
@@ -117,12 +117,11 @@ public class MarketServiceImpl implements MarketService {
     private MarketDTO saveAndMap(Market market, String status) {
         Market savedMarket = marketRepository.save(market);
 
-        switch (status) {
-            case "save" -> log.info("{} Created market: {}", GeneralUtil.extractUsername(), market);
-            case "update" -> log.info("{} Updated market: {}", GeneralUtil.extractUsername(), market);
-            case "delete" -> log.info("{} Deleted market: {}", GeneralUtil.extractUsername(), market);
+        if (status.equals("save")) {
+            log.info("{} Created market: {}", GeneralUtil.extractUsername(), market);
+        } else {
+            log.info("{} Updated market: {}", GeneralUtil.extractUsername(), market);
         }
-
         return marketMapper.map(savedMarket);
     }
 }

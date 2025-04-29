@@ -32,9 +32,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public RegionDTO getRegionById(Long id) {
-        return regionRepository.findById(id)
-                .map(regionMapper::map)
-                .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
+       return regionMapper.map(getRegionEntityById(id));
     }
 
     @Override
@@ -55,10 +53,14 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public void deleteRegion(Long id) {
-
         getRegionById(id);
         regionRepository.deleteById(id);
+    }
 
+    @Override
+    public Region getRegionEntityById(Long id) {
+        return regionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
     }
 
     private RegionDTO saveAndMap(Region region) {
