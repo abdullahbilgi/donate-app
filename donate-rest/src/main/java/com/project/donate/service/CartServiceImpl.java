@@ -5,6 +5,7 @@ import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
 import com.project.donate.exception.ResourceNotFoundException;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.Product;
@@ -45,7 +46,7 @@ public class CartServiceImpl implements CartService {
                 .map(cartMapper::map)
                 .orElseThrow(() -> {
                     log.error("{} Cart not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new RuntimeException("Cart not found id: " + id);
+                    return new ResourceNotFoundException("Cart not found id: " + id);
                 });
     }
 
@@ -79,7 +80,7 @@ public class CartServiceImpl implements CartService {
         Cart existingCart = cartRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("{} Cart not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new RuntimeException("Cart not found id: " + id);
+                    return new ResourceNotFoundException("Cart not found id: " + id);
                 });
 
         // Eski ürünlerin stoklarını geri ver
