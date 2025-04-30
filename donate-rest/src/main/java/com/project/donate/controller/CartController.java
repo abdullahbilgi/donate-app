@@ -1,6 +1,7 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Request.AddProductToCartRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.service.CartService;
@@ -36,6 +37,11 @@ public class CartController {
     @PostMapping
     public ResponseEntity<CartResponse> createCart(@RequestBody CartRequest request) {
         return ResponseEntity.ok(cartService.createCart(request));
+    }
+
+    @PostMapping("/addProduct")
+    public ResponseEntity<CartResponse> addProductToCart( @RequestBody AddProductToCartRequest request) {
+        return ResponseEntity.ok(cartService.addProductToCart(request));
     }
 
     @PutMapping("/{id}")

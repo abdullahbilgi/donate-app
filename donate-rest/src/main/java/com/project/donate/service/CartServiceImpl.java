@@ -1,6 +1,7 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Request.AddProductToCartRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.enums.Status;
@@ -32,6 +33,7 @@ public class CartServiceImpl implements CartService {
     private final CartMapper cartMapper;
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final ProductService productService;
 
 
     @Override
@@ -115,6 +117,23 @@ public class CartServiceImpl implements CartService {
         Cart cart = getCartEntityById(id);
         cart.setIsActive(false);
         saveAndMap(cart, "delete");
+    }
+
+    @Override
+    public CartResponse addProductToCart(AddProductToCartRequest request) {
+
+        Cart cart = cartRepository.findByUserId(request.getUserId());
+        Product product = productService.getProductEntityById(request.getProductId());
+        ProductItem productItem = new ProductItem(product.getId(),product.getQuantity());
+        if(cart == null) {
+            cart = new Cart();
+            cart.setUser(userService.getUserEntityById(request.getUserId()));
+            cart.getProductItems().add(productItem);
+        }else{
+            cart.getProductItems().add(productItem);
+        }
+        validateAndDecreaseStock(cart, cart.getTotalPrice());
+        return saveAndMap(cart, "save");
     }
 
     private void validateAndDecreaseStock(Cart cart, Double totalPrice) {
