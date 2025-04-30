@@ -1,6 +1,8 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
@@ -9,6 +11,7 @@ import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.Product;
+import com.project.donate.model.User;
 import com.project.donate.records.ProductItem;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
@@ -28,22 +31,23 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
     private final ProductRepository productRepository;
+    private final UserService userService;
 
 
     @Override
-    public List<CartDTO> getAllCarts() {
+    public List<CartResponse> getAllCarts() {
 
         return cartRepository.findAll()
                 .stream()
-                .map(cartMapper::map)
+                .map(cartMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CartDTO getCartById(Long id) {
+    public CartResponse getCartById(Long id) {
         log.info("{} looked cart with id: {}", GeneralUtil.extractUsername(), id);
         return cartRepository.findById(id)
-                .map(cartMapper::map)
+                .map(cartMapper::mapToDto)
                 .orElseThrow(() -> {
                     log.error("{} Cart not found id: {}", GeneralUtil.extractUsername(), id);
                     return new ResourceNotFoundException("Cart not found id: " + id);
@@ -51,22 +55,31 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartDTO> getUserCartsOrderedByDate(Long userId) {
+    public Cart getCartEntityById(Long id) {
+        return cartRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("{} Address not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new ResourceNotFoundException("Address not found id: " + id);});
+    }
+
+    @Override
+    public List<CartResponse> getUserCartsOrderedByDate(Long userId) {
         return cartRepository.findByUserIdOrderByPurchaseDateDesc(userId)
                 .stream()
-                .map(cartMapper::map)
+                .map(cartMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CartDTO createCart(CartDTO cartDTO) {
-        Cart cart = cartMapper.mapDto(cartDTO);
-
+    public CartResponse createCart(CartRequest request) {
+        Cart cart = cartMapper.mapToEntity(request);
+        cart.setStatus(Status.PENDING);
+        cart.setIsActive(true);
+        User user = userService.getUserEntityById(request.getUserId());
+        cart.setUser(user);
         // Ürünleri kontrol et ve stoktan düş
         validateAndDecreaseStock(cart, cart.getTotalPrice());
 
-        cart.setStatus(Status.PENDING);
-        cart.setIsActive(true);
 
         log.info("{} New cart created: {}", GeneralUtil.extractUsername(), cart);
 
@@ -76,7 +89,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public CartDTO updateCart(Long id, CartDTO cartDTO) {
+    public CartResponse updateCart(Long id, CartRequest request) {
         Cart existingCart = cartRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("{} Cart not found id: {}", GeneralUtil.extractUsername(), id);
@@ -87,7 +100,7 @@ public class CartServiceImpl implements CartService {
         restoreProductQuantities(existingCart.getProductItems());
 
         // Yeni ürünleri kontrol et ve stoktan düş
-        Cart updatedCart = cartMapper.mapDto(cartDTO);
+        Cart updatedCart = cartMapper.mapToEntity(request);
         validateAndDecreaseStock(updatedCart, updatedCart.getTotalPrice());
 
         updatedCart.setId(id);
@@ -99,8 +112,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCart(Long id) {
-        CartDTO cartDTO = getCartById(id);
-        Cart cart = cartMapper.mapDto(cartDTO);
+        Cart cart = getCartEntityById(id);
         cart.setIsActive(false);
         saveAndMap(cart, "delete");
     }
@@ -151,8 +163,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void cancelCart(Long id) {
-        CartDTO cartDTO = getCartById(id);
-        Cart cart = cartMapper.mapDto(cartDTO);
+        Cart cart = getCartEntityById(id);
         cart.setStatus(Status.CANCELED);
         restoreProductQuantities(cart.getProductItems());
         cart.setIsActive(false);
@@ -165,8 +176,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void approveCart(Long id) {
 
-        CartDTO cartDTO = getCartById(id);
-        Cart cart = cartMapper.mapDto(cartDTO);
+        Cart cart = getCartEntityById(id);
         cart.setStatus(Status.APPROVED);
         log.info("{} Approved Cart with id: {}", GeneralUtil.extractUsername(), id);
         cartRepository.save(cart);
@@ -174,7 +184,7 @@ public class CartServiceImpl implements CartService {
     }
 
 
-    private CartDTO saveAndMap(Cart cart, String status) {
+    private CartResponse saveAndMap(Cart cart, String status) {
         Cart savedCart = cartRepository.save(cart);
 
         switch (status) {
@@ -182,6 +192,6 @@ public class CartServiceImpl implements CartService {
             case "update" -> log.info("{} Updated cart: {}", GeneralUtil.extractUsername(), cart);
             case "delete" -> log.info("{} Deleted cart: {}", GeneralUtil.extractUsername(), cart);
         }
-        return cartMapper.map(savedCart);
+        return cartMapper.mapToDto(savedCart);
     }
 }

@@ -1,6 +1,8 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.ProductRequest;
+import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +24,14 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> getAllProducts(
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
     {
         return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
     // Resim Upload
@@ -42,14 +44,14 @@ public class ProductController {
 
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.createProduct(productDTO));
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
+        return ResponseEntity.ok(productService.createProduct(request));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.updateProduct(id,productDTO));
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
+        return ResponseEntity.ok(productService.updateProduct(id,request));
     }
 
     @PatchMapping("/{id}/increase")

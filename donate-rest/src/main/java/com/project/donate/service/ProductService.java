@@ -1,6 +1,8 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.ProductRequest;
+import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,13 +12,13 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductDTO createProduct(ProductDTO productDTO);
+    ProductResponse createProduct(ProductRequest request);
 
-    ProductDTO updateProduct(Long id,ProductDTO productDTO);
+    ProductResponse updateProduct(Long id,ProductRequest request);
 
-    List<ProductDTO> getAllProduct();
+    List<ProductResponse> getAllProduct();
 
-    ProductDTO getProductById(Long id);
+    ProductResponse getProductById(Long id);
 
     void increaseQuantity(Long id, int amount);
 
@@ -24,7 +26,7 @@ public interface ProductService {
 
     Product getProductEntityById(Long id);
 
-    Page<ProductDTO> getAllProductsPageable(Pageable pageable);
+    Page<ProductResponse> getAllProductsPageable(Pageable pageable);
 
     void deleteProduct(Long id);
 

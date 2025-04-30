@@ -1,18 +1,20 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CityDTO;
+import com.project.donate.dto.Request.CityRequest;
+import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.model.City;
 
 import java.util.List;
 
 public interface CityService {
-    CityDTO createCity(CityDTO cityDTO);
+    CityResponse createCity(CityRequest request);
 
-    CityDTO updateCity(Long id,CityDTO cityDTO);
+    CityResponse updateCity(Long id,CityRequest request);
 
-    List<CityDTO> getAllCities();
+    List<CityResponse> getAllCities();
 
-    CityDTO getCityById(Long id);
+    CityResponse getCityById(Long id);
 
     void deleteCity(Long id);
 

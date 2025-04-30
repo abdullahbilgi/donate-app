@@ -2,8 +2,11 @@ package com.project.donate.service;
 
 
 import com.project.donate.dto.RegionDTO;
+import com.project.donate.dto.Request.RegionRequest;
+import com.project.donate.dto.Response.RegionResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.RegionMapper;
+import com.project.donate.model.City;
 import com.project.donate.model.Region;
 import com.project.donate.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,35 +23,37 @@ public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
     private final RegionMapper regionMapper;
+    private final CityService cityService;
 
 
     @Override
-    public List<RegionDTO> getAllCities() {
+    public List<RegionResponse> getAllCities() {
         return regionRepository.findAll()
                 .stream()
-                .map(regionMapper::map)
+                .map(regionMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public RegionDTO getRegionById(Long id) {
-       return regionMapper.map(getRegionEntityById(id));
+    public RegionResponse getRegionById(Long id) {
+       return regionMapper.mapToDto(getRegionEntityById(id));
     }
 
     @Override
-    public RegionDTO createRegion(RegionDTO regionDTO) {
-        Region region = regionMapper.mapDto(regionDTO);
+    public RegionResponse createRegion(RegionRequest request) {
+        Region region = regionMapper.mapToEntity(request);
+        City city = cityService.getCityEntityById(request.getCityId());
+        region.setCity(city);
         return saveAndMap(region);
     }
 
     @Override
-    public RegionDTO updateRegion(Long id, RegionDTO regionDTO) {
+    public RegionResponse updateRegion(Long id, RegionRequest request) {
 
-        getRegionById(id);
-        Region savingRegion = regionMapper.mapDto(regionDTO);
-        savingRegion.setId(id);
-
-        return saveAndMap(savingRegion);
+        Region region = getRegionEntityById(id);
+        City city = cityService.getCityEntityById(request.getCityId());
+        region.setCity(city);
+        return saveAndMap(region);
     }
 
     @Override
@@ -63,9 +68,8 @@ public class RegionServiceImpl implements RegionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
     }
 
-    private RegionDTO saveAndMap(Region region) {
+    private RegionResponse saveAndMap(Region region) {
         Region savedRegion = regionRepository.save(region);
-
-        return regionMapper.map(savedRegion);
+        return regionMapper.mapToDto(savedRegion);
     }
 }

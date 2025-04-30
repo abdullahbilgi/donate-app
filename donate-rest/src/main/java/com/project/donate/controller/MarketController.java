@@ -2,6 +2,8 @@ package com.project.donate.controller;
 
 import com.project.donate.dto.MarketDTO;
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.MarketRequest;
+import com.project.donate.dto.Response.MarketResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.service.MarketService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +24,12 @@ public class MarketController {
     private final MarketService marketService;
 
     @GetMapping
-    public ResponseEntity<List<MarketDTO>> getAllMarkets() {
+    public ResponseEntity<List<MarketResponse>> getAllMarkets() {
         return ResponseEntity.ok(marketService.getAllMarket());
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<Page<MarketDTO>> getMarketsByStatus(
+    public ResponseEntity<Page<MarketResponse>> getMarketsByStatus(
             @PathVariable Status status,
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(
@@ -36,18 +38,18 @@ public class MarketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MarketDTO> getCityById(@PathVariable Long id) {
+    public ResponseEntity<MarketResponse> getCityById(@PathVariable Long id) {
         return ResponseEntity.ok(marketService.getMarketById(id));
     }
 
     @PostMapping
-    public ResponseEntity<MarketDTO> createMarket(@RequestBody MarketDTO marketDTO) {
-        return ResponseEntity.ok(marketService.createMarket(marketDTO));
+    public ResponseEntity<MarketResponse> createMarket(@RequestBody MarketRequest request) {
+        return ResponseEntity.ok(marketService.createMarket(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MarketDTO> updateMarket(@PathVariable Long id, @RequestBody MarketDTO marketDTO) {
-        return ResponseEntity.ok(marketService.updateMarket(id,marketDTO));
+    public ResponseEntity<MarketResponse> updateMarket(@PathVariable Long id, @RequestBody MarketRequest request) {
+        return ResponseEntity.ok(marketService.updateMarket(id,request));
     }
 
     @PostMapping("/enable/{id}")

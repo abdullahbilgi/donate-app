@@ -1,25 +1,25 @@
 package com.project.donate.mapper;
 
 import com.project.donate.dto.CategoryDTO;
+import com.project.donate.dto.Request.CategoryRequest;
+import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.model.Category;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryMapper implements ObjectMapper<Category, CategoryDTO> {
+public class CategoryMapper  {
 
-    @Override
-    public CategoryDTO map(Category category) {
-        return CategoryDTO.builder()
+    public CategoryResponse mapToDto(Category category) {
+        return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .build();
     }
 
-    @Override
-    public Category mapDto(CategoryDTO categoryDTO) {
+    public Category mapToEntity(CategoryRequest request) {
         return Category.builder()
-                .id(categoryDTO.getId())
-                .name(categoryDTO.getName())
+                .id(request.getId())
+                .name(request.getName())
                 .build();
     }
 }

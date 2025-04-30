@@ -1,6 +1,8 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,28 +19,28 @@ public class CartController {
 
 
     @GetMapping
-    public ResponseEntity<List<CartDTO>> getAllCarts() {
+    public ResponseEntity<List<CartResponse>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCarts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CartDTO> getCartById(@PathVariable Long id) {
+    public ResponseEntity<CartResponse> getCartById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getCartById(id));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CartDTO>> getUserCarts(@PathVariable Long userId) {
+    public ResponseEntity<List<CartResponse>> getUserCarts(@PathVariable Long userId) {
         return ResponseEntity.ok(cartService.getUserCartsOrderedByDate(userId));
     }
 
     @PostMapping
-    public ResponseEntity<CartDTO> createCart(@RequestBody CartDTO CartDTO) {
-        return ResponseEntity.ok(cartService.createCart(CartDTO));
+    public ResponseEntity<CartResponse> createCart(@RequestBody CartRequest request) {
+        return ResponseEntity.ok(cartService.createCart(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CartDTO> updateCart(@PathVariable Long id, @RequestBody CartDTO CartDTO) {
-        return ResponseEntity.ok(cartService.updateCart(id, CartDTO));
+    public ResponseEntity<CartResponse> updateCart(@PathVariable Long id, @RequestBody CartRequest request) {
+        return ResponseEntity.ok(cartService.updateCart(id, request));
     }
 
     @PutMapping("/cancelCart/{id}")

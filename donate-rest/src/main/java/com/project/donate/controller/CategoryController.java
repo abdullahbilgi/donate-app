@@ -1,6 +1,8 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.CategoryDTO;
+import com.project.donate.dto.Request.CategoryRequest;
+import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +17,28 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCities() {
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCityById(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> getCategoryId(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCity(@RequestBody CategoryDTO CategoryDTO) {
-        return ResponseEntity.ok(categoryService.createCategory(CategoryDTO));
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
+        return ResponseEntity.ok(categoryService.createCategory(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCity(@PathVariable Long id, @RequestBody CategoryDTO CategoryDTO) {
-        return ResponseEntity.ok(categoryService.updateCategory(id,CategoryDTO));
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
+        return ResponseEntity.ok(categoryService.updateCategory(id,request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }

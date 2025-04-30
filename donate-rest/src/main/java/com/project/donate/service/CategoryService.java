@@ -1,19 +1,21 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CategoryDTO;
+import com.project.donate.dto.Request.CategoryRequest;
+import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.model.Category;
 
 
 import java.util.List;
 
 public interface CategoryService {
-    CategoryDTO createCategory(CategoryDTO categoryDTO);
+    CategoryResponse createCategory(CategoryRequest request);
 
-    CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO);
+    CategoryResponse updateCategory(Long id, CategoryRequest request);
 
-    List<CategoryDTO> getAllCategories();
+    List<CategoryResponse> getAllCategories();
 
-    CategoryDTO getCategoryById(Long id);
+    CategoryResponse getCategoryById(Long id);
 
     void deleteCategory(Long id);
 

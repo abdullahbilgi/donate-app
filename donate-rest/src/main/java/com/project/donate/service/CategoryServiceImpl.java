@@ -1,6 +1,8 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CategoryDTO;
+import com.project.donate.dto.Request.CategoryRequest;
+import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CategoryMapper;
 import com.project.donate.model.Category;
@@ -25,32 +27,30 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(categoryMapper::map)
+                .map(categoryMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDTO getCategoryById(Long id) {
+    public CategoryResponse getCategoryById(Long id) {
         log.info("{} looked category with id: {}", GeneralUtil.extractUsername(), id);
-        return categoryMapper.map(getCategoryEntityById(id));
+        return categoryMapper.mapToDto(getCategoryEntityById(id));
     }
 
     @Override
-    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        Category category = categoryMapper.mapDto(categoryDTO);
+    public CategoryResponse createCategory(CategoryRequest request) {
+        Category category = categoryMapper.mapToEntity(request);
         return saveAndMap(category,"save");
     }
 
     @Override
-    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
-
+    public CategoryResponse updateCategory(Long id, CategoryRequest request) {
         getCategoryById(id);
-        Category savingCategory = categoryMapper.mapDto(categoryDTO);
+        Category savingCategory = categoryMapper.mapToEntity(request);
         savingCategory.setId(id);
-
         return saveAndMap(savingCategory,"update");
     }
 
@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
                 });
     }
 
-    private CategoryDTO saveAndMap(Category category, String status) {
+    private CategoryResponse saveAndMap(Category category, String status) {
         Category savedCategory = categoryRepository.save(category);
 
         if (status.equals("save")) {
@@ -86,6 +86,6 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             log.info("{} Updated category: {}", GeneralUtil.extractUsername(), category);
         }
-        return categoryMapper.map(savedCategory);
+        return categoryMapper.mapToDto(savedCategory);
     }
 }

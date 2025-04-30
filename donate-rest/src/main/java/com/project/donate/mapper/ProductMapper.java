@@ -1,20 +1,25 @@
 package com.project.donate.mapper;
 
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.ProductRequest;
+import com.project.donate.dto.Response.CategoryResponse;
+import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.enums.ProductStatus;
 import com.project.donate.model.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 
 @Component
-public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
+@RequiredArgsConstructor
+public class ProductMapper {
+    private final CategoryMapper categoryMapper;
 
-    @Override
-    public ProductDTO map(Product product) {
+    public ProductResponse mapToDto(Product product) {
+        CategoryResponse categoryResponse = categoryMapper.mapToDto(product.getCategory());
         if (product == null) return null;
-
-        ProductDTO.ProductDTOBuilder builder = ProductDTO.builder()
+        ProductResponse.ProductResponseBuilder builder = ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .productionDate(product.getProductionDate())
@@ -25,29 +30,25 @@ public class ProductMapper implements ObjectMapper<Product, ProductDTO> {
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
                 .productStatus(product.getProductStatus() != null ? product.getProductStatus().toString() : null)
-                .isActive(product.getIsActive())
-                .category(product.getCategory())
+                .category(categoryResponse)
                 .imageUrl(product.getImageUrl());
-
 
         return builder.build();
     }
 
-    @Override
-    public Product mapDto(ProductDTO productDTO) {
+    public Product mapToEntity(ProductRequest request) {
         return Product.builder()
-                .id(productDTO.getId())
-                .name(productDTO.getName())
-                .productionDate(productDTO.getProductionDate())
-                .expiryDate(productDTO.getExpiryDate())
-                .price(productDTO.getPrice())
-                .discountedPrice(productDTO.getDiscountedPrice() != null ? productDTO.getDiscountedPrice() : productDTO.getPrice())
-                .discount(productDTO.getDiscount() != null ? productDTO.getDiscount() : 0)
-                .quantity(productDTO.getQuantity())
-                .description(productDTO.getDescription())
-                .productStatus(productDTO.getProductStatus() != null ? ProductStatus.valueOf(productDTO.getProductStatus()) : ProductStatus.REAL)
-                .category(productDTO.getCategory())
-                .imageUrl(productDTO.getImageUrl())
+                .id(request.getId())
+                .name(request.getName())
+                .productionDate(request.getProductionDate())
+                .expiryDate(request.getExpiryDate())
+                .price(request.getPrice())
+                .discountedPrice(request.getDiscountedPrice() != null ? request.getDiscountedPrice() : request.getPrice())
+                .discount(request.getDiscount() != null ? request.getDiscount() : 0)
+                .quantity(request.getQuantity())
+                .description(request.getDescription())
+                .productStatus(request.getProductStatus() != null ? ProductStatus.valueOf(request.getProductStatus()) : ProductStatus.REAL)
+                .imageUrl(request.getImageUrl())
                 .build();
     }
 

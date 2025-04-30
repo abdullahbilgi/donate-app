@@ -1,6 +1,8 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.CityDTO;
+import com.project.donate.dto.Request.CityRequest;
+import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +19,23 @@ public class CityController {
 
 
     @GetMapping
-    public ResponseEntity<List<CityDTO>> getAllCities() {
+    public ResponseEntity<List<CityResponse>> getAllCities() {
         return ResponseEntity.ok(cityService.getAllCities());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CityDTO> getCityById(@PathVariable Long id) {
+    public ResponseEntity<CityResponse> getCityById(@PathVariable Long id) {
         return ResponseEntity.ok(cityService.getCityById(id));
     }
 
     @PostMapping
-    public ResponseEntity<CityDTO> createCity(@RequestBody CityDTO cityDTO) {
-        return ResponseEntity.ok(cityService.createCity(cityDTO));
+    public ResponseEntity<CityResponse> createCity(@RequestBody CityRequest request) {
+        return ResponseEntity.ok(cityService.createCity(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @RequestBody CityDTO cityDTO) {
-        return ResponseEntity.ok(cityService.updateCity(id,cityDTO));
+    public ResponseEntity<CityResponse> updateCity(@PathVariable Long id, @RequestBody CityRequest request) {
+        return ResponseEntity.ok(cityService.updateCity(id,request));
     }
 
     @DeleteMapping("/{id}")

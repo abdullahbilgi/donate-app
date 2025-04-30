@@ -1,18 +1,20 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.RegionDTO;
+import com.project.donate.dto.Request.RegionRequest;
+import com.project.donate.dto.Response.RegionResponse;
 import com.project.donate.model.Region;
 
 import java.util.List;
 
 public interface RegionService {
-    RegionDTO createRegion(RegionDTO regionDTO);
+    RegionResponse createRegion(RegionRequest request);
 
-    RegionDTO updateRegion(Long id,RegionDTO regionDTO);
+    RegionResponse updateRegion(Long id,RegionRequest request);
 
-    List<RegionDTO> getAllCities();
+    List<RegionResponse> getAllCities();
 
-    RegionDTO getRegionById(Long id);
+    RegionResponse getRegionById(Long id);
 
     void deleteRegion(Long id);
 

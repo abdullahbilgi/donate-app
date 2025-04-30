@@ -2,6 +2,8 @@ package com.project.donate.service;
 
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.dto.Request.AddressRequest;
+import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
@@ -26,36 +28,44 @@ public class AddressServiceImpl implements AddressService {
 
 
     @Override
-    public List<AddressDTO> getAllAddress() {
+    public List<AddressResponse> getAllAddress() {
         return addressRepository.findAllByIsActiveTrue()
                 .stream()
-                .map(addressMapper::map)
+                .map(addressMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AddressDTO getAddressById(Long id) {
+    public AddressResponse getAddressById(Long id) {
         log.info("{} looked address with id: {}", GeneralUtil.extractUsername(), id);
-        return addressMapper.map(getAddressEntityById(id));
+        return addressMapper.mapToDto(getAddressEntityById(id));
     }
 
     @Override
-    public AddressDTO createAddress(AddressDTO addressDTO) {
-        Address address = addressMapper.mapDto(addressDTO);
-        Region region = regionService.getRegionEntityById(addressDTO.getRegionId());
+    public AddressResponse createAddress(AddressRequest addressRequest) {
+        return saveAndMap(createAddressEntity(addressRequest),"save");
+    }
+
+    @Override
+    public Address createAddressEntity(AddressRequest request) {
+        Address address = addressMapper.mapToEntity(request);
+        Region region = regionService.getRegionEntityById(request.getRegionId());
         address.setRegion(region);
-        return saveAndMap(address,"save");
-
+        return address;
     }
 
     @Override
-    public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
-        getAddressById(id);
-        Region region = regionService.getRegionEntityById(addressDTO.getRegionId());
-        Address savingAddress = addressMapper.mapDto(addressDTO);
-        savingAddress.setRegion(region);
-        savingAddress.setId(id);
-        return saveAndMap(savingAddress, "update");
+    public Address saveAddress(Address address) {
+        return addressRepository.save(address);
+    }
+
+    @Override
+    public AddressResponse updateAddress(Long id, AddressRequest request) {
+        Address address = getAddressEntityById(id);
+        address = addressMapper.mapUpdateAddressRequestToAddress(request,address);
+        Region region = regionService.getRegionEntityById(request.getRegionId());
+        address.setRegion(region);
+        return saveAndMap(address, "update");
     }
 
     @Override
@@ -63,7 +73,7 @@ public class AddressServiceImpl implements AddressService {
         Address address = getAddressEntityById(id);
         address.setIsActive(false);
         log.info("{} Deleted address: {}", GeneralUtil.extractUsername(), address);
-        addressRepository.save(address);
+        saveAddress(address);
     }
 
     @Override
@@ -75,14 +85,16 @@ public class AddressServiceImpl implements AddressService {
                 );
     }
 
-    private AddressDTO saveAndMap(Address address, String status) {
-        Address savedAddress = addressRepository.save(address);
+
+
+    private AddressResponse saveAndMap(Address address, String status) {
+        Address savedAddress = saveAddress(address);
 
         if (status.equals("save")) {
             log.info("{} Created address: {}", GeneralUtil.extractUsername(), address);
         } else{
             log.info("{} Updated address: {}", GeneralUtil.extractUsername(), address);
         }
-        return addressMapper.map(savedAddress);
+        return addressMapper.mapToDto(savedAddress);
     }
 }

@@ -4,6 +4,8 @@ package com.project.donate.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.ProductRequest;
+import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.enums.ProductStatus;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.ProductMapper;
@@ -39,43 +41,41 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<ProductDTO> getAllProduct() {
+    public List<ProductResponse> getAllProduct() {
         return productRepository.findAll()
                 .stream()
-                .map(productMapper::map)
+                .map(productMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProductDTO getProductById(Long id) {
-        return productMapper.map(getProductEntityById(id));
+    public ProductResponse getProductById(Long id) {
+        return productMapper.mapToDto(getProductEntityById(id));
     }
 
     @Override
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        Category category =categoryService.getCategoryEntityById(productDTO.getCategoryId());
-        Product product = productMapper.mapDto(productDTO);
+    public ProductResponse createProduct(ProductRequest request) {
+        Category category =categoryService.getCategoryEntityById(request.getCategoryId());
+        Product product = productMapper.mapToEntity(request);
         product.setCategory(category);
         calculateDiscountPrice(product);
         return saveAndMap(product,"save");
     }
 
     @Override
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
         getProductById(id);
-        Product savingProduct = productMapper.mapDto(productDTO);
-        Category category = categoryService.getCategoryEntityById(productDTO.getCategoryId());
+        Product savingProduct = productMapper.mapToEntity(request);
+        Category category = categoryService.getCategoryEntityById(request.getCategoryId());
         savingProduct.setCategory(category);
         savingProduct.setId(id);
         calculateDiscountPrice(savingProduct);
-
         return saveAndMap(savingProduct,"update");
     }
 
     @Override
     public void deleteProduct(Long id) {
-        ProductDTO productDTO = getProductById(id);
-        Product product = productMapper.mapDto(productDTO);
+        Product product = getProductEntityById(id);
         product.setIsActive(false);
         log.info("{} Deleted product: {}", GeneralUtil.extractUsername(), product);
         productRepository.save(product);
@@ -195,18 +195,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDTO> getAllProductsPageable(Pageable pageable) {
+    public Page<ProductResponse> getAllProductsPageable(Pageable pageable) {
         return productRepository.findAllByIsActiveTrue(pageable)
-                .map(productMapper::map);
+                .map(productMapper::mapToDto);
     }
 
-    private ProductDTO saveAndMap(Product product,String status) {
+    private ProductResponse saveAndMap(Product product,String status) {
         Product savedProduct = productRepository.save(product);
         if (status.equals("save")) {
             log.info("{} Created product: {}", GeneralUtil.extractUsername(), product);
         } else{
             log.info("{} Updated product: {}", GeneralUtil.extractUsername(), product);
         }
-        return productMapper.map(savedProduct);
+        return productMapper.mapToDto(savedProduct);
     }
 }

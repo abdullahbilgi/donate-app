@@ -3,6 +3,8 @@ package com.project.donate.service;
 import com.project.donate.dto.AddressDTO;
 import com.project.donate.dto.MarketDTO;
 import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.MarketRequest;
+import com.project.donate.dto.Response.MarketResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.AddressMapper;
@@ -11,6 +13,7 @@ import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Address;
 import com.project.donate.model.Market;
 import com.project.donate.model.Product;
+import com.project.donate.model.User;
 import com.project.donate.repository.AddressRepository;
 import com.project.donate.repository.MarketRepository;
 import com.project.donate.util.GeneralUtil;
@@ -33,35 +36,33 @@ public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
     private final MarketMapper marketMapper;
     private final ProductService productService;
-    private final AddressMapper addressMapper;
     private final AddressService addressService;
+    private final UserService userService;
 
 
 
     @Override
-    public List<MarketDTO> getAllMarket() {
+    public List<MarketResponse> getAllMarket() {
         return marketRepository.findByIsActiveTrue()
-                .stream().map(marketMapper::map)
+                .stream().map(marketMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public MarketDTO getMarketById(Long id) {
-        return marketMapper.map(getMarketEntityById(id));
+    public MarketResponse getMarketById(Long id) {
+        return marketMapper.mapToDto(getMarketEntityById(id));
     }
 
 
     @Override
-    public MarketDTO createMarket(MarketDTO marketDTO) {
-        //TODO bu kısma bakılacak
-        AddressDTO addressDTO = addressMapper.map(marketDTO.getAddress());
-        log.info(addressDTO.getName());
-        AddressDTO convertedAddressDto = addressService.createAddress(addressDTO);
-        Address address = addressMapper.mapDto(convertedAddressDto);
-        log.info(address.getName());
-        Market market = marketMapper.mapDto(marketDTO);
+    public MarketResponse createMarket(MarketRequest marketDTO) {
+        Market market = marketMapper.mapToEntity(marketDTO);
+        Address address = addressService.createAddressEntity(marketDTO.getAddress());
+        addressService.saveAddress(address);
+        User user = userService.getUserEntityById(marketDTO.getUserId());
+        market.setUser(user);
         market.setAddress(address);
-        return saveAndMap(market, "save");
+        return saveAndMap(market,"save");
     }
 
     @Override
@@ -76,13 +77,13 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
-    public MarketDTO updateMarket(Long id, MarketDTO marketDTO) {
-        MarketDTO dto = getMarketById(id);
-        Market savingMarket = marketMapper.mapDto(marketDTO);
-        savingMarket.setId(id);
-        savingMarket.setStatus(Status.valueOf(dto.getStatus()));
-        savingMarket.setIsActive(dto.getIsActive());
-        return saveAndMap(savingMarket, "update");
+    public MarketResponse updateMarket(Long id, MarketRequest request) {
+        Market market = getMarketEntityById(id);
+        marketMapper.mapUpdateAddressRequestToMarket(request, market);
+        Address address = addressService.createAddressEntity(request.getAddress());
+        addressService.saveAddress(address);
+        market.setAddress(address);
+        return saveAndMap(market, "update");
     }
 
     @Override
@@ -108,27 +109,26 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public void deleteMarket(Long id) {
-        MarketDTO marketDTO = getMarketById(id);
-        Market market = marketMapper.mapDto(marketDTO);
+        Market market = getMarketEntityById(id);
         market.setIsActive(false);
         log.info("{} Deleted address: {}", GeneralUtil.extractUsername(), market);
         marketRepository.save(market);
     }
 
     @Override
-    public Page<MarketDTO> getMarketsByStatusPageable(Status status, Pageable pageable) {
+    public Page<MarketResponse> getMarketsByStatusPageable(Status status, Pageable pageable) {
         return marketRepository.getMarketsByStatusAndIsActiveTrue(status,pageable)
-                .map(marketMapper::map);
+                .map(marketMapper::mapToDto);
     }
 
     @Override
-    public List<MarketDTO> getMarketsByStatus(Status status) {
+    public List<MarketResponse> getMarketsByStatus(Status status) {
         return marketRepository.getMarketsByStatusAndIsActiveTrue(status)
-                .stream().map(marketMapper::map)
+                .stream().map(marketMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    private MarketDTO saveAndMap(Market market, String status) {
+    private MarketResponse saveAndMap(Market market, String status) {
         Market savedMarket = marketRepository.save(market);
 
         if (status.equals("save")) {
@@ -136,6 +136,6 @@ public class MarketServiceImpl implements MarketService {
         } else {
             log.info("{} Updated market: {}", GeneralUtil.extractUsername(), market);
         }
-        return marketMapper.map(savedMarket);
+        return marketMapper.mapToDto(savedMarket);
     }
 }

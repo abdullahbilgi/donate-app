@@ -1,6 +1,8 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.CityDTO;
+import com.project.donate.dto.Request.CityRequest;
+import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CityMapper;
 import com.project.donate.model.City;
@@ -22,32 +24,30 @@ public class CityServiceImpl implements CityService {
 
 
     @Override
-    public List<CityDTO> getAllCities() {
+    public List<CityResponse> getAllCities() {
         return cityRepository.findAll()
                 .stream()
-                .map(cityMapper::map)
+                .map(cityMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CityDTO getCityById(Long id) {
-       return cityMapper.map(getCityEntityById(id));
+    public CityResponse getCityById(Long id) {
+       return cityMapper.mapToDto(getCityEntityById(id));
     }
 
     @Override
-    public CityDTO createCity(CityDTO cityDTO) {
-        City city = cityMapper.mapDto(cityDTO);
-
+    public CityResponse createCity(CityRequest request) {
+        City city = cityMapper.mapToEntity(request);
         return saveAndMap(city);
     }
 
     @Override
-    public CityDTO updateCity(Long id, CityDTO cityDTO) {
+    public CityResponse updateCity(Long id, CityRequest cityRequest) {
 
         getCityById(id);
-        City savingCity = cityMapper.mapDto(cityDTO);
+        City savingCity = cityMapper.mapToEntity(cityRequest);
         savingCity.setId(id);
-
         return saveAndMap(savingCity);
     }
 
@@ -63,9 +63,8 @@ public class CityServiceImpl implements CityService {
                 .orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
     }
 
-    private CityDTO saveAndMap(City city) {
+    private CityResponse saveAndMap(City city) {
         City savedCity = cityRepository.save(city);
-
-        return cityMapper.map(savedCity);
+        return cityMapper.mapToDto(savedCity);
     }
 }
