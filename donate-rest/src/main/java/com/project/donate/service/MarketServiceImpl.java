@@ -1,13 +1,17 @@
 package com.project.donate.service;
 
+import com.project.donate.dto.AddressDTO;
 import com.project.donate.dto.MarketDTO;
 import com.project.donate.dto.ProductDTO;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.ResourceNotFoundException;
+import com.project.donate.mapper.AddressMapper;
 import com.project.donate.mapper.MarketMapper;
 import com.project.donate.mapper.ProductMapper;
+import com.project.donate.model.Address;
 import com.project.donate.model.Market;
 import com.project.donate.model.Product;
+import com.project.donate.repository.AddressRepository;
 import com.project.donate.repository.MarketRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +33,9 @@ public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
     private final MarketMapper marketMapper;
     private final ProductService productService;
+    private final AddressMapper addressMapper;
+    private final AddressService addressService;
+
 
 
     @Override
@@ -46,7 +53,14 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public MarketDTO createMarket(MarketDTO marketDTO) {
+        //TODO bu kısma bakılacak
+        AddressDTO addressDTO = addressMapper.map(marketDTO.getAddress());
+        log.info(addressDTO.getName());
+        AddressDTO convertedAddressDto = addressService.createAddress(addressDTO);
+        Address address = addressMapper.mapDto(convertedAddressDto);
+        log.info(address.getName());
         Market market = marketMapper.mapDto(marketDTO);
+        market.setAddress(address);
         return saveAndMap(market, "save");
     }
 
