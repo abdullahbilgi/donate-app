@@ -8,6 +8,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.model.Address;
 import com.project.donate.model.Market;
@@ -40,11 +41,11 @@ public class PdfGeneratorService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    public ByteArrayInputStream generateCartPdf(CartDTO cartDTO) {
+    public ByteArrayInputStream generateCartPdf(CartResponse cartDTO) {
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        Optional<User> user = userRepository.findById(cartDTO.getUserId());
+        Optional<User> user = userRepository.findById(cartDTO.getUser().getId());
 
         try {
             PdfWriter.getInstance(document, out);

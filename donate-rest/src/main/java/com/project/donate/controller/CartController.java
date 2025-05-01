@@ -41,7 +41,7 @@ public class CartController {
 
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> getCartPdf(@PathVariable Long id) {
-        CartDTO cart = cartService.getCartById(id);
+        CartResponse cart = cartService.getCartById(id);
         ByteArrayInputStream bis = pdfGeneratorService.generateCartPdf(cart);
 
         HttpHeaders headers = new HttpHeaders();
