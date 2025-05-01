@@ -1099,10 +1099,9 @@ public class Bootstrap implements CommandLineRunner {
 
 
             regionRepository.saveAll(regions);
+
+            log.info("Saved Regions by Bootstrap");
         }
-
-        log.info("Saved Regions by Bootstrap");
-
 
     }
 }

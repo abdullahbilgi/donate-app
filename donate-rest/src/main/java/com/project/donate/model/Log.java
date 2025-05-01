@@ -26,5 +26,6 @@ public class Log {
 
     private String service;
 
+    @Column(columnDefinition = "TEXT")
     private String message;
 }

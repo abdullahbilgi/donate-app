@@ -83,9 +83,6 @@ public class CartServiceImpl implements CartService {
         validateAndDecreaseStock(cart, cart.getTotalPrice());
 
 
-        log.info("{} New cart created: {}", GeneralUtil.extractUsername(), cart);
-
-
         return saveAndMap(cart, "save");
     }
 
