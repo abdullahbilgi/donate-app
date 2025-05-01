@@ -1,5 +1,9 @@
 package com.project.donate.service;
 
-public interface LogService {
+import com.project.donate.dto.LogDTO;
 
+import java.util.List;
+
+public interface LogService {
+    List<LogDTO> getLatestLogs(int limit);
 }

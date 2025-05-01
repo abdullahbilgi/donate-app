@@ -68,9 +68,6 @@ public class CartServiceImpl implements CartService {
         cart.setStatus(Status.PENDING);
         cart.setIsActive(true);
 
-        log.info("{} New cart created: {}", GeneralUtil.extractUsername(), cart);
-
-
         return saveAndMap(cart, "save");
     }
 
