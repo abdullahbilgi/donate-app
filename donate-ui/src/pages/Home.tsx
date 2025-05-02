@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import Button from "../ui/Button";
 import { FaHandHoldingHeart } from "react-icons/fa6";
-import { FaHandHoldingUsd } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -28,18 +28,18 @@ const Home = () => {
               variation="donation"
             >
               <div className="flex items-center gap-1.5">
-                <span>Donate Now</span> <FaHandHoldingHeart />
+                <span>Donate or Share Now</span> <FaHandHoldingHeart />
               </div>
             </Button>
             <Button
               onClick={() => {
-                navigate("/donateCellProduct");
+                navigate("/products");
               }}
               size="xxl"
               variation="cell"
             >
               <div className="flex items-center gap-1.5">
-                <span>Share at a Fair Price</span> <FaHandHoldingUsd />
+                <span>Get yours</span> <FaCartShopping />
               </div>
             </Button>
           </div>

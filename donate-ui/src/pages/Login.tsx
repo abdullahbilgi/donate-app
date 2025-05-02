@@ -1,32 +1,25 @@
 import { Link } from "react-router";
 import Button from "../ui/Button";
 import SignupLoginLayout from "../ui/SignupLoginLayout";
+import Form from "../ui/Form";
+import FormRow from "../ui/FormRow";
+import Input from "../ui/Input";
 
 const Login = () => {
   return (
     <SignupLoginLayout>
       <h1 className="text-2xl font-bold">Log In</h1>
 
-      <form className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <label className="text-lg font-semibold">Name</label>
-          <input
-            type="text"
-            placeholder="Name"
-            className="bg-gray-100 p-3 w-64 rounded-3xl"
-          />
-        </div>
+      <Form formVariation="sign" onSubmit={() => console.log("submit")}>
+        <FormRow labelText="Username">
+          <Input type="text" id="username" disabled={false} />
+        </FormRow>
 
-        <div className="flex flex-col gap-2 mb-8">
-          <label className="text-lg font-semibold">Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            className="bg-gray-100 p-3 w-64 rounded-3xl"
-          />
-        </div>
+        <FormRow labelText="Password">
+          <Input type="password" id="password" disabled={false} />
+        </FormRow>
 
-        <Button onClick={() => console.log("login")}>Log in</Button>
+        <Button onClick={() => console.log("login")}>Sign Up</Button>
 
         <p className="font-normal">
           Dont have any account?{" "}
@@ -34,7 +27,7 @@ const Login = () => {
             Sign Up
           </Link>
         </p>
-      </form>
+      </Form>
     </SignupLoginLayout>
   );
 };

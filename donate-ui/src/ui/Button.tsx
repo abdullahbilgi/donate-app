@@ -2,14 +2,25 @@ import clsx from "clsx";
 
 interface ButtonProps {
   size?: "small" | "medium" | "large" | "xxl";
-  variation?: "primary" | "secondary" | "danger" | "donation" | "cell";
-  onClick: () => void;
+  variation?:
+    | "primary"
+    | "submit"
+    | "danger"
+    | "donation"
+    | "cell"
+    | "addToCart"
+    | "basketButton";
+  disabled?: boolean;
+  className?: string;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
   size = "medium",
   variation = "primary",
+  disabled = false,
+  className,
   onClick,
   children,
 }) => {
@@ -22,20 +33,28 @@ const Button: React.FC<ButtonProps> = ({
 
   // Dinamik varyasyon sınıfları
   const buttonVariation = {
-    primary: "bg-lime-300 text-teal-800 hover:bg-lime-400",
-    secondary: "bg-green-500 text-white hover:bg-green-600",
+    primary:
+      "bg-lime-300 text-teal-800 hover:bg-lime-400 border border-lime-400",
+    submit:
+      "bg-gray-500 text-white hover:bg-gray-600 px-10 py-3 transition-transform duration-300 hover:scale-102 hover:shadow-lg",
     danger: "bg-red-500 text-white hover:bg-red-600",
-    donation: "bg-lime-200 text-teal-800 hover:bg-lime-300 ",
-    cell: "bg-amber-400 text-amber-700 hover:bg-amber-500",
+    donation: "bg-lime-300 text-teal-800 hover:bg-lime-400 ",
+    cell: "bg-gray-600 text-gray-100 hover:bg-gray-700",
+    addToCart:
+      "bg-gray-300 text-teal-800 hover:text-gray-100 hover:bg-gray-400 border border-gray-300",
+    basketButton:
+      "bg-gray-300 text-teal-800 hover:text-gray-100 hover:bg-gray-400",
   };
   return (
     <button
       className={clsx(
-        "flex justify-center items-center shadow-md rounded-2xl transition duration-300 cursor-pointer",
+        `flex justify-center items-center shadow-md rounded-2xl transition duration-200 cursor-pointer ${className}`,
         buttonSize[size], // Dinamik boyut
-        buttonVariation[variation] // Dinamik varyasyon
+        buttonVariation[variation], // Dinamik varyasyon,
+        "disabled:opacity-50 disabled:cursor-not-allowed"
       )}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>
