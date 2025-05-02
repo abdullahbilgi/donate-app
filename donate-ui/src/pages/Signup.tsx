@@ -1,51 +1,31 @@
 import { Link } from "react-router";
 import Button from "../ui/Button";
 import SignupLoginLayout from "../ui/SignupLoginLayout";
+import Form from "../ui/Form";
+import FormRow from "../ui/FormRow";
+import Input from "../ui/Input";
 
 const Signup = () => {
   return (
     <SignupLoginLayout>
       <h1 className="text-2xl font-bold">Sign Up</h1>
 
-      <form className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <label className="text-md font-semibold">Full Name</label>
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="bg-gray-100 p-3 rounded-3xl w-72"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-md font-semibold">Username</label>
-          <input
-            type="text"
-            placeholder="Username"
-            className="bg-gray-100 p-3 rounded-3xl w-72"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-md font-semibold">Email</label>
-          <input
-            type="text"
-            placeholder="Email"
-            className="bg-gray-100 p-3 rounded-3xl w-72"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2 mb-3">
-          <label className="text-md font-semibold">Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            className="bg-gray-100 p-3 rounded-3xl w-72"
-          />
-        </div>
+      <Form formVariation="sign" onSubmit={() => console.log("submit")}>
+        <FormRow labelText="Full Name">
+          <Input type="text" id="name" disabled={false} />
+        </FormRow>
+        <FormRow labelText="Username">
+          <Input type="text" id="username" disabled={false} />
+        </FormRow>
+        <FormRow labelText="Email">
+          <Input type="email" id="email" disabled={false} />
+        </FormRow>
+        <FormRow labelText="Password">
+          <Input type="password" id="password" disabled={false} />
+        </FormRow>
 
         <Button onClick={() => console.log("login")}>Sign Up</Button>
-      </form>
+      </Form>
     </SignupLoginLayout>
   );
 };

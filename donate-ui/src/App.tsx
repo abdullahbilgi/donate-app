@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import AppLayout from "./pages/AppLayout";
 import Signup from "./pages/Signup";
 import DonateCellProduct from "./pages/donateSellProduct";
+import Products from "./pages/Products";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/donateCellProduct" element={<DonateCellProduct />} />
+          <Route path="/products" element={<Products />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

@@ -3,9 +3,12 @@ import Header from "../ui/Header";
 
 const AppLayout = () => {
   return (
-    <div className="bg-gray-50 grid grid-rows-[auto_1fr] h-svh font-poppins">
+    <div
+      className="grid grid-rows-[auto_1fr] min-h-svh font-poppins"
+      style={{ backgroundColor: "#f1f5f9" }}
+    >
       <Header />
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>
