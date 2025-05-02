@@ -32,4 +32,6 @@ public class AddressDTO {
 
     @NotBlank(message = "Region is mandatory")
     private Region region;
+
+    private Long regionId;
 }

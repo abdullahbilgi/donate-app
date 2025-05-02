@@ -48,7 +48,7 @@ public class UserDTO {
     private Integer age;
 
     @NotBlank(message = "Role is mandatory")
-    private List<String> roles;
+    private Role role;
 
     @NotBlank(message = "Address is mandatory")
     private Address address;

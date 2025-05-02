@@ -1,22 +1,22 @@
 package com.project.donate.mapper;
 
 import com.project.donate.dto.CityDTO;
+import com.project.donate.dto.Request.CityRequest;
+import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.model.City;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CityMapper implements ObjectMapper<City, CityDTO> {
+public class CityMapper  {
 
-    @Override
-    public CityDTO map(City city) {
-        return CityDTO.builder()
+    public CityResponse mapToDto(City city) {
+        return CityResponse.builder()
                 .id(city.getId())
                 .name(city.getName())
                 .build();
     }
 
-    @Override
-    public City mapDto(CityDTO cityDTO) {
+    public City mapToEntity(CityRequest cityDTO) {
         return City.builder()
                 .id(cityDTO.getId())
                 .name(cityDTO.getName())

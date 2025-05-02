@@ -1,17 +1,26 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.dto.Request.AddressRequest;
+import com.project.donate.dto.Response.AddressResponse;
+import com.project.donate.model.Address;
 
 import java.util.List;
 
 public interface AddressService {
-    AddressDTO createAddress(AddressDTO addressDTO);
+    AddressResponse createAddress(AddressRequest request);
 
-    AddressDTO updateAddress(Long id,AddressDTO addressDTO);
+    AddressResponse updateAddress(Long id,AddressRequest request);
 
-    List<AddressDTO> getAllAddress();
+    List<AddressResponse> getAllAddress();
 
-    AddressDTO getAddressById(Long id);
+    AddressResponse getAddressById(Long id);
 
     void deleteAddress(Long id);
+
+    Address getAddressEntityById(Long id);
+
+    Address createAddressEntity(AddressRequest address);
+
+    Address saveAddress(Address address);
 }

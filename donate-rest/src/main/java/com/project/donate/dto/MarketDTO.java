@@ -33,6 +33,8 @@ public class MarketDTO {
     @NotBlank(message = "User is mandatory")
     private User user;
 
+    private Long userId;
+
     @NotBlank(message = "Address is mandatory")
     private Address address;
 

@@ -15,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Market {
@@ -40,7 +41,7 @@ public class Market {
     private Status status = Status.PENDING;
 
     @Builder.Default
-    private Boolean isActive = false;
+    private Boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -59,6 +60,4 @@ public class Market {
     @JsonIgnore
     @Builder.Default
     private Set<Product> products = new HashSet<>();
-
-
 }

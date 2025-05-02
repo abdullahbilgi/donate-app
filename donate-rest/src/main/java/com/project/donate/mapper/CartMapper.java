@@ -1,6 +1,9 @@
 package com.project.donate.mapper;
 
 import com.project.donate.dto.CartDTO;
+import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Response.CartResponse;
+import com.project.donate.dto.Response.UserResponse;
 import com.project.donate.model.Cart;
 import com.project.donate.model.User;
 import com.project.donate.repository.UserRepository;
@@ -9,36 +12,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CartMapper implements ObjectMapper<Cart, CartDTO> {
+public class CartMapper  {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    @Override
-    public CartDTO map(Cart cart) {
-        return CartDTO.builder()
+    public CartResponse mapToDto(Cart cart) {
+        UserResponse user = userMapper.userToUserDto(cart.getUser());
+        return CartResponse.builder()
                 .id(cart.getId())
-                .userId(cart.getUser().getId())
+                .user(user)
                 .productItems(cart.getProductItems())
                 .status(cart.getStatus())
                 .totalPrice(cart.getTotalPrice())
                 .purchaseDate(cart.getPurchaseDate())
-                .isActive(cart.getIsActive())
                 .expiredDate(cart.getExpiredDate())
                 .build();
     }
 
-    @Override
-    public Cart mapDto(CartDTO dto) {
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + dto.getUserId()));
+    public Cart mapToEntity(CartRequest request) {
 
         return Cart.builder()
-                .id(dto.getId())
-                .user(user)
-                .productItems(dto.getProductItems())
-                .status(dto.getStatus())
-                .totalPrice(dto.getTotalPrice())
-                .isActive(dto.getIsActive())
+                //.id(request.getId())
                 .build();
     }
 }

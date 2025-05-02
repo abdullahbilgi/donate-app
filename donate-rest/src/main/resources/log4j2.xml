@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_DIR">logs/donate-app</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console appender with colors -->
+        <Console name="LogToConsole" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level}  %style{[%M]}{magenta}   %style{[%C]}{cyan} : %msg%n%throwable"
+                    disableAnsi="false"
+                    noConsoleNoAnsi="false"
+            />
+        </Console>
+
+        <!-- Rolling file appender without colors -->
+        <RollingFile
+                name="rollingFile"
+                fileName="${LOG_DIR}/donate.log"
+                filePattern="${LOG_DIR}/donate.%i.log.gz"
+                ignoreExceptions="false"
+                createOnDemand="true">
+
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p  [%M]   %c{1.} : %m%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+
+            <DefaultRolloverStrategy max="5">
+                <Delete basePath="${LOG_DIR}" maxDepth="2">
+                    <IfFileName glob="*/donate.*.log.gz" />
+                    <IfLastModified age="P30D" />
+                </Delete>
+            </DefaultRolloverStrategy>
+
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="com.project.donate" level="debug" additivity="false">
+            <AppenderRef ref="rollingFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+
+        <Logger name="org.springframework" level="error" additivity="false">
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="LogToConsole"/>
+        </Root>
+
+    </Loggers>
+</Configuration>

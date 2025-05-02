@@ -1,18 +1,27 @@
 package com.project.donate.service;
 
 import com.project.donate.dto.MarketDTO;
+import com.project.donate.dto.ProductDTO;
+import com.project.donate.dto.Request.MarketRequest;
+import com.project.donate.dto.Response.MarketResponse;
+import com.project.donate.enums.Status;
+import com.project.donate.model.Market;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface MarketService {
 
-    MarketDTO createMarket(MarketDTO marketDTO);
+    MarketResponse createMarket(MarketRequest request);
 
-    MarketDTO updateMarket(Long id, MarketDTO marketDTO);
+    Market getMarketEntityById(Long id);
 
-    List<MarketDTO> getAllMarket();
+    MarketResponse updateMarket(Long id, MarketRequest request);
 
-    MarketDTO getMarketById(Long id);
+    List<MarketResponse> getAllMarket();
+
+    MarketResponse getMarketById(Long id);
 
     void assignProduct(Long marketId, Long productId);
 
@@ -20,5 +29,7 @@ public interface MarketService {
 
     void deleteMarket(Long id);
 
+    Page<MarketResponse> getMarketsByStatusPageable(Status status ,Pageable pageable);
 
+    List<MarketResponse> getMarketsByStatus(Status status);
 }

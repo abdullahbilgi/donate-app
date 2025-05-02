@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
@@ -18,7 +19,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -35,6 +35,9 @@ public class Address {
     private Double longitude;
 
     private String zipCode;
+
+    @Builder.Default
+    private Boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(name = "region_id", nullable = false)

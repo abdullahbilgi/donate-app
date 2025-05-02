@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
@@ -28,4 +29,7 @@ public class Category {
 
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
+
+    @Builder.Default
+    private Boolean isActive = true;
 }

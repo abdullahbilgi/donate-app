@@ -16,6 +16,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart {

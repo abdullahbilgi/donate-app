@@ -2,10 +2,16 @@ package com.project.donate.service;
 
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.dto.Request.AddressRequest;
+import com.project.donate.dto.Response.AddressResponse;
+import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
+import com.project.donate.model.Region;
 import com.project.donate.repository.AddressRepository;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,54 +19,82 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final RegionService regionService;
 
 
     @Override
-    public List<AddressDTO> getAllAddress() {
-        return addressRepository.findAll()
+    public List<AddressResponse> getAllAddress() {
+        return addressRepository.findAllByIsActiveTrue()
                 .stream()
-                .map(addressMapper::map)
+                .map(addressMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AddressDTO getAddressById(Long id) {
-        return addressRepository.findById(id)
-                .map(addressMapper::map)
-                .orElseThrow(() -> new RuntimeException("Address not found id: " + id));
+    public AddressResponse getAddressById(Long id) {
+        log.info("{} looked address with id: {}", GeneralUtil.extractUsername(), id);
+        return addressMapper.mapToDto(getAddressEntityById(id));
     }
 
     @Override
-    public AddressDTO createAddress(AddressDTO addressDTO) {
-        Address address = addressMapper.mapDto(addressDTO);
-        return saveAndMap(address);
+    public AddressResponse createAddress(AddressRequest addressRequest) {
+        return saveAndMap(createAddressEntity(addressRequest),"save");
     }
 
     @Override
-    public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
+    public Address createAddressEntity(AddressRequest request) {
+        Address address = addressMapper.mapToEntity(request);
+        Region region = regionService.getRegionEntityById(request.getRegionId());
+        address.setRegion(region);
+        return address;
+    }
 
-        getAddressById(id);
-        Address savingAddress = addressMapper.mapDto(addressDTO);
-        savingAddress.setId(id);
+    @Override
+    public Address saveAddress(Address address) {
+        return addressRepository.save(address);
+    }
 
-        return saveAndMap(savingAddress);
+    @Override
+    public AddressResponse updateAddress(Long id, AddressRequest request) {
+        Address address = getAddressEntityById(id);
+        address = addressMapper.mapUpdateAddressRequestToAddress(request,address);
+        Region region = regionService.getRegionEntityById(request.getRegionId());
+        address.setRegion(region);
+        return saveAndMap(address, "update");
     }
 
     @Override
     public void deleteAddress(Long id) {
-
-        getAddressById(id);
-        addressRepository.deleteById(id);
-
+        Address address = getAddressEntityById(id);
+        address.setIsActive(false);
+        log.info("{} Deleted address: {}", GeneralUtil.extractUsername(), address);
+        saveAddress(address);
     }
 
-    private AddressDTO saveAndMap(Address address) {
-        Address savedAddress = addressRepository.save(address);
+    @Override
+    public Address getAddressEntityById(Long id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("{} Address not found id: {}", GeneralUtil.extractUsername(), id);
+                    return new ResourceNotFoundException("Address not found id: " + id);}
+                );
+    }
 
-        return addressMapper.map(savedAddress);
+
+
+    private AddressResponse saveAndMap(Address address, String status) {
+        Address savedAddress = saveAddress(address);
+
+        if (status.equals("save")) {
+            log.info("{} Created address: {}", GeneralUtil.extractUsername(), address);
+        } else{
+            log.info("{} Updated address: {}", GeneralUtil.extractUsername(), address);
+        }
+        return addressMapper.mapToDto(savedAddress);
     }
 }

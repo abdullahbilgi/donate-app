@@ -15,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -55,6 +56,8 @@ public class Product {
     @Builder.Default
     private Boolean isActive = true;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
@@ -62,6 +65,5 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     @JsonIgnore
     private Set<Market> markets = new HashSet<>();
-
-
 }
+

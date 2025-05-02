@@ -1,6 +1,7 @@
 package com.project.donate.register;
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.dto.Request.AddressRequest;
 import com.project.donate.enums.Role;
 import com.project.donate.model.Address;
 import jakarta.validation.constraints.*;
@@ -36,6 +37,6 @@ public class UserRegistrationRequest {
     @NotNull
     private Role role;
 
-    private AddressDTO address;
+    private AddressRequest address;
 
 }

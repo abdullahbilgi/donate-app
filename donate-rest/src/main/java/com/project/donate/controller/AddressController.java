@@ -1,6 +1,8 @@
 package com.project.donate.controller;
 
 import com.project.donate.dto.AddressDTO;
+import com.project.donate.dto.Request.AddressRequest;
+import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +18,23 @@ public class AddressController {
     private final AddressService addressService;
 
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> getAllCities() {
+    public ResponseEntity<List<AddressResponse>> getAllCities() {
         return ResponseEntity.ok(addressService.getAllAddress());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AddressDTO> getCityById(@PathVariable Long id) {
+    public ResponseEntity<AddressResponse> getCityById(@PathVariable Long id) {
         return ResponseEntity.ok(addressService.getAddressById(id));
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> createCity(@RequestBody AddressDTO addressDTO) {
-        return ResponseEntity.ok(addressService.createAddress(addressDTO));
+    public ResponseEntity<AddressResponse> createCity(@RequestBody AddressRequest request) {
+        return ResponseEntity.ok(addressService.createAddress(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AddressDTO> updateCity(@PathVariable Long id, @RequestBody AddressDTO addressDTO) {
-        return ResponseEntity.ok(addressService.updateAddress(id,addressDTO));
+    public ResponseEntity<AddressResponse> updateCity(@PathVariable Long id, @RequestBody AddressRequest request) {
+        return ResponseEntity.ok(addressService.updateAddress(id,request));
     }
 
     @DeleteMapping("/{id}")
