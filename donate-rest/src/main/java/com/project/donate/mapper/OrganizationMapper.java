@@ -1,34 +1,51 @@
 package com.project.donate.mapper;
 
 
-import com.project.donate.dto.OrganizationDTO;
+import com.project.donate.dto.Request.MarketRequest;
+import com.project.donate.dto.Request.OrganizationRequest;
+import com.project.donate.dto.Response.*;
+import com.project.donate.model.Market;
 import com.project.donate.model.Organization;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
-public class OrganizationMapper implements ObjectMapper<Organization, OrganizationDTO> {
-    @Override
-    public OrganizationDTO map(Organization organization) {
-        return OrganizationDTO.builder()
+@RequiredArgsConstructor
+public class OrganizationMapper{
+
+    private final AddressMapper addressMapper;
+    private final UserMapper userMapper;
+
+    public OrganizationResponse mapToDto(Organization organization) {
+        AddressResponse addressResponse = addressMapper.mapToDto(organization.getAddress());
+
+        UserResponse userResponse = userMapper.userToUserDto(organization.getUser());
+
+        return OrganizationResponse.builder()
                 .id(organization.getId())
-                .user(organization.getUser())
-                .address(organization.getAddress())
+                .user(userResponse)
+                .address(addressResponse)
                 .name(organization.getName())
                 .status(String.valueOf(organization.getStatus()))
-                .isActive(organization.getIsActive())
+                .productItems(organization.getProductItems())
                 .taxNumber(organization.getTaxNumber())
                 .build();
-
     }
 
-    @Override
-    public Organization mapDto(OrganizationDTO organizationDTO) {
+    public Organization mapToEntity(OrganizationRequest request) {
         return Organization.builder()
-                .id(organizationDTO.getId())
-                .user(organizationDTO.getUser())
-                .address(organizationDTO.getAddress())
-                .name(organizationDTO.getName())
-                .taxNumber(organizationDTO.getTaxNumber())
+                .id(request.getId())
+                .name(request.getName())
+                .taxNumber(request.getTaxNumber())
                 .build();
+    }
+
+    public void mapUpdateAddressRequestToOrganization(OrganizationRequest request,Organization organization) {
+        organization.setName(request.getName());
+        organization.setTaxNumber(request.getTaxNumber());
     }
 }

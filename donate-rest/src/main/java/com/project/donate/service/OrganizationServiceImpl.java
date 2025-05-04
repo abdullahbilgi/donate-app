@@ -1,16 +1,23 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.OrganizationDTO;
+import com.project.donate.dto.Request.OrganizationRequest;
+import com.project.donate.dto.Response.OrganizationResponse;
 import com.project.donate.enums.Status;
+import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.OrganizationMapper;
-import com.project.donate.model.Organization;
+import com.project.donate.model.*;
+import com.project.donate.records.ProductItem;
 import com.project.donate.repository.OrganizationRepository;
+import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,20 +28,27 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private final OrganizationRepository organizationRepository;
     private final OrganizationMapper organizationMapper;
+    private final AddressService addressService;
+    private final ProductRepository productRepository;
+    private final UserService userService;
 
 
     @Override
-    public List<OrganizationDTO> getAllOrganization() {
-        return organizationRepository.findAll()
-                .stream().map(organizationMapper::map)
+    public List<OrganizationResponse> getAllOrganization() {
+        return organizationRepository.findByIsActiveTrue()
+                .stream().map(organizationMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public OrganizationDTO getOrganizationById(Long id) {
+    public OrganizationResponse getOrganizationById(Long id) {
+        return organizationMapper.mapToDto(getOrganizationEntityById(id));
+    }
+
+    @Override
+    public Organization getOrganizationEntityById(Long id) {
         log.info("{} - looked organization with id: {}", GeneralUtil.extractUsername(), id);
         return organizationRepository.findById(id)
-                .map(organizationMapper::map)
                 .orElseThrow(() -> {
                     log.error("{} organization not found id: {}", GeneralUtil.extractUsername(), id);
                     return new ResourceNotFoundException("Organization not found: " + id);
@@ -43,52 +57,151 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
     @Override
-    public OrganizationDTO createOrganization(OrganizationDTO organizationDTO) {
-        Organization organization = organizationMapper.mapDto(organizationDTO);
+    public OrganizationResponse createOrganization(OrganizationRequest organizationDTO) {
+        Organization organization = organizationMapper.mapToEntity(organizationDTO);
+        Address address = addressService.createAddressEntity(organizationDTO.getAddress());
+        addressService.saveAddress(address);
+        User user = userService.getUserEntityById(organizationDTO.getUserId());
+        organization.setUser(user);
+        organization.setAddress(address);
         return saveAndMap(organization, "save");
     }
 
     @Override
-    public OrganizationDTO updateOrganization(Long id, OrganizationDTO organizationDTO) {
-        OrganizationDTO dto = getOrganizationById(id);
-        Organization savingOrganization = organizationMapper.mapDto(organizationDTO);
-        savingOrganization.setId(id);
-        savingOrganization.setStatus(Status.valueOf(dto.getStatus()));
-        savingOrganization.setIsActive(dto.getIsActive());
-        return saveAndMap(savingOrganization, "update");
+    public OrganizationResponse updateOrganization(Long id, OrganizationRequest request) {
+        Organization organization = getOrganizationEntityById(id);
+        organizationMapper.mapUpdateAddressRequestToOrganization(request, organization);
+        Address address = addressService.createAddressEntity(request.getAddress());
+        addressService.saveAddress(address);
+        organization.setAddress(address);
+        return saveAndMap(organization, "update");
     }
 
     @Override
     public void enabledOrganization(Long id) {
-        OrganizationDTO organizationDTO = getOrganizationById(id);
-        Organization organization = organizationMapper.mapDto(organizationDTO);
+        Organization organization = getOrganizationEntityById(id);
         organization.setStatus(Status.APPROVED);
-        organization.setIsActive(true);
 
         log.info("{} enabled organization", GeneralUtil.extractUsername());
         organizationRepository.save(organization);
 
     }
 
+    @Override
+    public OrganizationResponse assignProduct(Long organizationId, ProductItem newItem) {
+        Organization organization = getOrganizationEntityById(organizationId);
+
+        List<ProductItem> existingItems = organization.getProductItems();
+        if (existingItems == null) {
+            existingItems = new ArrayList<>();
+        }
+
+        Product product = productRepository.findById(newItem.productId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + newItem.productId()));
+
+        if (!product.getIsActive()) {
+            throw new RuntimeException("Product is not active");
+        }
+
+        if (product.getQuantity() < newItem.quantity()) {
+            throw new OutOfStockException("Not enough stock for product id: " + newItem.productId());
+        }
+
+        product.setQuantity(product.getQuantity() - newItem.quantity());
+        productRepository.save(product);
+
+        boolean found = false;
+        for (int i = 0; i < existingItems.size(); i++) {
+            ProductItem existingItem = existingItems.get(i);
+            if (existingItem.productId().equals(newItem.productId())) {
+                int updatedQuantity = existingItem.quantity() + newItem.quantity();
+                existingItems.set(i, new ProductItem(existingItem.productId(), updatedQuantity));
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            existingItems.add(newItem);
+        }
+
+        organization.setProductItems(existingItems);
+        organizationRepository.save(organization);
+        return organizationMapper.mapToDto(organization);
+    }
+
+    @Override
+    public OrganizationResponse removeProduct(Long organizationId, Long productId, int quantityToRemove) {
+        Organization organization = getOrganizationEntityById(organizationId);
+        List<ProductItem> existingItems = organization.getProductItems();
+
+        if (existingItems == null || existingItems.isEmpty()) {
+            throw new ResourceNotFoundException("No products assigned to this organization");
+        }
+
+        boolean removed = false;
+        for (int i = 0; i < existingItems.size(); i++) {
+            ProductItem item = existingItems.get(i);
+            if (item.productId().equals(productId)) {
+                if (item.quantity() <= quantityToRemove) {
+                    existingItems.remove(i); // tümünü sil
+                } else {
+                    existingItems.set(i, new ProductItem(productId, item.quantity() - quantityToRemove));
+                }
+
+                Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Product not found id: " + productId));
+                product.setQuantity(product.getQuantity() + quantityToRemove);
+                productRepository.save(product);
+
+                removed = true;
+                break;
+            }
+        }
+
+        if (!removed) {
+            throw new ResourceNotFoundException("Product not assigned to this organization");
+        }
+
+        organization.setProductItems(existingItems);
+        organizationRepository.save(organization);
+        return organizationMapper.mapToDto(organization);
+    }
+
+
+
+
 
     @Override
     public void deleteOrganization(Long id) {
-        OrganizationDTO organizationDTO = getOrganizationById(id);
-        Organization organization = organizationMapper.mapDto(organizationDTO);
+        Organization organization = getOrganizationEntityById(id);
         organization.setIsActive(false);
-        saveAndMap(organization, "delete");
+        log.info("{} Deleted organization: {}", GeneralUtil.extractUsername(), organization);
+        organizationRepository.save(organization);
 
     }
 
-    private OrganizationDTO saveAndMap(Organization organization, String status) {
+    @Override
+    public Page<OrganizationResponse> getOrganizationsByStatusPageable(Status status, Pageable pageable) {
+        return organizationRepository.getOrganizationsByStatusAndIsActiveTrue(status, pageable)
+                .map(organizationMapper::mapToDto);
+    }
+
+    @Override
+    public List<OrganizationResponse> getOrganizationsByStatus(Status status) {
+        return organizationRepository.getOrganizationsByStatusAndIsActiveTrue(status)
+                .stream().map(organizationMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    private OrganizationResponse saveAndMap(Organization organization, String status) {
         Organization savedOrganization = organizationRepository.save(organization);
 
         switch (status) {
             case "save" -> log.info("{} Created organization: {}", GeneralUtil.extractUsername(), organization);
             case "update" -> log.info("{} Updated organization: {}", GeneralUtil.extractUsername(), organization);
-            case "delete" -> log.info("{} Deleted organization: {}", GeneralUtil.extractUsername(), organization);
         }
 
-        return organizationMapper.map(savedOrganization);
+        return organizationMapper.mapToDto(savedOrganization);
     }
 }

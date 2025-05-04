@@ -31,7 +31,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
+import java.util.*;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -51,26 +52,32 @@ public class PdfGeneratorService {
             PdfWriter.getInstance(document, out);
             document.open();
 
-            Product firstProduct = productRepository.findById(cartDTO.getProductItems().get(0).productId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
-            Market market = firstProduct.getMarkets().stream().findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("Market not found"));
-
-            Address address = market.getAddress();
-
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
             Font bodyFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
             Font footerFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8);
+            Font brandFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 24, new Color(0, 128, 0));
+            Font marketFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
 
+            // --- MARKETLERİ GRUPLA ---
+            Map<Market, List<Product>> marketToProducts = new LinkedHashMap<>();
+            for (ProductItem item : cartDTO.getProductItems()) {
+                Product product = productRepository.findById(item.productId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + item.productId()));
+                Market market = product.getMarkets().stream().findFirst()
+                        .orElseThrow(() -> new ResourceNotFoundException("Market not found for product: " + product.getId()));
+                marketToProducts.computeIfAbsent(market, k -> new ArrayList<>()).add(product);
+            }
 
-            // --- HEADER TABLE (2 sütunlu: sol -> logo + text, sağ -> qr + market adı) ---
+            Market firstMarket = marketToProducts.keySet().iterator().next();
+            Address address = firstMarket.getAddress();
+
+            // --- HEADER TABLE (Logo + Market QR/adlar) ---
             PdfPTable headerTable = new PdfPTable(2);
             headerTable.setWidthPercentage(100);
             headerTable.setWidths(new float[]{6f, 4f});
             headerTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-            // Sol üst: Logo + LASTBITE yazısı
+            // Sol üst: Logo + LASTBITE
             PdfPTable leftHeader = new PdfPTable(2);
             leftHeader.setWidths(new float[]{1f, 3f});
             leftHeader.setWidthPercentage(100);
@@ -84,7 +91,6 @@ public class PdfGeneratorService {
             logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
             leftHeader.addCell(logoCell);
 
-            Font brandFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 24, new Color(0, 128, 0));
             PdfPCell brandCell = new PdfPCell(new Phrase("LASTBITE", brandFont));
             brandCell.setBorder(Rectangle.NO_BORDER);
             brandCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -96,29 +102,33 @@ public class PdfGeneratorService {
             leftCell.setVerticalAlignment(Element.ALIGN_TOP);
             headerTable.addCell(leftCell);
 
-            // Sağ üst: QR kod ve market adı
-            String mapsUrl = "https://www.google.com/maps?q=" + address.getLatitude() + "," + address.getLongitude();
-            Image qrImage = generateQRCodeImage(mapsUrl, 80, 80);
-            qrImage.setAlignment(Image.ALIGN_RIGHT);
-
+            // Sağ üst: Market QR kodları ve adları (alt alta)
             PdfPTable rightHeader = new PdfPTable(1);
             rightHeader.setWidthPercentage(100);
             rightHeader.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-            PdfPCell qrCell = new PdfPCell(qrImage, false);
-            qrCell.setBorder(Rectangle.NO_BORDER);
-            qrCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            rightHeader.addCell(qrCell);
+            for (Map.Entry<Market, List<Product>> entry : marketToProducts.entrySet()) {
+                Market market = entry.getKey();
+                Address mAddress = market.getAddress();
+                String mapsUrl = "https://www.google.com/maps?q=" + mAddress.getLatitude() + "," + mAddress.getLongitude();
+                Image qrImage = generateQRCodeImage(mapsUrl, 60, 60);
+                qrImage.setAlignment(Image.ALIGN_RIGHT);
 
-            Font marketFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
-            Paragraph marketName = new Paragraph(market.getName(), marketFont);
-            marketName.setAlignment(Element.ALIGN_RIGHT);
 
-            PdfPCell nameCell = new PdfPCell(marketName);
-            nameCell.setBorder(Rectangle.NO_BORDER);
-            nameCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            nameCell.setPaddingRight(20f);
-            rightHeader.addCell(nameCell);
+                PdfPCell qrCell = new PdfPCell(qrImage, false);
+                qrCell.setBorder(Rectangle.NO_BORDER);
+                qrCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                rightHeader.addCell(qrCell);
+
+                Paragraph marketName = new Paragraph(market.getName(), marketFont);
+                marketName.setAlignment(Element.ALIGN_RIGHT);
+
+                PdfPCell nameCell = new PdfPCell(marketName);
+                nameCell.setBorder(Rectangle.NO_BORDER);
+                nameCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                //nameCell.setPaddingRight(20f);
+                rightHeader.addCell(nameCell);
+            }
 
             PdfPCell rightCell = new PdfPCell(rightHeader);
             rightCell.setBorder(Rectangle.NO_BORDER);
@@ -127,20 +137,10 @@ public class PdfGeneratorService {
             document.add(headerTable);
             document.add(new Paragraph(" "));
 
-
-
-            //Order Details
+            // --- ORDER DETAILS ---
             Paragraph title = new Paragraph("Order Details", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
-            document.add(new Paragraph(" "));
-
-            //Market Address
-            String fullAddress = address.getName() + ", " + address.getRegion().getName() + " - " + address.getZipCode();
-            Paragraph marketAddress = new Paragraph(fullAddress, bodyFont);
-
-            marketAddress.setAlignment(Element.ALIGN_CENTER);
-            document.add(marketAddress);
             document.add(new Paragraph(" "));
 
 
@@ -168,48 +168,65 @@ public class PdfGeneratorService {
             document.add(infoTable);
             document.add(new Paragraph(" "));
 
-            // Products
-            document.add(new Paragraph("Products:", titleFont));
-            document.add(new Paragraph(" ", bodyFont));
+            // --- PRODUCTS PER MARKET ---
+            for (Map.Entry<Market, List<Product>> entry : marketToProducts.entrySet()) {
+                Market market = entry.getKey();
+                List<Product> products = entry.getValue();
 
-            PdfPTable table = new PdfPTable(3);
-            table.setWidthPercentage(100);
-            table.setWidths(new int[]{2, 2, 2});
+                // Market başlığı
+                Paragraph marketTitle = new Paragraph("Market: " + market.getName(), titleFont);
+                marketTitle.setSpacingBefore(10);
+                document.add(marketTitle);
 
-            Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+                // Market adresi
+                Address mAddress = market.getAddress();
+                String fullMarketAddress = mAddress.getName() + ", " + mAddress.getRegion().getName() + " - " + mAddress.getZipCode();
+                Paragraph addressPara = new Paragraph("Address: " + fullMarketAddress, bodyFont);
+                document.add(addressPara);
 
-            table.addCell(new PdfPCell(new Phrase("Product", headFont)));
-            table.addCell(new PdfPCell(new Phrase("Quantity", headFont)));
-            table.addCell(new PdfPCell(new Phrase("Price", headFont)));
+                document.add(new Paragraph(" ", bodyFont));
 
-            for (ProductItem item : cartDTO.getProductItems()) {
-                Product product = productRepository.findById(item.productId())
-                        .orElseThrow(() -> {
-                            log.error("{} Product not found id: {}", GeneralUtil.extractUsername(), item.productId());
-                            return new ResourceNotFoundException("Product not found while restoring: " + item.productId());
-                        });
+                // Ürün tablosu
+                PdfPTable table = new PdfPTable(3);
+                table.setWidthPercentage(100);
+                table.setWidths(new int[]{2, 2, 2});
 
-                table.addCell(new Phrase(product.getName(), bodyFont));
-                table.addCell(new Phrase(String.valueOf(item.quantity()), bodyFont));
-                table.addCell(new Phrase((product.getPrice() * item.quantity()) + " TL", bodyFont));
+                Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+                table.addCell(new PdfPCell(new Phrase("Product", headFont)));
+                table.addCell(new PdfPCell(new Phrase("Quantity", headFont)));
+                table.addCell(new PdfPCell(new Phrase("Price", headFont)));
+
+                for (Product product : products) {
+                    Optional<ProductItem> itemOpt = cartDTO.getProductItems().stream()
+                            .filter(p -> p.productId().equals(product.getId()))
+                            .findFirst();
+
+                    if (itemOpt.isEmpty()) continue;
+                    ProductItem item = itemOpt.get();
+
+                    table.addCell(new Phrase(product.getName(), bodyFont));
+                    table.addCell(new Phrase(String.valueOf(item.quantity()), bodyFont));
+                    table.addCell(new Phrase((product.getPrice() * item.quantity()) + " TL", bodyFont));
+                }
+
+                document.add(table);
+                document.add(new Paragraph(" "));
             }
 
-            document.add(table);
 
             Paragraph totalPrice = new Paragraph("Total Price: " + cartDTO.getTotalPrice() + " TL", bodyFont);
             totalPrice.setAlignment(Element.ALIGN_RIGHT);
             document.add(totalPrice);
-
             document.add(new Paragraph(" "));
 
-            // Footer
+            // --- FOOTER ---
             Paragraph footer = new Paragraph("Thanks for shopping\nHas no financial value\nDocument is for informational purposes", footerFont);
             footer.setAlignment(Element.ALIGN_CENTER);
             document.add(footer);
 
             document.close();
 
-        } catch (DocumentException | IOException | WriterException e){
+        } catch (DocumentException | IOException | WriterException e) {
             log.error("Error while creating PDF", e);
             throw new RuntimeException("Error while creating PDF", e);
         }

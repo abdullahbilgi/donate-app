@@ -38,7 +38,7 @@ public class MarketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MarketResponse> getCityById(@PathVariable Long id) {
+    public ResponseEntity<MarketResponse> getMarketById(@PathVariable Long id) {
         return ResponseEntity.ok(marketService.getMarketById(id));
     }
 

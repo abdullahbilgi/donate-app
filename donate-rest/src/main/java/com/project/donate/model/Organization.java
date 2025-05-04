@@ -1,12 +1,16 @@
 package com.project.donate.model;
 
 import com.project.donate.enums.Status;
+import com.project.donate.records.ProductItem;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,4 +51,8 @@ public class Organization {
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
+
+    @Column(columnDefinition = "jsonb")
+    @Type(JsonType.class)
+    private List<ProductItem> productItems;
 }
