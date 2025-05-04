@@ -2,9 +2,11 @@ import { useNavigate } from "react-router";
 import Button from "../ui/Button";
 import { FaHandHoldingHeart } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
-
+import { getAllProducts } from "../store/products/thunks";
+import { useAppDispatch, useAppSelector } from "../store";
 const Home = () => {
   const navigate = useNavigate();
+
   return (
     <div className="h-full px-8 pb-6">
       <div className="bg-[url('/images/home-bg1.webp')] bg-cover bg-center h-full rounded-4xl flex items-center justify-center">

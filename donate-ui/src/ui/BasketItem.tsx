@@ -49,7 +49,7 @@ const BasketItem: React.FC<BasketItemProps> = ({
         </div>
       </div>
       <IoClose
-        className="w-5 h-5 cursor-pointer"
+        className="w-5 h-5 cursor-pointer hover:text-gray-500 duration-200"
         onClick={() => handleDelete()}
       />
     </div>
