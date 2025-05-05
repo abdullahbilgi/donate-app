@@ -1,10 +1,5 @@
 package com.project.donate.dto.Response;
 
-import com.project.donate.model.Category;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,8 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
-
+public class UserDonateResponse {
     private Long id;
 
     private String name;
@@ -25,10 +19,6 @@ public class ProductResponse {
     private LocalDateTime expiryDate;
 
     private Double price;
-
-    private Double discountedPrice;
-
-    private Integer discount;
 
     private Integer quantity;
 

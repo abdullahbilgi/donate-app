@@ -55,11 +55,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
-        Category category =categoryService.getCategoryEntityById(request.getCategoryId());
+        Category category = categoryService.getCategoryEntityById(request.getCategoryId());
         Product product = productMapper.mapToEntity(request);
         product.setCategory(category);
         calculateDiscountPrice(product);
-        return saveAndMap(product,"save");
+        return saveAndMap(product, "save");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
         savingProduct.setCategory(category);
         savingProduct.setId(id);
         calculateDiscountPrice(savingProduct);
-        return saveAndMap(savingProduct,"update");
+        return saveAndMap(savingProduct, "update");
     }
 
     @Override
@@ -106,8 +106,10 @@ public class ProductServiceImpl implements ProductService {
     public void updateAllProductDiscounts() {
         List<Product> products = productRepository.findAll();
         for (Product product : products) {
-            calculateDiscountPrice(product);
-            productRepository.save(product);
+            if (product.getProductStatus() != ProductStatus.DONATE) {
+                calculateDiscountPrice(product);
+                productRepository.save(product);
+            }
         }
 
         log.info("All product discounts updated");
@@ -200,11 +202,11 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::mapToDto);
     }
 
-    private ProductResponse saveAndMap(Product product,String status) {
+    private ProductResponse saveAndMap(Product product, String status) {
         Product savedProduct = productRepository.save(product);
         if (status.equals("save")) {
             log.info("{} Created product: {}", GeneralUtil.extractUsername(), product);
-        } else{
+        } else {
             log.info("{} Updated product: {}", GeneralUtil.extractUsername(), product);
         }
         return productMapper.mapToDto(savedProduct);
