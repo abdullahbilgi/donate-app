@@ -8,10 +8,10 @@ import { cartActions } from "../store/cart-slice";
 
 interface ProductItemProps {
   id: number;
-  image: string;
+  image: string | null;
   label: string;
-  normalPrice: string;
-  discountPrice: string;
+  normalPrice: number;
+  discountPrice: number;
 }
 const ProductItem: React.FC<ProductItemProps> = ({
   id,

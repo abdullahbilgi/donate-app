@@ -20,9 +20,6 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
 
   const navigate = useNavigate();
 
-  console.log(cartQuantity);
-  console.log(basketItemList);
-
   useEffect(() => {
     function handleClickOutside(e: any) {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -52,7 +49,7 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
               </span>
             </h2>
             <button onClick={onClose} className="cursor-pointer">
-              <IoIosCloseCircleOutline className="w-7 h-7" />
+              <IoIosCloseCircleOutline className="w-7 h-7 hover:text-gray-500 duration-200" />
             </button>
           </div>
 

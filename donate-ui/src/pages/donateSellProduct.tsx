@@ -14,6 +14,7 @@ import { LiaDonateSolid } from "react-icons/lia";
 import { FaRegImage } from "react-icons/fa6";
 import { BsChatLeftText } from "react-icons/bs";
 import { useState } from "react";
+import { useAppSelector } from "../store";
 
 interface Inputs {
   productName: string;
@@ -35,6 +36,7 @@ const DonateCellProduct = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   const [notAccepted, setNotAccepted] = useState(true);
+
   return (
     <div className="flex flex-col">
       <div className="relative bg-[url('/images/donation.jpg')] bg-cover bg-center h-[70vh]">

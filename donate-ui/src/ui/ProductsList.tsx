@@ -1,37 +1,29 @@
 import ProductItem from "./ProductItem";
 
-const DUMMY_ITEM = [
-  {
-    id: 1,
-    image: "/public/images/donation.jpg",
-    label: "Ülker Yarim Yagli Süt",
-    normalPrice: "780",
-    discountPrice: "650",
-  },
-  {
-    id: 2,
-    image: "/public/images/donation.jpg",
-    label: "Ürün2",
-    normalPrice: "452",
-    discountPrice: "380",
-  },
-  {
-    id: 3,
-    image: "/public/images/donation.jpg",
-    label: "Ürün3",
-    normalPrice: "754",
-    discountPrice: "557",
-  },
-  {
-    id: 4,
-    image: "/public/images/donation.jpg",
-    label: "Ürün4",
-    normalPrice: "584",
-    discountPrice: "400",
-  },
-];
+interface ProductItem {
+  id: number;
+  name: string;
+  productionDate: string;
+  expiryDate: string;
+  price: number;
+  discountedPrice: number;
+  discount: number;
+  quantity: number;
+  description: string;
+  productStatus: "DISCOUNT" | "NORMAL" | string;
+  category: {
+    id: number;
+    name: string;
+  };
+  imageUrl: string | null;
+  categoryResponse: any; // Gerekirse daha sonra detaylandırılır
+}
 
-const ProductList = () => {
+interface ProductListProps {
+  products: ProductItem[];
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <div className="2xl:col-span-9">
       <div className="flex flex-wrap items-center gap-2">
@@ -43,15 +35,15 @@ const ProductList = () => {
         className="grid grid-cols-1 mt-5 md:grid-cols-2 [&.gridView]:grid-cols-1 xl:grid-cols-4 group [&.gridView]:xl:grid-cols-1 gap-x-5"
         id="cardGridView"
       >
-        {DUMMY_ITEM.map((item) => {
+        {products.map((item) => {
           return (
             <ProductItem
               key={item.id}
               id={item.id}
-              image={item.image}
-              label={item.label}
-              normalPrice={item.normalPrice}
-              discountPrice={item.discountPrice}
+              image={item.imageUrl}
+              label={item.name}
+              normalPrice={item.price}
+              discountPrice={item.discountedPrice}
             />
           );
         })}
