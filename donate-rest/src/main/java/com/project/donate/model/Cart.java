@@ -9,6 +9,7 @@ import com.project.donate.enums.Status;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,6 @@ import java.util.Map;
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart {
@@ -25,24 +25,16 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartProduct> cartProducts = new ArrayList<>();
 
-    @Column(columnDefinition = "jsonb",nullable = false)
-    @Type(JsonType.class)
-    private List<ProductItem> productItems;
-
-    @Column(nullable = false)
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(updatable = false)
     private LocalDateTime purchaseDate;
 
-    @Column(updatable = false)
     private LocalDateTime expiredDate;
 
     private Boolean isActive;
@@ -53,3 +45,5 @@ public class Cart {
         this.expiredDate = this.purchaseDate.plusDays(1);
     }
 }
+
+

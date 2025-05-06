@@ -18,11 +18,11 @@ public class CartMapper  {
     private final UserMapper userMapper;
 
     public CartResponse mapToDto(Cart cart) {
-        UserResponse user = userMapper.userToUserDto(cart.getUser());
+        //UserResponse user = userMapper.userToUserDto(cart.getUser());
         return CartResponse.builder()
                 .id(cart.getId())
-                .user(user)
-                .productItems(cart.getProductItems())
+                //.user(user)
+                //.productItems(cart.getProductItems())
                 .status(cart.getStatus())
                 .totalPrice(cart.getTotalPrice())
                 .purchaseDate(cart.getPurchaseDate())

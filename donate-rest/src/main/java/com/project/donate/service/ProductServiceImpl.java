@@ -99,6 +99,11 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
     /**
      * Her gün gece yarısı (00:00:00) çalışarak tüm ürünleri günceller.
      */

@@ -1,8 +1,8 @@
 package com.project.donate.controller;
 
-import com.project.donate.dto.CartDTO;
-import com.project.donate.dto.Request.AddProductToCartRequest;
+import com.project.donate.dto.Request.AddToCartRequest;
 import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.service.CartService;
 import com.project.donate.util.PdfGeneratorService;
@@ -54,13 +54,13 @@ public class CartController {
     }
 
 
-    @PostMapping
+    /**@PostMapping
     public ResponseEntity<CartResponse> createCart(@RequestBody CartRequest request) {
         return ResponseEntity.ok(cartService.createCart(request));
-    }
+    }**/
 
     @PostMapping("/addProduct")
-    public ResponseEntity<CartResponse> addProductToCart( @RequestBody AddProductToCartRequest request) {
+    public ResponseEntity<AddToCartResponse> addProductToCart(@RequestBody AddToCartRequest request) {
         return ResponseEntity.ok(cartService.addProductToCart(request));
     }
 

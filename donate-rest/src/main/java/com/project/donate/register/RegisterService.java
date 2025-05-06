@@ -4,6 +4,7 @@ import com.project.donate.dto.Request.AddressRequest;
 import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.mapper.AddressMapper;
 import com.project.donate.model.Address;
+import com.project.donate.model.Cart;
 import com.project.donate.model.Region;
 import com.project.donate.model.User;
 import com.project.donate.repository.AddressRepository;
@@ -27,6 +28,7 @@ public class RegisterService {
     public void register(UserRegistrationRequest request) {
 
         Address address = addressService.createAddressEntity(request.getAddress());
+        Cart cart = new Cart();
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
@@ -37,6 +39,7 @@ public class RegisterService {
                 .age(request.getAge())
                 .role(request.getRole())
                 .address(address)
+                .cart(cart)
                 .build();
         userRepository.save(user);
 

@@ -33,5 +33,7 @@ public interface ProductService {
     String uploadImage(MultipartFile file);
 
     void updateProductImage(Long productId, String imageUrl);
+
+    void save(Product product);
 }
 

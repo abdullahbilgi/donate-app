@@ -27,6 +27,10 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "cart_id", unique = true)
+    private Cart cart;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdDate;
