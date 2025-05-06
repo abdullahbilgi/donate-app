@@ -1,7 +1,8 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.Request.AddToCartRequest;
+import com.project.donate.dto.Request.CartProductResponse;
 import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.model.Cart;
@@ -27,6 +28,12 @@ public interface CartService {
 
     void deleteCart(Long id);
 
-    AddToCartResponse addProductToCart(AddToCartRequest request);
+    AddToCartResponse addProductToCart(CartProductResponse request);
+
+    void save(Cart cart);
+
+    Cart createCart();
+
+    void removeProductFromCart(RemoveProductFromCartRequest request);
 
 }

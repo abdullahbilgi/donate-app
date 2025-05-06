@@ -1,6 +1,7 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.Request.AddToCartRequest;
+import com.project.donate.dto.Request.CartProductResponse;
+import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartProductMapper;
@@ -29,7 +30,7 @@ public class CartProductServiceImpl implements CartProductService {
     private final CartProductMapper cartProductMapper;
 
     @Override
-    public AddToCartResponse addProductToCart(AddToCartRequest request) {
+    public AddToCartResponse addProductToCart(CartProductResponse request) {
         Cart cart = cartRepository.findById(request.getCartId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
 
@@ -38,12 +39,24 @@ public class CartProductServiceImpl implements CartProductService {
 
         CartProductId cartProductId = new CartProductId(cart.getId(), product.getId());
 
-        CartProduct cartProduct = new CartProduct();
-        cartProduct.setId(cartProductId);
-        cartProduct.setCart(cart);
-        cartProduct.setProduct(product);
-        cartProduct.setProductQuantity(request.getProductQuantity());
-        cartProduct.setProductAddedTime(LocalDateTime.now());
+        CartProduct cartProduct;
+
+        if (cartProductRepository.existsByIdCartIdAndIdProductId(request.getCartId(), request.getProductId())) {
+            // Ürün zaten sepette, var olanı güncelle
+            cartProduct = cartProductRepository.findById(cartProductId)
+                    .orElseThrow(() -> new RuntimeException("CartProduct not found despite existence check"));
+
+            cartProduct.setProductQuantity(request.getProductQuantity() + cartProduct.getProductQuantity()); // ya da üstüne ekle: +=
+            cartProduct.setProductAddedTime(LocalDateTime.now());
+        } else {
+            // Yeni CartProduct oluştur
+            cartProduct = new CartProduct();
+            cartProduct.setId(cartProductId);
+            cartProduct.setCart(cart);
+            cartProduct.setProduct(product);
+            cartProduct.setProductQuantity(request.getProductQuantity());
+            cartProduct.setProductAddedTime(LocalDateTime.now());
+        }
 
         cartProductRepository.save(cartProduct);
         return cartProductMapper.mapToDto(cartProduct);
@@ -62,5 +75,17 @@ public class CartProductServiceImpl implements CartProductService {
     @Override
     public List<CartProduct> getCartProducts() {
         return cartProductRepository.findAll();
+    }
+
+    @Override
+    public void removeProductFromCart(RemoveProductFromCartRequest request) {
+        CartProduct cartProduct = cartProductRepository
+                .findByIdCartIdAndIdProductId(request.getCartId(),request.getProductId());
+        cartProductRepository.delete(cartProduct);
+    }
+
+    @Override
+    public CartProduct getCartProductById(Long cartId, Long productId) {
+        return cartProductRepository.findByIdCartIdAndIdProductId(cartId, productId);
     }
 }

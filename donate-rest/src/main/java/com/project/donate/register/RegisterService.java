@@ -10,6 +10,7 @@ import com.project.donate.model.User;
 import com.project.donate.repository.AddressRepository;
 import com.project.donate.repository.UserRepository;
 import com.project.donate.service.AddressService;
+import com.project.donate.service.CartService;
 import com.project.donate.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,11 +25,13 @@ public class RegisterService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
+    private final CartService cartService;
 
     public void register(UserRegistrationRequest request) {
 
         Address address = addressService.createAddressEntity(request.getAddress());
-        Cart cart = new Cart();
+        addressService.saveAddress(address);
+        Cart cart = cartService.createCart();
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())

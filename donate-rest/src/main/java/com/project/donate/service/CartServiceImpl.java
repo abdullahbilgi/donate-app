@@ -1,10 +1,10 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.Request.AddToCartRequest;
+import com.project.donate.dto.Request.CartProductResponse;
 import com.project.donate.dto.Request.CartRequest;
+import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
-import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
 import com.project.donate.exception.ResourceNotFoundException;
@@ -12,8 +12,6 @@ import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.CartProduct;
 import com.project.donate.model.Product;
-import com.project.donate.model.User;
-import com.project.donate.records.ProductItem;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
@@ -69,10 +67,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartResponse> getUserCartsOrderedByDate(Long userId) {
-        return cartRepository.findByUserIdOrderByPurchaseDateDesc(userId)
+       /** return cartRepository.findByUserIdOrderByPurchaseDateDesc(userId)
                 .stream()
                 .map(cartMapper::mapToDto)
                 .collect(Collectors.toList());
+        **/
+
+       return null;
     }
 
 
@@ -89,13 +90,43 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public AddToCartResponse addProductToCart(AddToCartRequest request) {
+    public AddToCartResponse addProductToCart(CartProductResponse request) {
         AddToCartResponse addToCartResponse = cartProductService.addProductToCart(request);
         validateAndDecreaseStock(request);
         return addToCartResponse;
     }
 
-    private void validateAndDecreaseStock(AddToCartRequest request) {
+    @Override
+    public void save(Cart cart) {
+         cartRepository.save(cart);
+    }
+
+    @Override
+    public Cart createCart() {
+        Cart cart = new Cart();
+        double initTotalPrice = 0;
+        cart.setTotalPrice(initTotalPrice);
+        save(cart);
+        return cart;
+    }
+
+    @Override
+    public void removeProductFromCart(RemoveProductFromCartRequest request) {
+        CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(),request.getProductId());
+        removeProductFromCartHelper(cartProduct);
+    }
+
+    public void removeProductFromCartHelper(CartProduct cartProduct){
+        Product product = cartProduct.getProduct();
+        product.setQuantity(product.getQuantity() + cartProduct.getProductQuantity());
+        productService.save(product);
+        Cart cart = cartProduct.getCart();
+        cart.setTotalPrice(cart.getTotalPrice() - (product.getPrice() * cartProduct.getProductQuantity()));
+        save(cart);
+        cartProductService.delete(cartProduct.getId());
+    }
+
+    private void validateAndDecreaseStock(CartProductResponse request) {
 
         Product product = productService.getProductEntityById(request.getProductId());
         Cart cart = getCartEntityById(request.getCartId());
@@ -123,10 +154,7 @@ public class CartServiceImpl implements CartService {
             LocalDateTime addedTime = cartProduct.getProductAddedTime();
 
             if (addedTime != null && addedTime.isBefore(now.minusMinutes(15))) {
-                Product product = cartProduct.getProduct();
-                product.setQuantity(product.getQuantity() + cartProduct.getProductQuantity());
-                productService.save(product);
-                cartProductService.delete(cartProduct.getId());
+                removeProductFromCartHelper(cartProduct);
             }
         }
     }
