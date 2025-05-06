@@ -1,6 +1,6 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.Request.CartProductResponse;
+import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
@@ -12,6 +12,7 @@ import com.project.donate.mapper.CartMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.CartProduct;
 import com.project.donate.model.Product;
+import com.project.donate.repository.CartProductRepository;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class CartServiceImpl implements CartService {
+    private final CartProductRepository cartProductRepository;
 
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
@@ -90,7 +92,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public AddToCartResponse addProductToCart(CartProductResponse request) {
+    public AddToCartResponse addProductToCart(CartProductRequest request) {
         AddToCartResponse addToCartResponse = cartProductService.addProductToCart(request);
         validateAndDecreaseStock(request);
         return addToCartResponse;
@@ -116,17 +118,38 @@ public class CartServiceImpl implements CartService {
         removeProductFromCartHelper(cartProduct);
     }
 
+    @Override
+    public void updateProductQuantityFromCart(CartProductRequest request) {
+        CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(),request.getProductId());
+        Integer fark = request.getProductQuantity()-cartProduct.getProductQuantity();
+        Product product = productService.getProductEntityById(request.getProductId());
+        if(product.getQuantity()-(fark) < 0)
+        {
+            throw new  OutOfStockException("product sayısı yetersiz");
+        }else{
+            product.setQuantity(product.getQuantity()-(fark));
+        }
+        cartProduct.setProductQuantity(request.getProductQuantity());
+        cartProductRepository.save(cartProduct); // cart product tablosu tamam
+        Cart cart = getCartEntityById(request.getCartId());
+        cart.setTotalPrice(cart.getTotalPrice() + (fark*product.getDiscountedPrice()));
+        save(cart); // cart tablosu tamam
+
+        // eger fark pozitifse eksilecek
+        productService.save(product);
+    }
+
     public void removeProductFromCartHelper(CartProduct cartProduct){
         Product product = cartProduct.getProduct();
         product.setQuantity(product.getQuantity() + cartProduct.getProductQuantity());
         productService.save(product);
         Cart cart = cartProduct.getCart();
-        cart.setTotalPrice(cart.getTotalPrice() - (product.getPrice() * cartProduct.getProductQuantity()));
+        cart.setTotalPrice(cart.getTotalPrice() - (product.getDiscountedPrice() * cartProduct.getProductQuantity()));
         save(cart);
         cartProductService.delete(cartProduct.getId());
     }
 
-    private void validateAndDecreaseStock(CartProductResponse request) {
+    private void validateAndDecreaseStock(CartProductRequest request) {
 
         Product product = productService.getProductEntityById(request.getProductId());
         Cart cart = getCartEntityById(request.getCartId());
@@ -140,7 +163,7 @@ public class CartServiceImpl implements CartService {
             throw new OutOfStockException("Not enough stock for product id: " + product.getId());
         }
         product.setQuantity(product.getQuantity()-request.getProductQuantity());// hocam onemli
-        cart.setTotalPrice(cart.getTotalPrice() + ((product.getPrice())* request.getProductQuantity()));
+        cart.setTotalPrice(cart.getTotalPrice() + ((product.getDiscountedPrice())* request.getProductQuantity()));
         cartRepository.save(cart);
         productRepository.save(product);
     }

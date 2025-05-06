@@ -116,7 +116,6 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.save(product);
             }
         }
-
         log.info("All product discounts updated");
     }
 

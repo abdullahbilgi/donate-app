@@ -1,6 +1,6 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.Request.CartProductResponse;
+import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.exception.ResourceNotFoundException;
@@ -30,7 +30,7 @@ public class CartProductServiceImpl implements CartProductService {
     private final CartProductMapper cartProductMapper;
 
     @Override
-    public AddToCartResponse addProductToCart(CartProductResponse request) {
+    public AddToCartResponse addProductToCart(CartProductRequest request) {
         Cart cart = cartRepository.findById(request.getCartId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
 

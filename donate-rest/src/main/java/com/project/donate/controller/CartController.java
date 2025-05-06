@@ -1,6 +1,6 @@
 package com.project.donate.controller;
 
-import com.project.donate.dto.Request.CartProductResponse;
+import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
@@ -61,7 +61,7 @@ public class CartController {
     }**/
 
     @PostMapping("/addProduct")
-    public ResponseEntity<AddToCartResponse> addProductToCart(@RequestBody CartProductResponse request) {
+    public ResponseEntity<AddToCartResponse> addProductToCart(@RequestBody CartProductRequest request) {
         return ResponseEntity.ok(cartService.addProductToCart(request));
     }
 
@@ -75,6 +75,12 @@ public class CartController {
     @PutMapping("/{id}")
     public ResponseEntity<CartResponse> updateCart(@PathVariable Long id, @RequestBody CartRequest request) {
         return ResponseEntity.ok(cartService.updateCart(id, request));
+    }
+
+    @PutMapping("/updateCartProduct")
+    public ResponseEntity<Void> updateProductCart(@RequestBody CartProductRequest request) {
+       cartService.updateProductQuantityFromCart(request);
+       return ResponseEntity.ok().build();
     }
 
     @PutMapping("/cancelCart/{id}")
