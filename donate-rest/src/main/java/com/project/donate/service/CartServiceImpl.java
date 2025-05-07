@@ -128,6 +128,7 @@ public class CartServiceImpl implements CartService {
             throw new  OutOfStockException("product sayısı yetersiz");
         }else{
             product.setQuantity(product.getQuantity()-(fark));
+            cartProduct.setProductPrice(cartProduct.getProductPrice() + (fark*product.getDiscountedPrice()));
         }
         cartProduct.setProductQuantity(request.getProductQuantity());
         cartProductRepository.save(cartProduct); // cart product tablosu tamam
@@ -138,6 +139,16 @@ public class CartServiceImpl implements CartService {
         // eger fark pozitifse eksilecek
         productService.save(product);
     }
+
+   /**
+    private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
+        double totalPrice  = 0;
+        for (CartProduct cartProduct : cartProducts) {
+            totalPrice+=cartProduct.getProductPrice();
+        }
+        return totalPrice;
+    }
+    **/
 
     public void removeProductFromCartHelper(CartProduct cartProduct){
         Product product = cartProduct.getProduct();

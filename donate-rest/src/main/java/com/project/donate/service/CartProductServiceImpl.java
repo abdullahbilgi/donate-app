@@ -47,7 +47,8 @@ public class CartProductServiceImpl implements CartProductService {
                     .orElseThrow(() -> new RuntimeException("CartProduct not found despite existence check"));
 
             cartProduct.setProductQuantity(request.getProductQuantity() + cartProduct.getProductQuantity()); // ya da üstüne ekle: +=
-            cartProduct.setProductAddedTime(LocalDateTime.now());
+            cartProduct.setProductPrice(cartProduct.getProductPrice() +request.getProductQuantity() * product.getDiscountedPrice());
+            cartProduct.setProductAddedTime(LocalDateTime.now());//todo degistirlebilir
         } else {
             // Yeni CartProduct oluştur
             cartProduct = new CartProduct();
@@ -55,6 +56,7 @@ public class CartProductServiceImpl implements CartProductService {
             cartProduct.setCart(cart);
             cartProduct.setProduct(product);
             cartProduct.setProductQuantity(request.getProductQuantity());
+            cartProduct.setProductPrice(request.getProductQuantity() * product.getDiscountedPrice());
             cartProduct.setProductAddedTime(LocalDateTime.now());
         }
 

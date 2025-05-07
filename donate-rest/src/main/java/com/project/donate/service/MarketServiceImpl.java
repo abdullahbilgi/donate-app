@@ -27,7 +27,6 @@ public class MarketServiceImpl implements MarketService {
 
     private final MarketRepository marketRepository;
     private final MarketMapper marketMapper;
-    private final ProductService productService;
     private final AddressService addressService;
     private final UserService userService;
 
@@ -86,7 +85,7 @@ public class MarketServiceImpl implements MarketService {
         marketRepository.save(market);
     }
 
-    @Override
+   /** @Override
     public void assignProduct(Long marketId, Long productId) {
 
         Market market = getMarketEntityById(marketId);
@@ -97,6 +96,7 @@ public class MarketServiceImpl implements MarketService {
         log.info("{} assigned product", GeneralUtil.extractUsername());
         marketRepository.save(market);
     }
+    **/
 
     @Override
     public void deleteMarket(Long id) {

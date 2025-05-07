@@ -5,6 +5,7 @@ import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
+import com.project.donate.model.Cart;
 import com.project.donate.service.CartService;
 import com.project.donate.util.PdfGeneratorService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class CartController {
 
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> getCartPdf(@PathVariable Long id) {
-        CartResponse cart = cartService.getCartById(id);
+        Cart cart = cartService.getCartEntityById(id);
         ByteArrayInputStream bis = pdfGeneratorService.generateCartPdf(cart);
 
         HttpHeaders headers = new HttpHeaders();

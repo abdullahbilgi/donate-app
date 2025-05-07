@@ -10,13 +10,11 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.project.donate.dto.CartDTO;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.exception.ResourceNotFoundException;
-import com.project.donate.model.Address;
-import com.project.donate.model.Market;
-import com.project.donate.model.Product;
-import com.project.donate.model.User;
+import com.project.donate.model.*;
 import com.project.donate.records.ProductItem;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.repository.UserRepository;
+import com.project.donate.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -40,13 +38,17 @@ import java.util.List;
 public class PdfGeneratorService {
 
     private final ProductRepository productRepository;
+    private final ProductService productService;
     private final UserRepository userRepository;
 
-    public ByteArrayInputStream generateCartPdf(CartResponse cartDTO) {
+    public ByteArrayInputStream generateCartPdf(Cart cart) {
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        Optional<User> user = userRepository.findById(cartDTO.getUser().getId());
+         User user = userRepository.findUserByCart(cart)
+                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        System.out.println("sssss");
 
         try {
             PdfWriter.getInstance(document, out);
@@ -60,13 +62,27 @@ public class PdfGeneratorService {
 
             // --- MARKETLERİ GRUPLA ---
             Map<Market, List<Product>> marketToProducts = new LinkedHashMap<>();
-            for (ProductItem item : cartDTO.getProductItems()) {
-                Product product = productRepository.findById(item.productId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + item.productId()));
-                Market market = product.getMarkets().stream().findFirst()
-                        .orElseThrow(() -> new ResourceNotFoundException("Market not found for product: " + product.getId()));
-                marketToProducts.computeIfAbsent(market, k -> new ArrayList<>()).add(product);
+
+            for (CartProduct cartProduct : cart.getCartProducts()) {
+                try {
+                    Product product = productRepository.findById(cartProduct.getProduct().getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + cartProduct.getProduct().getId()));
+
+                    Market market = product.getMarket(); // Artık ManyToOne, doğrudan erişiyoruz
+
+                    if (market == null) {
+                        throw new ResourceNotFoundException("Market not found for product: " + product.getId());
+                    }
+
+                    marketToProducts.computeIfAbsent(market, k -> new ArrayList<>()).add(product);
+                } catch (ResourceNotFoundException ex) {
+                    System.err.println("Hata: " + ex.getMessage());
+                    // İstersen log kaydı al veya hata listesini topla
+                } catch (Exception ex) {
+                    System.err.println("Beklenmeyen bir hata oluştu: " + ex.getMessage());
+                }
             }
+
 
             Market firstMarket = marketToProducts.keySet().iterator().next();
             Address address = firstMarket.getAddress();
@@ -83,13 +99,18 @@ public class PdfGeneratorService {
             leftHeader.setWidthPercentage(100);
             leftHeader.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-            Image logo = Image.getInstance(getClass().getClassLoader().getResource("lastbite.png"));
-            logo.scaleAbsolute(60, 40);
-            PdfPCell logoCell = new PdfPCell(logo, false);
-            logoCell.setBorder(Rectangle.NO_BORDER);
-            logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            leftHeader.addCell(logoCell);
+            try {
+                Image logo = Image.getInstance(getClass().getClassLoader().getResource("lastbite.png"));
+                logo.scaleAbsolute(60, 40);
+                PdfPCell logoCell = new PdfPCell(logo, false);
+                logoCell.setBorder(Rectangle.NO_BORDER);
+                logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                leftHeader.addCell(logoCell);
+            } catch (Exception e) {
+                log.warn("Logo yüklenemedi: {}", e.getMessage());
+                leftHeader.addCell(new PdfPCell(new Phrase("LOGO", brandFont)));
+            }
 
             PdfPCell brandCell = new PdfPCell(new Phrase("LASTBITE", brandFont));
             brandCell.setBorder(Rectangle.NO_BORDER);
@@ -150,17 +171,17 @@ public class PdfGeneratorService {
             infoTable.setWidthPercentage(100);
             infoTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-            infoTable.addCell(new Phrase("Order Number: " + cartDTO.getId(), bodyFont));
+            infoTable.addCell(new Phrase("Order Number: " + cart.getId(), bodyFont)); // todo burası degistirilcek
 
-            PdfPCell purchaseDateCell = new PdfPCell(new Phrase("Purchase Date: " + cartDTO.getPurchaseDate().format(formatter), bodyFont));
+            PdfPCell purchaseDateCell = new PdfPCell(new Phrase("Purchase Date: " + cart.getPurchaseDate().format(formatter), bodyFont));
             purchaseDateCell.setBorder(Rectangle.NO_BORDER);
             purchaseDateCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             infoTable.addCell(purchaseDateCell);
 
-            String fullName = user.get().getName() + " " + user.get().getSurname();
+            String fullName = user.getName() + " " + user.getSurname();
             infoTable.addCell(new Phrase("User: " + fullName, bodyFont));
 
-            PdfPCell expiredDateCell = new PdfPCell(new Phrase("Expired Date: " + cartDTO.getExpiredDate().format(formatter), bodyFont));
+            PdfPCell expiredDateCell = new PdfPCell(new Phrase("Expired Date: " + cart.getExpiredDate().format(formatter), bodyFont));
             expiredDateCell.setBorder(Rectangle.NO_BORDER);
             expiredDateCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             infoTable.addCell(expiredDateCell);
@@ -196,17 +217,14 @@ public class PdfGeneratorService {
                 table.addCell(new PdfPCell(new Phrase("Quantity", headFont)));
                 table.addCell(new PdfPCell(new Phrase("Price", headFont)));
 
-                for (Product product : products) {
-                    Optional<ProductItem> itemOpt = cartDTO.getProductItems().stream()
-                            .filter(p -> p.productId().equals(product.getId()))
-                            .findFirst();
+                List<CartProduct> cartProducts = cart.getCartProducts();
 
-                    if (itemOpt.isEmpty()) continue;
-                    ProductItem item = itemOpt.get();
+                for (CartProduct cartProduct : cartProducts) {
+                    Product product = productService.getProductEntityById(cartProduct.getProduct().getId());
 
                     table.addCell(new Phrase(product.getName(), bodyFont));
-                    table.addCell(new Phrase(String.valueOf(item.quantity()), bodyFont));
-                    table.addCell(new Phrase((product.getPrice() * item.quantity()) + " TL", bodyFont));
+                    table.addCell(new Phrase(String.valueOf(cartProduct.getProductQuantity())));
+                    table.addCell(new Phrase((cartProduct.getProductPrice()) + " TL", bodyFont));
                 }
 
                 document.add(table);
@@ -214,7 +232,7 @@ public class PdfGeneratorService {
             }
 
 
-            Paragraph totalPrice = new Paragraph("Total Price: " + cartDTO.getTotalPrice() + " TL", bodyFont);
+            Paragraph totalPrice = new Paragraph("Total Price: " + cart.getTotalPrice() + " TL", bodyFont);
             totalPrice.setAlignment(Element.ALIGN_RIGHT);
             document.add(totalPrice);
             document.add(new Paragraph(" "));
@@ -231,7 +249,7 @@ public class PdfGeneratorService {
             throw new RuntimeException("Error while creating PDF", e);
         }
 
-        log.info("{} generated PDF of cart detail id: {}", GeneralUtil.extractUsername(), cartDTO.getId());
+        log.info("{} generated PDF of cart detail id: {}", GeneralUtil.extractUsername(), cart.getId());
 
         return new ByteArrayInputStream(out.toByteArray());
     }

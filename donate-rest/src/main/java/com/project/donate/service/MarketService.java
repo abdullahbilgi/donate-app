@@ -23,7 +23,7 @@ public interface MarketService {
 
     MarketResponse getMarketById(Long id);
 
-    void assignProduct(Long marketId, Long productId);
+    //void assignProduct(Long marketId, Long productId);
 
     void enabledMarket(Long id);
 

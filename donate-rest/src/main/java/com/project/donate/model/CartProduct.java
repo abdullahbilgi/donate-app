@@ -27,6 +27,8 @@ public class CartProduct {
     @Column(nullable = false)
     private Integer productQuantity;
 
+    private Double productPrice;
+
     private LocalDateTime productAddedTime;
 }
 

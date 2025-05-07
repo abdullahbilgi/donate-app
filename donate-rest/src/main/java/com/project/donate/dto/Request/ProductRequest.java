@@ -51,4 +51,6 @@ public class ProductRequest {
     private String imageUrl;
 
     private Long categoryId;
+
+    private Long marketId;
 }

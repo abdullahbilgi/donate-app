@@ -58,11 +58,12 @@ public class MarketController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{marketId}/product/{productId}")
+    /**@PostMapping("/{marketId}/product/{productId}")
     public ResponseEntity<Void> assignRole(@PathVariable("marketId") Long marketId,@PathVariable("productId") Long productId){
         marketService.assignProduct(marketId,productId);
         return ResponseEntity.ok().build();
     }
+     **/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMarket(@PathVariable Long id) {

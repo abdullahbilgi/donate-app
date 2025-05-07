@@ -10,6 +10,7 @@ import com.project.donate.enums.ProductStatus;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Category;
+import com.project.donate.model.Market;
 import com.project.donate.model.Product;
 import com.project.donate.repository.CategoryRepository;
 import com.project.donate.repository.ProductRepository;
@@ -38,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final Cloudinary cloudinary;
     private final CategoryService categoryService;
+    private final MarketService marketService;
 
 
     @Override
@@ -56,8 +58,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse createProduct(ProductRequest request) {
         Category category = categoryService.getCategoryEntityById(request.getCategoryId());
+        Market market = marketService.getMarketEntityById(request.getMarketId());
         Product product = productMapper.mapToEntity(request);
         product.setCategory(category);
+        product.setMarket(market);
         calculateDiscountPrice(product);
         return saveAndMap(product, "save");
     }

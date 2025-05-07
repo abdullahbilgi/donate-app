@@ -51,12 +51,7 @@ public class Market {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @ManyToMany
-    @JoinTable(
-            name = "market_product",
-            joinColumns = @JoinColumn(name = "market_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @Builder.Default
     private Set<Product> products = new HashSet<>();
