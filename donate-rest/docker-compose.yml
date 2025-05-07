@@ -50,5 +50,19 @@ services:
       timeout: 5s
       start_period: 30s
 
+  frontend:
+    build:
+      context: ../donate-ui
+      dockerfile: Dockerfile.dev
+    container_name: donate_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./donate-ui:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
+
 volumes:
   postgres_data:
