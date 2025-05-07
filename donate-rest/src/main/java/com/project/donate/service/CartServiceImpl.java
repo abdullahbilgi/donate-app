@@ -5,6 +5,7 @@ import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
+import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
 import com.project.donate.exception.ResourceNotFoundException;
@@ -195,25 +196,25 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void cancelCart(Long id) {
-       /** Cart cart = getCartEntityById(id);
-        cart.setStatus(Status.CANCELED);
-        restoreProductQuantities(cart.getProductItems());
-        cart.setIsActive(false);
-        log.info("{} Canceled Cart with id: {}", GeneralUtil.extractUsername(), id);
-        cartRepository.save(cart);
-        **/
+        Cart cart = getCartEntityById(id);
+        List<CartProduct> cartProducts = cartProductService.getCartProducts();
+        for (CartProduct cartProduct : cartProducts) {
+            removeProductFromCartHelper(cartProduct);
+        }
+        cart.setTotalPrice(0.0);
+        save(cart);
     }
 
     @Override
     public void approveCart(Long id) {
-        /**
-
         Cart cart = getCartEntityById(id);
-        cart.setStatus(Status.APPROVED);
-        log.info("{} Approved Cart with id: {}", GeneralUtil.extractUsername(), id);
-        cartRepository.save(cart);
-         **/
-
+        List<CartProduct> cartProducts = cartProductService.getCartProducts();
+        for (CartProduct cartProduct : cartProducts) {
+            cartProduct.setStatus(Status.APPROVED);
+            cartProductService.save(cartProduct);
+        }
+        cart.setTotalPrice(0.0);
+        save(cart);
     }
 
 

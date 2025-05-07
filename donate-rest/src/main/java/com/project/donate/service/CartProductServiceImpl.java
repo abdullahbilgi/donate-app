@@ -3,6 +3,7 @@ package com.project.donate.service;
 import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
+import com.project.donate.enums.Status;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartProductMapper;
 import com.project.donate.model.Cart;
@@ -41,7 +42,7 @@ public class CartProductServiceImpl implements CartProductService {
 
         CartProduct cartProduct;
 
-        if (cartProductRepository.existsByIdCartIdAndIdProductId(request.getCartId(), request.getProductId())) {
+        if (cartProductRepository.existsByIdCartIdAndIdProductIdAndStatus(request.getCartId(), request.getProductId(),Status.PENDING)) {
             // Ürün zaten sepette, var olanı güncelle
             cartProduct = cartProductRepository.findById(cartProductId)
                     .orElseThrow(() -> new RuntimeException("CartProduct not found despite existence check"));
@@ -58,6 +59,7 @@ public class CartProductServiceImpl implements CartProductService {
             cartProduct.setProductQuantity(request.getProductQuantity());
             cartProduct.setProductPrice(request.getProductQuantity() * product.getDiscountedPrice());
             cartProduct.setProductAddedTime(LocalDateTime.now());
+            cartProduct.setStatus(Status.PENDING);
         }
 
         cartProductRepository.save(cartProduct);
@@ -82,12 +84,12 @@ public class CartProductServiceImpl implements CartProductService {
     @Override
     public void removeProductFromCart(RemoveProductFromCartRequest request) {
         CartProduct cartProduct = cartProductRepository
-                .findByIdCartIdAndIdProductId(request.getCartId(),request.getProductId());
+                .findByIdCartIdAndIdProductIdAndStatus(request.getCartId(),request.getProductId(),Status.PENDING);
         cartProductRepository.delete(cartProduct);
     }
 
     @Override
     public CartProduct getCartProductById(Long cartId, Long productId) {
-        return cartProductRepository.findByIdCartIdAndIdProductId(cartId, productId);
+        return cartProductRepository.findByIdCartIdAndIdProductIdAndStatus(cartId, productId,Status.PENDING);
     }
 }

@@ -46,10 +46,6 @@ public class ProductRequest {
     @Size(min = 1, max = 80, message = "Description must be between 1 and 80 characters")
     private String description;
 
-    private String productStatus;
-
-    private String imageUrl;
-
     private Long categoryId;
 
     private Long marketId;

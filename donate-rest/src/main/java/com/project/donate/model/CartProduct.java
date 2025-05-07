@@ -1,5 +1,6 @@
 package com.project.donate.model;
 
+import com.project.donate.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,5 +31,8 @@ public class CartProduct {
     private Double productPrice;
 
     private LocalDateTime productAddedTime;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
 

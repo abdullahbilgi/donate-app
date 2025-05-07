@@ -1004,3 +1004,79 @@
 2025-05-07 11:25:03 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 1
 2025-05-07 11:25:56 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 1
 2025-05-07 11:25:56 INFO   [generateCartPdf]   c.p.d.u.PdfGeneratorService : anonymousUser generated PDF of cart detail id: 1
+2025-05-07 15:07:42 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 10656 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:07:42 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:07:42 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:07:47 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:07:48 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.13 seconds (process running for 7.425)
+2025-05-07 15:07:48 INFO   [run]   c.p.d.b.Bootstrap : Saved Cities by Bootstrap
+2025-05-07 15:07:48 INFO   [run]   c.p.d.b.Bootstrap : Saved Regions by Bootstrap
+2025-05-07 15:11:06 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 1848 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:11:06 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:11:06 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:11:11 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:11:11 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.013 seconds (process running for 5.929)
+2025-05-07 15:11:28 INFO   [register]   c.p.d.r.RegisterService : User registered - d4545dd
+2025-05-07 15:11:38 INFO   [saveAndMap]   c.p.d.s.CategoryServiceImpl : anonymousUser Created category: Category(id=1, name=category 1, createdDate=2025-05-07T15:11:38.470983, lastModifiedDate=2025-05-07T15:11:38.470983, isActive=true)
+2025-05-07 15:11:49 INFO   [saveAndMap]   c.p.d.s.MarketServiceImpl : anonymousUser Created market: Market(id=1, name=yeni market deneme 99, createdDate=2025-05-07T15:11:49.870242, lastModifiedDate=2025-05-07T15:11:49.870242, taxNumber=123450789, status=PENDING, isActive=true, user=com.project.donate.model.User@3c0cdc10, address=Address(id=2, name=Test 166, createdDate=2025-05-07T15:11:49.861618, lastModifiedDate=2025-05-07T15:11:49.861618, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=true, region=Region(id=11, name=SARIÇAM, createdDate=2025-05-07T15:07:48.555396, lastModifiedDate=2025-05-07T15:07:48.555396, city=City(id=1, name=ADANA, createdDate=2025-05-07T15:07:48.445399, lastModifiedDate=2025-05-07T15:07:48.445399))), products=[])
+2025-05-07 15:12:00 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 1
+2025-05-07 15:12:00 INFO   [saveAndMap]   c.p.d.s.ProductServiceImpl : anonymousUser Created product: [!!!com.project.donate.model.Product@27966c0c=>java.lang.StackOverflowError:null!!!]
+2025-05-07 15:12:08 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 1
+2025-05-07 15:12:42 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 1
+2025-05-07 15:12:42 INFO   [saveAndMap]   c.p.d.s.ProductServiceImpl : anonymousUser Created product: [!!!com.project.donate.model.Product@6379e960=>java.lang.StackOverflowError:null!!!]
+2025-05-07 15:12:53 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 1
+2025-05-07 15:12:53 INFO   [saveAndMap]   c.p.d.s.ProductServiceImpl : anonymousUser Created product: [!!!com.project.donate.model.Product@463d6d8f=>java.lang.StackOverflowError:null!!!]
+2025-05-07 15:13:04 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:13:11 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 3
+2025-05-07 15:13:36 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 1
+2025-05-07 15:13:36 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:13:36 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 3
+2025-05-07 15:13:36 INFO   [generateCartPdf]   c.p.d.u.PdfGeneratorService : anonymousUser generated PDF of cart detail id: 1
+2025-05-07 15:16:20 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 14832 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:16:20 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:16:20 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:16:25 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:16:25 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.013 seconds (process running for 5.908)
+2025-05-07 15:22:07 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 14796 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:22:07 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:22:07 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:22:11 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:22:12 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.342 seconds (process running for 6.33)
+2025-05-07 15:22:32 INFO   [register]   c.p.d.r.RegisterService : User registered - d454ss5dd
+2025-05-07 15:37:17 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 3356 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:37:17 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:37:17 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:37:21 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:37:22 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.434 seconds (process running for 6.42)
+2025-05-07 15:38:00 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 3
+2025-05-07 15:41:37 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 6856 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:41:37 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:41:37 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:41:42 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:41:42 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.179 seconds (process running for 6.09)
+2025-05-07 15:44:03 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 13148 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:44:03 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:44:03 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:44:07 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:44:08 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.034 seconds (process running for 5.917)
+2025-05-07 15:44:44 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 3
+2025-05-07 15:45:09 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:45:52 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:49:07 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 5492 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:49:07 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:49:07 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:49:12 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:49:12 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.678 seconds (process running for 6.614)
+2025-05-07 15:53:19 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 4560 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-07 15:53:19 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-07 15:53:19 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-07 15:53:24 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-07 15:53:24 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 5.788 seconds (process running for 6.701)
+2025-05-07 15:54:10 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:54:48 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:55:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:56:05 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:56:31 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:56:37 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:56:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2
+2025-05-07 15:57:06 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : anonymousUser - looked product with id: 2

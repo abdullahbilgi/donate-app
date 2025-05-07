@@ -47,8 +47,6 @@ public class ProductMapper {
                 .discount(request.getDiscount() != null ? request.getDiscount() : 0)
                 .quantity(request.getQuantity())
                 .description(request.getDescription())
-                .productStatus(request.getProductStatus() != null ? ProductStatus.valueOf(request.getProductStatus()) : ProductStatus.REAL)
-                .imageUrl(request.getImageUrl())
                 .build();
     }
 
