@@ -1,14 +1,18 @@
 package com.project.donate.bootstrap;
 
 
+import com.project.donate.enums.Role;
 import com.project.donate.model.City;
 import com.project.donate.model.Region;
+import com.project.donate.model.User;
 import com.project.donate.repository.CityRepository;
 import com.project.donate.repository.RegionRepository;
+import com.project.donate.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +28,30 @@ public class Bootstrap implements CommandLineRunner {
 
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public void run(String... args) throws Exception {
+
+        if (userRepository.count() < 1) {
+
+            User user = User.builder()
+                    .name("Admin")
+                    .surname("Admin")
+                    .username("admin")
+                    .email("admin@example.com")
+                    .password(passwordEncoder.encode("StrongPass123"))
+                    .phone("05554443322")
+                    .age(52)
+                    .role(Role.ADMIN)
+                    .build();
+
+            userRepository.save(user);
+
+            log.info("User created by Bootstrap");
+        }
 
         if (cityRepository.count() < 1) {
 
