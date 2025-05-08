@@ -5,8 +5,12 @@ import com.project.donate.model.CartProduct;
 import com.project.donate.model.CartProductId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CartProductRepository extends JpaRepository<CartProduct, CartProductId> {
     boolean existsByIdCartIdAndIdProductIdAndStatus(Long cartId, Long productId, Status status);
 
     CartProduct findByIdCartIdAndIdProductIdAndStatus(Long cartId, Long productId,Status status);
+
+    List<CartProduct> findAllByStatus(Status status);
 }

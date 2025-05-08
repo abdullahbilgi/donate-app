@@ -5,6 +5,7 @@ import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
+import com.project.donate.dto.Response.PurchasesProductResponse;
 import com.project.donate.model.Cart;
 import com.project.donate.service.CartService;
 import com.project.donate.util.PdfGeneratorService;
@@ -100,5 +101,10 @@ public class CartController {
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         cartService.deleteCart(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/purchasedProducts/{id}")
+    public ResponseEntity<List<PurchasesProductResponse>> getPurchasesProductByUser(@PathVariable Long id) {
+        return ResponseEntity.ok(cartService.getPurchasesProductsByUser(id));
     }
 }

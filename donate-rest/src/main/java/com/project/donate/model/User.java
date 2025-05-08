@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,10 +27,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false, length = 100)
     private String name;
-
-    @OneToOne
-    @JoinColumn(name = "cart_id", unique = true)
-    private Cart cart;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -59,6 +56,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Cart> cart;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
