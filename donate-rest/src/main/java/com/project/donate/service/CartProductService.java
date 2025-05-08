@@ -3,6 +3,7 @@ package com.project.donate.service;
 import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
+import com.project.donate.model.Cart;
 import com.project.donate.model.CartProduct;
 import com.project.donate.model.CartProductId;
 
@@ -15,4 +16,5 @@ public interface CartProductService {
     List<CartProduct> getCartProducts();
     void removeProductFromCart(RemoveProductFromCartRequest request);
     CartProduct getCartProductById(Long cartId,Long productId);
+    Cart getUsersCurrentCart(long userId);
 }

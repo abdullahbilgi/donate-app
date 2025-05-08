@@ -5,20 +5,24 @@ import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.dto.Response.CartResponse;
+import com.project.donate.dto.Response.PurchasesProductResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartMapper;
+import com.project.donate.mapper.CartProductMapper;
 import com.project.donate.model.Cart;
 import com.project.donate.model.CartProduct;
 import com.project.donate.model.Product;
+import com.project.donate.model.User;
 import com.project.donate.repository.CartProductRepository;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,8 @@ public class CartServiceImpl implements CartService {
     private final CartProductService cartProductService;
 
 
+
+
     @Override
     public List<CartResponse> getAllCarts() {
 
@@ -59,6 +65,8 @@ public class CartServiceImpl implements CartService {
                     return new ResourceNotFoundException("Cart not found id: " + id);
                 });
     }
+
+
 
     @Override
     public Cart getCartEntityById(Long id) {
@@ -121,7 +129,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateProductQuantityFromCart(CartProductRequest request) {
-        CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(),request.getProductId());
+        CartProduct cartProduct = cartProductService.getCartProductById(cartProductService.getUsersCurrentCart(request.getUserId()).getId(),request.getProductId());
         Integer fark = request.getProductQuantity()-cartProduct.getProductQuantity();
         Product product = productService.getProductEntityById(request.getProductId());
         if(product.getQuantity()-(fark) < 0)
@@ -133,7 +141,7 @@ public class CartServiceImpl implements CartService {
         }
         cartProduct.setProductQuantity(request.getProductQuantity());
         cartProductRepository.save(cartProduct); // cart product tablosu tamam
-        Cart cart = getCartEntityById(request.getCartId());
+        Cart cart = cartProductService.getUsersCurrentCart(request.getUserId());
         cart.setTotalPrice(cart.getTotalPrice() + (fark*product.getDiscountedPrice()));
         save(cart); // cart tablosu tamam
 
@@ -141,7 +149,17 @@ public class CartServiceImpl implements CartService {
         productService.save(product);
     }
 
-   /**
+    @Override
+    public List<PurchasesProductResponse> getPurchasesProductsByUser(Long id) {
+        userService.getUserEntityById(id); // Validasyon amacıyla çağrılıyor
+        List<Cart> completedCarts = cartRepository.findAllByUserIdAndStatus(id, Status.APPROVED);
+        return completedCarts.stream()
+                .map(cartMapper::toPurchasesProductResponse)
+                .toList();
+
+    }
+
+    /**
     private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
         double totalPrice  = 0;
         for (CartProduct cartProduct : cartProducts) {
@@ -164,7 +182,7 @@ public class CartServiceImpl implements CartService {
     private void validateAndDecreaseStock(CartProductRequest request) {
 
         Product product = productService.getProductEntityById(request.getProductId());
-        Cart cart = getCartEntityById(request.getCartId());
+        Cart cart = cartProductService.getUsersCurrentCart(request.getUserId());
         if(!product.getIsActive()){
             log.warn("Product not active: {}", product);
             throw new ResourceNotActiveException("Product is not active");
@@ -182,7 +200,7 @@ public class CartServiceImpl implements CartService {
 
     @Scheduled(fixedRate = 60000) // her dakika çalışır
     public void restoreProductQuantities() {
-        List<CartProduct> cartProducts = cartProductService.getCartProducts();
+        List<CartProduct> cartProducts = cartProductRepository.findAllByStatus(Status.PENDING);
         LocalDateTime now = LocalDateTime.now();
 
         for (CartProduct cartProduct : cartProducts) {
@@ -207,13 +225,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void approveCart(Long id) {
-        Cart cart = getCartEntityById(id);
+        Cart cart = cartProductService.getUsersCurrentCart(id);
         List<CartProduct> cartProducts = cartProductService.getCartProducts();
         for (CartProduct cartProduct : cartProducts) {
             cartProduct.setStatus(Status.APPROVED);
             cartProductService.save(cartProduct);
         }
-        cart.setTotalPrice(0.0);
+        cart.setStatus(Status.APPROVED);
+        cart.setPurchaseDate(LocalDateTime.now());
         save(cart);
     }
 

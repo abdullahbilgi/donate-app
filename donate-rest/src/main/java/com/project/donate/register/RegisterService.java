@@ -31,7 +31,7 @@ public class RegisterService {
 
         Address address = addressService.createAddressEntity(request.getAddress());
         addressService.saveAddress(address);
-        Cart cart = cartService.createCart();
+        //Cart cart = cartService.createCart();
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
@@ -42,7 +42,6 @@ public class RegisterService {
                 .age(request.getAge())
                 .role(request.getRole())
                 .address(address)
-                .cart(cart)
                 .build();
         userRepository.save(user);
 

@@ -39,6 +39,10 @@ public class Cart {
 
     private Boolean isActive;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @PrePersist
     public void prePersist() {
         this.purchaseDate = LocalDateTime.now();

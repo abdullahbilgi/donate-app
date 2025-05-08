@@ -6,10 +6,7 @@ import com.project.donate.dto.Response.AddToCartResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.CartProductMapper;
-import com.project.donate.model.Cart;
-import com.project.donate.model.CartProduct;
-import com.project.donate.model.CartProductId;
-import com.project.donate.model.Product;
+import com.project.donate.model.*;
 import com.project.donate.repository.CartProductRepository;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
@@ -29,11 +26,11 @@ public class CartProductServiceImpl implements CartProductService {
     private final ProductRepository productRepository;
     private final CartProductRepository cartProductRepository;
     private final CartProductMapper cartProductMapper;
+    private final UserService userService;
 
     @Override
     public AddToCartResponse addProductToCart(CartProductRequest request) {
-        Cart cart = cartRepository.findById(request.getCartId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+        Cart cart = getUsersCurrentCart(request.getUserId());
 
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -42,7 +39,7 @@ public class CartProductServiceImpl implements CartProductService {
 
         CartProduct cartProduct;
 
-        if (cartProductRepository.existsByIdCartIdAndIdProductIdAndStatus(request.getCartId(), request.getProductId(),Status.PENDING)) {
+        if (cartProductRepository.existsByIdCartIdAndIdProductIdAndStatus(cart.getId(), request.getProductId(),Status.PENDING)) {
             // Ürün zaten sepette, var olanı güncelle
             cartProduct = cartProductRepository.findById(cartProductId)
                     .orElseThrow(() -> new RuntimeException("CartProduct not found despite existence check"));
@@ -65,6 +62,8 @@ public class CartProductServiceImpl implements CartProductService {
         cartProductRepository.save(cartProduct);
         return cartProductMapper.mapToDto(cartProduct);
     }
+
+
 
     @Override
     public void save(CartProduct cartProduct) {
@@ -91,5 +90,19 @@ public class CartProductServiceImpl implements CartProductService {
     @Override
     public CartProduct getCartProductById(Long cartId, Long productId) {
         return cartProductRepository.findByIdCartIdAndIdProductIdAndStatus(cartId, productId,Status.PENDING);
+    }
+
+    @Override
+    public Cart getUsersCurrentCart(long userId) {
+        Cart cart = cartRepository.findByUserIdAndStatus(userId,Status.PENDING);
+        User user = userService.getUserEntityById(userId);
+        if(cart == null){
+            cart = new Cart();
+            cart.setUser(user);
+            cart.setStatus(Status.PENDING);
+            cart.setTotalPrice(0.0);
+            cartRepository.save(cart);
+        }
+        return cart;
     }
 }
