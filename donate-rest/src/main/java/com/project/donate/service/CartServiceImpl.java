@@ -96,7 +96,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteCart(Long id) {
         Cart cart = getCartEntityById(id);
-        cart.setIsActive(false);
         saveAndMap(cart, "delete");
     }
 

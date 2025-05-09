@@ -146,10 +146,11 @@ public class PdfGeneratorService {
             String fullName = user.getName() + " " + user.getSurname();
             infoTable.addCell(new Phrase("User: " + fullName, bodyFont));
 
-            PdfPCell expiredDateCell = new PdfPCell(new Phrase("Expired Date: " + cart.getExpiredDate().format(formatter), bodyFont));
+            /**PdfPCell expiredDateCell = new PdfPCell(new Phrase("Expired Date: " + cart.getExpiredDate().format(formatter), bodyFont));
             expiredDateCell.setBorder(Rectangle.NO_BORDER);
             expiredDateCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             infoTable.addCell(expiredDateCell);
+             **/
 
             document.add(infoTable);
             document.add(new Paragraph(" "));
