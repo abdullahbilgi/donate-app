@@ -1,6 +1,5 @@
 package com.project.donate.mapper;
 
-import com.project.donate.dto.RegionDTO;
 import com.project.donate.dto.Request.RegionRequest;
 import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.dto.Response.RegionResponse;

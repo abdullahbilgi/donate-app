@@ -2,12 +2,8 @@ package com.project.donate.bootstrap;
 
 
 import com.project.donate.enums.Role;
-import com.project.donate.model.City;
-import com.project.donate.model.Region;
-import com.project.donate.model.User;
-import com.project.donate.repository.CityRepository;
-import com.project.donate.repository.RegionRepository;
-import com.project.donate.repository.UserRepository;
+import com.project.donate.model.*;
+import com.project.donate.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
@@ -29,29 +25,111 @@ public class Bootstrap implements CommandLineRunner {
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public void run(String... args) throws Exception {
 
-        if (userRepository.count() < 1) {
 
-            User user = User.builder()
-                    .name("Admin")
-                    .surname("Admin")
-                    .username("admin")
-                    .email("admin@example.com")
-                    .password(passwordEncoder.encode("StrongPass123"))
-                    .phone("05554443322")
-                    .age(52)
-                    .role(Role.ADMIN)
-                    .build();
+        if (cityRepository.count() < 1) {
 
-            userRepository.save(user);
+            List<Category> categories = List.of(
+                    // Fruits & Vegetables
+                    Category.builder().name("Fresh Fruits").build(),
+                    Category.builder().name("Fresh Vegetables").build(),
+                    Category.builder().name("Organic Produce").build(),
+                    Category.builder().name("Cut & Ready Produce").build(),
+                    Category.builder().name("Dried Fruits & Vegetables").build(),
 
-            log.info("User created by Bootstrap");
+                    // Meat, Chicken & Fish
+                    Category.builder().name("Red Meat").build(),
+                    Category.builder().name("Chicken Products").build(),
+                    Category.builder().name("Fish & Seafood").build(),
+                    Category.builder().name("Offal").build(),
+                    Category.builder().name("Marinated Meats").build(),
+                    Category.builder().name("Delicatessen (Sausage, Salami, etc.)").build(),
+
+                    // Dairy & Breakfast
+                    Category.builder().name("Milk").build(),
+                    Category.builder().name("Cheese").build(),
+                    Category.builder().name("Yogurt & Ayran").build(),
+                    Category.builder().name("Butter & Margarine").build(),
+                    Category.builder().name("Olives & Jams").build(),
+                    Category.builder().name("Honey & Molasses").build(),
+                    Category.builder().name("Eggs").build(),
+
+                    // Bakery
+                    Category.builder().name("Breads").build(),
+                    Category.builder().name("Pastries & Savory Bakes").build(),
+                    Category.builder().name("Cakes & Cookies").build(),
+                    Category.builder().name("Frozen Bakery Products").build(),
+                    Category.builder().name("Flour & Baking Ingredients").build(),
+
+                    // Pantry / Dry Foods
+                    Category.builder().name("Rice & Bulgur").build(),
+                    Category.builder().name("Pasta & Noodles").build(),
+                    Category.builder().name("Legumes (Lentils, Beans, etc.)").build(),
+                    Category.builder().name("Flour, Sugar & Salt").build(),
+                    Category.builder().name("Canned Foods").build(),
+                    Category.builder().name("Tomato Paste & Sauces").build(),
+                    Category.builder().name("Cooking Oils").build(),
+
+                    // Beverages
+                    Category.builder().name("Water & Mineral Water").build(),
+                    Category.builder().name("Fruit Juices").build(),
+                    Category.builder().name("Sodas & Soft Drinks").build(),
+                    Category.builder().name("Energy Drinks").build(),
+                    Category.builder().name("Tea & Herbal Teas").build(),
+                    Category.builder().name("Coffee").build(),
+
+                    // Snacks & Sweets
+                    Category.builder().name("Chocolate & Wafer").build(),
+                    Category.builder().name("Chips & Crackers").build(),
+                    Category.builder().name("Nuts & Seeds").build(),
+                    Category.builder().name("Ice Cream").build(),
+                    Category.builder().name("Biscuits & Cakes").build(),
+
+                    // Cleaning Supplies
+                    Category.builder().name("Dishwashing Products").build(),
+                    Category.builder().name("Laundry Products").build(),
+                    Category.builder().name("General Cleaning Supplies").build(),
+                    Category.builder().name("Paper Products").build(),
+                    Category.builder().name("Personal Hygiene Products").build(),
+
+                    // Personal Care
+                    Category.builder().name("Hair Care").build(),
+                    Category.builder().name("Skin Care").build(),
+                    Category.builder().name("Oral Care").build(),
+                    Category.builder().name("Deodorant & Perfume").build(),
+                    Category.builder().name("Baby Care").build(),
+
+                    // Baby Products
+                    Category.builder().name("Diapers").build(),
+                    Category.builder().name("Baby Food & Formula").build(),
+                    Category.builder().name("Wet Wipes").build(),
+                    Category.builder().name("Pacifiers & Bottles").build(),
+
+                    // Pet Supplies
+                    Category.builder().name("Cat & Dog Food").build(),
+                    Category.builder().name("Litter & Accessories").build(),
+                    Category.builder().name("Pet Vitamins & Treats").build(),
+
+                    // Home & Lifestyle
+                    Category.builder().name("Kitchenware").build(),
+                    Category.builder().name("Small Home Appliances").build(),
+                    Category.builder().name("Home Decoration").build(),
+                    Category.builder().name("Garden & Outdoor").build(),
+                    Category.builder().name("Stationery & Toys").build()
+            );
+
+            categoryRepository.saveAll(categories);
+
+            log.info("Categories created by Bootstrap");
         }
+
 
         if (cityRepository.count() < 1) {
 
@@ -1125,6 +1203,43 @@ public class Bootstrap implements CommandLineRunner {
             regionRepository.saveAll(regions);
 
             log.info("Saved Regions by Bootstrap");
+        }
+
+        if (userRepository.count() < 1) {
+
+            City city = new City();
+            city.setName("Example City");
+            city = cityRepository.save(city);
+
+            Region region = new Region();
+            region.setName("Example Region");
+            region.setCity(city);
+            regionRepository.save(region);
+
+
+            Address address = new Address();
+            address.setName("admin");
+            address.setRegion(region);
+            addressRepository.save(address);
+
+
+            addressRepository.save(address);
+
+            User user = User.builder()
+                    .name("Admin")
+                    .surname("Admin")
+                    .username("admin")
+                    .email("admin@example.com")
+                    .password(passwordEncoder.encode("StrongPass123"))
+                    .phone("05554443322")
+                    .age(52)
+                    .address(address)
+                    .role(Role.ADMIN)
+                    .build();
+
+            userRepository.save(user);
+
+            log.info("User created by Bootstrap");
         }
 
     }

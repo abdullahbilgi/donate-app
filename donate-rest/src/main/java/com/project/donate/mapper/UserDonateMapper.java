@@ -1,10 +1,6 @@
 package com.project.donate.mapper;
 
-import com.project.donate.dto.Request.ProductRequest;
-import com.project.donate.dto.Request.UserDonateRequest;
 import com.project.donate.dto.Response.CategoryResponse;
-import com.project.donate.dto.Response.ProductResponse;
-import com.project.donate.dto.Response.UserDonateResponse;
 import com.project.donate.enums.ProductStatus;
 import com.project.donate.model.Product;
 import lombok.RequiredArgsConstructor;

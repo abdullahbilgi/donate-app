@@ -1,18 +1,14 @@
 package com.project.donate.mapper;
 
-import com.project.donate.dto.Response.AddressResponse;
+
 import com.project.donate.dto.Response.UserResponse;
-import com.project.donate.dto.UserDTO;
 import com.project.donate.model.User;
 import com.project.donate.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

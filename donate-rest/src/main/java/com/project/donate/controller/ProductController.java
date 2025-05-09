@@ -1,6 +1,6 @@
 package com.project.donate.controller;
 
-import com.project.donate.dto.ProductDTO;
+
 import com.project.donate.dto.Request.ProductRequest;
 import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.service.ProductService;
@@ -12,9 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

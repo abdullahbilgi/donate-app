@@ -1,10 +1,5 @@
 package com.project.donate.dto.Response;
 
-import com.project.donate.model.Category;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +19,8 @@ public class ProductResponse {
 
     private LocalDateTime expiryDate;
 
+    private LocalDateTime lastDonatedDate;
+
     private Double price;
 
     private Double discountedPrice;
@@ -37,6 +34,8 @@ public class ProductResponse {
     private String productStatus;
 
     private CategoryResponse category;
+
+    private MarketResponse market;
 
     private String imageUrl;
 

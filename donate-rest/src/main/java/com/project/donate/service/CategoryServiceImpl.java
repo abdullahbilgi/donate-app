@@ -1,6 +1,5 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.CategoryDTO;
 import com.project.donate.dto.Request.CategoryRequest;
 import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.exception.ResourceNotFoundException;
