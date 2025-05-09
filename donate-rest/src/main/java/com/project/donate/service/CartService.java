@@ -40,4 +40,6 @@ public interface CartService {
     void updateProductQuantityFromCart(CartProductRequest request);
 
     List<PurchasesProductResponse> getPurchasesProductsByUser(Long id);
+
+    CartResponse getCurrentUserCart(Long userId);
 }

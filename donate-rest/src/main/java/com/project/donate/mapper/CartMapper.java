@@ -19,13 +19,17 @@ public class CartMapper  {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProductMapper productMapper;
+    private final CartProductMapper cartProductMapper;
 
     public CartResponse mapToDto(Cart cart) {
-        //UserResponse user = userMapper.userToUserDto(cart.getUser());
+        List<CartProductResponse> productResponses = cart.getCartProducts()
+                .stream()
+                .map(cartProductMapper::mapToCartProductResponse)
+                .toList();
+
         return CartResponse.builder()
                 .id(cart.getId())
-                //.user(user)
-                //.productItems(cart.getProductItems())
+                .productItems(productResponses)
                 .status(cart.getStatus())
                 .totalPrice(cart.getTotalPrice())
                 .purchaseDate(cart.getPurchaseDate())

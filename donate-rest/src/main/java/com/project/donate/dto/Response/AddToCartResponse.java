@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class AddToCartResponse {
-    private CartResponse cart;
+    //private CartResponse cart;
 
     private ProductResponse product;
 

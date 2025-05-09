@@ -158,6 +158,12 @@ public class CartServiceImpl implements CartService {
 
     }
 
+    public CartResponse getCurrentUserCart(Long userId) {
+        Cart cart = cartRepository.findByUserIdAndStatus(userId, Status.PENDING)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcının aktif bir sepeti bulunamadı."));
+        return cartMapper.mapToDto(cart);
+    }
+
     /**
     private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
         double totalPrice  = 0;

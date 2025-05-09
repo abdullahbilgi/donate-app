@@ -94,15 +94,15 @@ public class CartProductServiceImpl implements CartProductService {
 
     @Override
     public Cart getUsersCurrentCart(long userId) {
-        Cart cart = cartRepository.findByUserIdAndStatus(userId,Status.PENDING);
-        User user = userService.getUserEntityById(userId);
-        if(cart == null){
-            cart = new Cart();
-            cart.setUser(user);
-            cart.setStatus(Status.PENDING);
-            cart.setTotalPrice(0.0);
-            cartRepository.save(cart);
-        }
-        return cart;
+        return cartRepository.findByUserIdAndStatus(userId, Status.PENDING)
+                .orElseGet(() -> {
+                    User user = userService.getUserEntityById(userId);
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    newCart.setStatus(Status.PENDING);
+                    newCart.setTotalPrice(0.0);
+                    return cartRepository.save(newCart);
+                });
     }
+
 }

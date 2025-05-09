@@ -37,9 +37,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartById(id));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CartResponse>> getUserCarts(@PathVariable Long userId) {
-        return ResponseEntity.ok(cartService.getUserCartsOrderedByDate(userId));
+    @GetMapping("/currentUserCart/{userId}")
+    public ResponseEntity<CartResponse> getCurrentUserCart(@PathVariable Long userId) {
+        return ResponseEntity.ok(cartService.getCurrentUserCart(userId));
     }
 
     @GetMapping("/{id}/pdf")
