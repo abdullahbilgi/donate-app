@@ -35,10 +35,6 @@ public class Cart {
 
     private LocalDateTime purchaseDate;
 
-    private LocalDateTime expiredDate;
-
-    private Boolean isActive;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -46,7 +42,6 @@ public class Cart {
     @PrePersist
     public void prePersist() {
         this.purchaseDate = LocalDateTime.now();
-        this.expiredDate = this.purchaseDate.plusDays(1);
     }
 }
 

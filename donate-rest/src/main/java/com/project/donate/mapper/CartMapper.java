@@ -29,7 +29,6 @@ public class CartMapper  {
                 .status(cart.getStatus())
                 .totalPrice(cart.getTotalPrice())
                 .purchaseDate(cart.getPurchaseDate())
-                .expiredDate(cart.getExpiredDate())
                 .build();
     }
 
