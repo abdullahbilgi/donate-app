@@ -28,7 +28,6 @@ public class ProductRequest {
     @NotNull(message = "ExpiryDate is mandatory")
     private LocalDateTime expiryDate;
 
-    @NotNull(message = "LastDonatedDate is mandatory")
     private LocalDateTime lastDonatedDate;
 
     @Min(value = 0, message = "Price must be at least 0")

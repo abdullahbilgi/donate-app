@@ -9,12 +9,10 @@ import com.project.donate.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 public class ProductMapper {
     private final CategoryMapper categoryMapper;
-
 
     public ProductResponse mapToDto(Product product) {
         if (product == null) return null;
@@ -22,11 +20,14 @@ public class ProductMapper {
         CategoryResponse categoryResponse = categoryMapper.mapToDto(product.getCategory());
 
         Market market = product.getMarket();
-        MarketResponse marketResponse = MarketResponse.builder()
-                .id(market.getId())
-                .name(market.getName())
-                .taxNumber(market.getTaxNumber())
-                .build();
+        MarketResponse marketResponse = null;
+        if (market != null) {
+            marketResponse = MarketResponse.builder()
+                    .id(market.getId())
+                    .name(market.getName())
+                    .taxNumber(market.getTaxNumber())
+                    .build();
+        }
 
         return ProductResponse.builder()
                 .id(product.getId())
@@ -60,5 +61,4 @@ public class ProductMapper {
                 .description(request.getDescription())
                 .build();
     }
-
 }

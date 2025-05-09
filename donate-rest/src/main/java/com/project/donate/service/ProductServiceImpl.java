@@ -54,12 +54,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
-        Category category = categoryService.getCategoryEntityById(request.getCategoryId());
-        Market market = marketService.getMarketEntityById(request.getMarketId());
         Product product = productMapper.mapToEntity(request);
-        product.setCategory(category);
-        product.setMarket(market);
-        validProduct(product);
+        validProduct(product,request);
         return saveAndMap(product, "save");
     }
 
@@ -71,12 +67,8 @@ public class ProductServiceImpl implements ProductService {
             log.error("{} Product is not active!", GeneralUtil.extractUsername());
             throw new ResourceNotFoundException("Product is not active!");
         }
-        Market market = marketService.getMarketEntityById(request.getMarketId());
-        Category category = categoryService.getCategoryEntityById(request.getCategoryId());
-        savingProduct.setCategory(category);
-        savingProduct.setMarket(market);
         savingProduct.setId(id);
-        validProduct(savingProduct);
+        validProduct(savingProduct,request);
         return saveAndMap(savingProduct, "update");
     }
 
@@ -107,11 +99,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(Product product) {
+    public void save(Product product ) {
         productRepository.save(product);
     }
 
-    private void validProduct(Product product) {
+    private void validProduct(Product product,ProductRequest request) {
 
         if (product.getProductStatus() == ProductStatus.DONATE) {
             product.setDiscount(0);
@@ -127,6 +119,18 @@ public class ProductServiceImpl implements ProductService {
             product.setDiscount((int) Math.round(discountRate));
         }
 
+        Category category = categoryService.getCategoryEntityById(request.getCategoryId());
+        product.setCategory(category);
+
+        if (request.getMarketId() != null) {
+            Market market = marketService.getMarketEntityById(request.getMarketId());
+            product.setMarket(market);
+        }else {
+            product.setMarket(null);
+        }
+
+
+
 
         if (product.getExpiryDate() != null && product.getProductionDate() != null &&
                 !product.getExpiryDate().isAfter(product.getProductionDate())) {
@@ -134,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Expiry date must be after production date!");
         }
 
-        if (product.getLastDonatedDate() != null && product.getExpiryDate() != null &&
+        if (product.getLastDonatedDate() != null && product.getExpiryDate() != null && product.getProductStatus()!=ProductStatus.DONATE &&
                 !product.getLastDonatedDate().isEqual(product.getExpiryDate().minusDays(3))) {
             log.warn("{} Last donated date must be 3 days before expiry date!", GeneralUtil.extractUsername());
             throw new IllegalArgumentException("Last donated date must be 3 days before expiry date!");
