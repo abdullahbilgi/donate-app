@@ -65,6 +65,6 @@ public class Product {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "market_id", nullable = false)
+    @JoinColumn(name = "market_id")
     private Market market;
 }
