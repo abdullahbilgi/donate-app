@@ -1,6 +1,5 @@
 package com.project.donate.mapper;
 
-import com.project.donate.dto.MarketDTO;
 import com.project.donate.dto.Request.MarketRequest;
 import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.dto.Response.MarketResponse;
@@ -10,7 +9,6 @@ import com.project.donate.model.Market;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

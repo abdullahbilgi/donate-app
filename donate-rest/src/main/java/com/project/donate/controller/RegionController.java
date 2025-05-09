@@ -1,6 +1,5 @@
 package com.project.donate.controller;
 
-import com.project.donate.dto.RegionDTO;
 import com.project.donate.dto.Request.RegionRequest;
 import com.project.donate.dto.Response.RegionResponse;
 import com.project.donate.service.RegionService;

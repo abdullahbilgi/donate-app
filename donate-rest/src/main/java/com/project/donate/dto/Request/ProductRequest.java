@@ -1,6 +1,6 @@
 package com.project.donate.dto.Request;
 
-import com.project.donate.model.Category;
+import com.project.donate.enums.ProductStatus;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,15 +28,17 @@ public class ProductRequest {
     @NotNull(message = "ExpiryDate is mandatory")
     private LocalDateTime expiryDate;
 
-    @NotNull(message = "Price is mandatory")
+    @NotNull(message = "LastDonatedDate is mandatory")
+    private LocalDateTime lastDonatedDate;
+
     @Min(value = 0, message = "Price must be at least 0")
     private Double price;
 
     @Min(value = 0, message = "DiscountedPrice must be at least 0")
     private Double discountedPrice;
 
-    @Min(value = 1, message = "Discount must be at least 1")
-    private Integer discount;
+    @NotNull(message = "Status is mandatory")
+    private ProductStatus productStatus;
 
     @NotNull(message = "Quantity is mandatory")
     @Min(value = 0, message = "Quantity must be at least 0")

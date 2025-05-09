@@ -34,6 +34,8 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
+    private LocalDateTime lastDonatedDate;
+
     @Column(updatable = false)
     private LocalDateTime productionDate;
 

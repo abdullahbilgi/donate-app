@@ -1,6 +1,5 @@
 package com.project.donate.service;
 
-import com.project.donate.dto.CityDTO;
 import com.project.donate.dto.Request.CityRequest;
 import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.model.City;

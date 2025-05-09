@@ -3,7 +3,6 @@ package com.project.donate.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.project.donate.dto.ProductDTO;
 import com.project.donate.dto.Request.ProductRequest;
 import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.enums.ProductStatus;
@@ -12,7 +11,6 @@ import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Category;
 import com.project.donate.model.Market;
 import com.project.donate.model.Product;
-import com.project.donate.repository.CategoryRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.mapToEntity(request);
         product.setCategory(category);
         product.setMarket(market);
-        calculateDiscountPrice(product);
+        validProduct(product);
         return saveAndMap(product, "save");
     }
 
@@ -70,10 +67,16 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(Long id, ProductRequest request) {
         getProductById(id);
         Product savingProduct = productMapper.mapToEntity(request);
+        if (!savingProduct.getIsActive()){
+            log.error("{} Product is not active!", GeneralUtil.extractUsername());
+            throw new ResourceNotFoundException("Product is not active!");
+        }
+        Market market = marketService.getMarketEntityById(request.getMarketId());
         Category category = categoryService.getCategoryEntityById(request.getCategoryId());
         savingProduct.setCategory(category);
+        savingProduct.setMarket(market);
         savingProduct.setId(id);
-        calculateDiscountPrice(savingProduct);
+        validProduct(savingProduct);
         return saveAndMap(savingProduct, "update");
     }
 
@@ -108,50 +111,58 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
-    /**
-     * Her gün gece yarısı (00:00:00) çalışarak tüm ürünleri günceller.
-     */
-    @Scheduled(cron = "0 0 0 * * ?") // Her gün 00:00:00'da çalışır
-    public void updateAllProductDiscounts() {
-        List<Product> products = productRepository.findAll();
-        for (Product product : products) {
-            if (product.getProductStatus() != ProductStatus.DONATE) {
-                calculateDiscountPrice(product);
-                productRepository.save(product);
-            }
-        }
-        log.info("All product discounts updated");
-    }
+    private void validProduct(Product product) {
 
-    private void calculateDiscountPrice(Product product) {
-        if (product.getExpiryDate() == null || product.getPrice() == null) {
-            return;
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, product.getExpiryDate());
-        long daysRemaining = duration.toDays();
-
-        if (daysRemaining > 150) { // 5 aydan fazla süresi var, indirim yok
-            product.setDiscountedPrice(product.getPrice());
-
-        } else if (daysRemaining > 60) { // 2-5 ay arası, kademeli indirim
-            product.setProductStatus(ProductStatus.DISCOUNT);
-
-            int discountPercentage = (int) ((150 - daysRemaining) * 100 / 90); // Gün sayısına göre dinamik indirim (max %100)
-            discountPercentage = Math.min(discountPercentage, 80); // Maksimum %80 indirim uygulanır
-            product.setDiscount(discountPercentage);
-
-            double discountAmount = product.getPrice() * discountPercentage / 100.0;
-            product.setDiscountedPrice(product.getPrice() - discountAmount);
-
-        } else { // 2 aydan az süresi kaldı, bağışa çevir
+        if (product.getProductStatus() == ProductStatus.DONATE) {
             product.setDiscount(0);
             product.setPrice(0.0);
             product.setDiscountedPrice(0.0);
-            product.setProductStatus(ProductStatus.DONATE);
+
+        } else {
+            if (product.getPrice() <= product.getDiscountedPrice()) {
+                log.warn("{} The discounted price must be lower than the price!", GeneralUtil.extractUsername());
+                throw new ArithmeticException("The discounted price must be lower than the price!");
+            }
+            double discountRate = ((product.getPrice() - product.getDiscountedPrice()) / product.getPrice()) * 100;
+            product.setDiscount((int) Math.round(discountRate));
+        }
+
+
+        if (product.getExpiryDate() != null && product.getProductionDate() != null &&
+                !product.getExpiryDate().isAfter(product.getProductionDate())) {
+            log.warn("{} Expiry date must be after production date!", GeneralUtil.extractUsername());
+            throw new IllegalArgumentException("Expiry date must be after production date!");
+        }
+
+        if (product.getLastDonatedDate() != null && product.getExpiryDate() != null &&
+                !product.getLastDonatedDate().isEqual(product.getExpiryDate().minusDays(3))) {
+            log.warn("{} Last donated date must be 3 days before expiry date!", GeneralUtil.extractUsername());
+            throw new IllegalArgumentException("Last donated date must be 3 days before expiry date!");
         }
     }
+
+    @Scheduled(cron = "0 1 0 * * ?") // Her gün saat 00:01:00'da çalışır
+    public void updateAllProductStatus() {
+        List<Product> products = productRepository.findAll();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (Product product : products) {
+            if (product.getProductStatus() != ProductStatus.DONATE &&
+                    product.getLastDonatedDate() != null &&
+                    now.isAfter(product.getLastDonatedDate())) {
+
+                product.setProductStatus(ProductStatus.DONATE);
+                product.setDiscount(0);
+                product.setPrice(0.0);
+                product.setDiscountedPrice(0.0);
+
+                productRepository.save(product);
+            }
+        }
+
+        log.info("Product statuses updated after 00:01:00");
+    }
+
 
     @Override
     public void increaseQuantity(Long id, int amount) {

@@ -1,6 +1,5 @@
 package com.project.donate.controller;
 
-import com.project.donate.dto.AddressDTO;
 import com.project.donate.dto.Request.AddressRequest;
 import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.service.AddressService;

@@ -1,7 +1,6 @@
 package com.project.donate.service;
 
 
-import com.project.donate.dto.AddressDTO;
 import com.project.donate.dto.Request.AddressRequest;
 import com.project.donate.dto.Response.AddressResponse;
 import com.project.donate.exception.ResourceNotFoundException;
