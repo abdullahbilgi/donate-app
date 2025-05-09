@@ -85,9 +85,8 @@ public class PdfGeneratorService {
             Address address = firstMarket.getAddress();
 
             // --- HEADER TABLE (Logo + Market QR/adlar) ---
-            PdfPTable headerTable = new PdfPTable(2);
+            PdfPTable headerTable = new PdfPTable(1); // sadece 1 kolon, sağ taraf kaldırıldı
             headerTable.setWidthPercentage(100);
-            headerTable.setWidths(new float[]{6f, 4f});
             headerTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
             // Sol üst: Logo + LASTBITE
@@ -118,42 +117,11 @@ public class PdfGeneratorService {
             PdfPCell leftCell = new PdfPCell(leftHeader);
             leftCell.setBorder(Rectangle.NO_BORDER);
             leftCell.setVerticalAlignment(Element.ALIGN_TOP);
-            headerTable.addCell(leftCell);
-
-            // Sağ üst: Market QR kodları ve adları (alt alta)
-            PdfPTable rightHeader = new PdfPTable(1);
-            rightHeader.setWidthPercentage(100);
-            rightHeader.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-
-            for (Map.Entry<Market, List<Product>> entry : marketToProducts.entrySet()) {
-                Market market = entry.getKey();
-                Address mAddress = market.getAddress();
-                String mapsUrl = "https://www.google.com/maps?q=" + mAddress.getLatitude() + "," + mAddress.getLongitude();
-                Image qrImage = generateQRCodeImage(mapsUrl, 60, 60);
-                qrImage.setAlignment(Image.ALIGN_RIGHT);
-
-
-                PdfPCell qrCell = new PdfPCell(qrImage, false);
-                qrCell.setBorder(Rectangle.NO_BORDER);
-                qrCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                rightHeader.addCell(qrCell);
-
-                Paragraph marketName = new Paragraph(market.getName(), marketFont);
-                marketName.setAlignment(Element.ALIGN_RIGHT);
-
-                PdfPCell nameCell = new PdfPCell(marketName);
-                nameCell.setBorder(Rectangle.NO_BORDER);
-                nameCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                //nameCell.setPaddingRight(20f);
-                rightHeader.addCell(nameCell);
-            }
-
-            PdfPCell rightCell = new PdfPCell(rightHeader);
-            rightCell.setBorder(Rectangle.NO_BORDER);
-            headerTable.addCell(rightCell);
+            headerTable.addCell(leftCell); // sadece sol taraf ekleniyor
 
             document.add(headerTable);
             document.add(new Paragraph(" "));
+
 
             // --- ORDER DETAILS ---
             Paragraph title = new Paragraph("Order Details", titleFont);
@@ -191,17 +159,37 @@ public class PdfGeneratorService {
                 Market market = entry.getKey();
                 List<Product> products = entry.getValue();
 
-                // Market başlığı
-                Paragraph marketTitle = new Paragraph("Market: " + market.getName(), titleFont);
-                marketTitle.setSpacingBefore(10);
-                document.add(marketTitle);
+                Address mAddress = market.getAddress();
+                String mapsUrl = "https://www.google.com/maps?q=" + mAddress.getLatitude() + "," + mAddress.getLongitude();
+
+                // Yeni tablo: Market ismi ve QR kodu yan yana
+                PdfPTable marketHeaderTable = new PdfPTable(2);
+                marketHeaderTable.setWidthPercentage(100);
+                marketHeaderTable.setWidths(new float[]{7f, 1.5f}); // Ayar: isim geniş, QR dar
+                marketHeaderTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
+                // Market adı hücresi
+                PdfPCell marketNameCell = new PdfPCell(new Phrase("Market: " + market.getName(), titleFont));
+                marketNameCell.setBorder(Rectangle.NO_BORDER);
+                marketNameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                marketNameCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                marketHeaderTable.addCell(marketNameCell);
+
+                // QR kod hücresi
+                Image qrImage = generateQRCodeImage(mapsUrl, 50, 50);
+                PdfPCell qrCell = new PdfPCell(qrImage, false);
+                qrCell.setBorder(Rectangle.NO_BORDER);
+                qrCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                qrCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                marketHeaderTable.addCell(qrCell);
+
+                // PDF'e market başlığı + QR ekle
+                document.add(marketHeaderTable);
 
                 // Market adresi
-                Address mAddress = market.getAddress();
                 String fullMarketAddress = mAddress.getName() + ", " + mAddress.getRegion().getName() + " - " + mAddress.getZipCode();
                 Paragraph addressPara = new Paragraph("Address: " + fullMarketAddress, bodyFont);
                 document.add(addressPara);
-
                 document.add(new Paragraph(" ", bodyFont));
 
                 // Ürün tablosu
@@ -215,9 +203,11 @@ public class PdfGeneratorService {
                 table.addCell(new PdfPCell(new Phrase("Price", headFont)));
 
                 List<CartProduct> cartProducts = cart.getCartProducts();
-
                 for (CartProduct cartProduct : cartProducts) {
                     Product product = productService.getProductEntityById(cartProduct.getProduct().getId());
+
+                    // Sadece bu markete ait ürünleri göster
+                    if (!product.getMarket().equals(market)) continue;
 
                     table.addCell(new Phrase(product.getName(), bodyFont));
                     table.addCell(new Phrase(String.valueOf(cartProduct.getProductQuantity())));
@@ -227,6 +217,7 @@ public class PdfGeneratorService {
                 document.add(table);
                 document.add(new Paragraph(" "));
             }
+
 
 
             Paragraph totalPrice = new Paragraph("Total Price: " + cart.getTotalPrice() + " TL", bodyFont);
