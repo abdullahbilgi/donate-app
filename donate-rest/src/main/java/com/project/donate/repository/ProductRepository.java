@@ -15,4 +15,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //List<Product> findAllByIsActiveTrue();
 
     Page<Product> findAllByIsActiveTrue(Pageable pageable);
+
+    Page<Product> findAllByCategory_IdAndIsActiveTrue(Long categoryId, Pageable pageable);
+
+    Page<Product> findAllByMarket_Address_Region_IdAndIsActiveTrue(Long regionId, Pageable pageable);
+    // Şehre (City) göre aktif ürünleri getirir
+    Page<Product> findAllByMarket_Address_Region_City_IdAndIsActiveTrue(Long cityId, Pageable pageable);
+
+    Page<Product> findAllByMarketIdAndIsActiveTrue(Long cityId, Pageable pageable);
 }

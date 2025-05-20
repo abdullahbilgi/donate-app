@@ -3,6 +3,7 @@ package com.project.donate.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.project.donate.dto.ProductDocument;
 import com.project.donate.dto.Request.ProductRequest;
 import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.enums.ProductStatus;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +40,7 @@ public class ProductServiceImpl implements ProductService {
     private final Cloudinary cloudinary;
     private final CategoryService categoryService;
     private final MarketService marketService;
+    private final ElasticsearchOperations elasticsearchOperations;
 
 
     @Override
@@ -55,8 +59,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse createProduct(ProductRequest request) {
         Product product = productMapper.mapToEntity(request);
-        validProduct(product,request);
-        return saveAndMap(product, "save");
+        validProduct(product, request);
+        Product savedProduct = productRepository.save(product);
+
+        // Elasticsearch'e ekleme
+        ProductDocument document = productMapper.mapToDocument(savedProduct);
+        elasticsearchOperations.save(document, IndexCoordinates.of("products"));
+
+        return productMapper.mapToDto(savedProduct);
     }
 
     @Override
@@ -102,6 +112,32 @@ public class ProductServiceImpl implements ProductService {
     public void save(Product product ) {
         productRepository.save(product);
     }
+
+    @Override
+    public Page<ProductResponse> getProductsByCategoryId(Long id, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByCategory_IdAndIsActiveTrue(id, pageable);
+        return products.map(productMapper::mapToDto); // Mapper'ı kendi yapına göre uyarla
+    }
+
+    @Override
+    public Page<ProductResponse> getProductsByCityId(Long cityId, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByMarket_Address_Region_City_IdAndIsActiveTrue(cityId, pageable);
+        return products.map(productMapper::mapToDto);
+    }
+
+
+    @Override
+    public Page<ProductResponse> getProductsByRegionId(Long regionId, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByMarket_Address_Region_IdAndIsActiveTrue(regionId, pageable);
+        return products.map(productMapper::mapToDto);
+    }
+
+    @Override
+    public Page<ProductResponse> getProductsByMarketId(Long marketId, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByMarketIdAndIsActiveTrue(marketId, pageable);
+        return products.map(productMapper::mapToDto);
+    }
+
 
     private void validProduct(Product product,ProductRequest request) {
 

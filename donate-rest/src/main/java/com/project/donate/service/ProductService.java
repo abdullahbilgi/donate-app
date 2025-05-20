@@ -34,5 +34,15 @@ public interface ProductService {
     void updateProductImage(Long productId, String imageUrl);
 
     void save(Product product);
+
+    Page<ProductResponse> getProductsByCategoryId(Long id, Pageable pageable);
+
+    Page<ProductResponse> getProductsByCityId(Long id, Pageable pageable);
+
+    Page<ProductResponse> getProductsByRegionId(Long id, Pageable pageable);
+
+    Page<ProductResponse> getProductsByMarketId(Long id, Pageable pageable);
+
+
 }
 
