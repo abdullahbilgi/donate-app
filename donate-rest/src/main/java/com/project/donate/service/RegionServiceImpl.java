@@ -67,6 +67,12 @@ public class RegionServiceImpl implements RegionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Region not found id: " + id));
     }
 
+    @Override
+    public City getRegionsCityEntityById(Long id) {
+        Region region = getRegionEntityById(id);
+        return region.getCity();
+    }
+
     private RegionResponse saveAndMap(Region region) {
         Region savedRegion = regionRepository.save(region);
         return regionMapper.mapToDto(savedRegion);

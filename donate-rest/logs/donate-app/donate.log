@@ -3914,3 +3914,19 @@ Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: raw time
 2025-05-20 14:43:42 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-05-20 14:43:43 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.666 seconds (process running for 7.555)
 2025-05-20 14:43:53 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 1
+2025-05-20 16:04:00 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 14664 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-20 16:04:00 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-20 16:04:00 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-20 16:04:09 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-20 16:04:12 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 12.381 seconds (process running for 15.077)
+2025-05-20 16:06:04 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 9352 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-20 16:06:04 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-20 16:06:04 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-20 16:06:10 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-20 16:06:11 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.669 seconds (process running for 9.365)
+2025-05-20 16:07:30 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 3
+2025-05-20 16:08:58 INFO   [saveAndMap]   c.p.d.s.MarketServiceImpl : anonymousUser Created market: Market(id=5, name=üsküdardaki market, createdDate=2025-05-20T16:08:58.608598, lastModifiedDate=2025-05-20T16:08:58.608598, taxNumber=123450789, status=PENDING, isActive=true, user=com.project.donate.model.User@1930e500, address=Address(id=6, name=Test 166, createdDate=2025-05-20T16:08:58.601491, lastModifiedDate=2025-05-20T16:08:58.601491, latitude=37.7749, longitude=-122.4194, zipCode=86524, isActive=true, region=Region(id=459, name=ÜSKÜDAR, createdDate=2025-05-08T14:35:51.945411, lastModifiedDate=2025-05-08T14:35:51.945411, city=City(id=34, name=İSTANBUL, createdDate=2025-05-08T14:35:51.480794, lastModifiedDate=2025-05-08T14:35:51.480794))), products=[])
+2025-05-20 16:09:46 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 3
+2025-05-20 16:09:50 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 3
+2025-05-20 16:09:58 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 5
+2025-05-20 16:10:02 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : anonymousUser - looked market with id: 5

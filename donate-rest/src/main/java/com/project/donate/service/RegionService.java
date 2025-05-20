@@ -2,6 +2,7 @@ package com.project.donate.service;
 
 import com.project.donate.dto.Request.RegionRequest;
 import com.project.donate.dto.Response.RegionResponse;
+import com.project.donate.model.City;
 import com.project.donate.model.Region;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface RegionService {
     void deleteRegion(Long id);
 
     Region getRegionEntityById(Long id);
+
+    City getRegionsCityEntityById(Long id);
 }
