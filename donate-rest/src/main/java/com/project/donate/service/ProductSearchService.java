@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.project.donate.dto.ProductDocument;
+import com.project.donate.model.City;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -23,10 +24,14 @@ import java.util.stream.Collectors;
 public class ProductSearchService{
 
     private final ElasticsearchClient elasticsearchClient;
+    private final RegionService regionService;
 
-    public Page<ProductDocument> searchByTextAndCity(String keyword, Long cityId, Pageable pageable) {
+    public Page<ProductDocument> searchByTextAndCity(String keyword, Long regionId, Pageable pageable) {
 
-        // Fuzzy match queries
+        City city = regionService.getRegionsCityEntityById(regionId);
+        Long cityId = city.getId(); // cityId artık veritabanından geldi
+
+        // Text bazlı fuzzy match'ler
         Query nameQuery = MatchQuery.of(m -> m
                 .field("name")
                 .query(keyword)
@@ -39,8 +44,13 @@ public class ProductSearchService{
                 .fuzziness("AUTO")
         )._toQuery();
 
-        // Boost cityId match
-        Query cityBoostQuery = TermQuery.of(t -> t
+        // Region ve City filtreleri
+        Query regionQuery = TermQuery.of(t -> t
+                .field("regionId")
+                .value(regionId.toString())
+        )._toQuery();
+
+        Query cityQuery = TermQuery.of(t -> t
                 .field("cityId")
                 .value(cityId.toString())
         )._toQuery();
@@ -58,9 +68,11 @@ public class ProductSearchService{
                                                     .should(descriptionQuery)
                                             )
                                     )
-                                    .functions(fn -> fn
-                                            .filter(cityBoostQuery)
-                                            .weight(5.0)
+                                    .functions(fns -> fns
+                                            .filter(regionQuery).weight(10.0)
+                                    )
+                                    .functions(fns -> fns
+                                            .filter(cityQuery).weight(5.0)
                                     )
                                     .boostMode(FunctionBoostMode.Multiply)
                             )
@@ -70,7 +82,7 @@ public class ProductSearchService{
             SearchResponse<ProductDocument> response = elasticsearchClient.search(request, ProductDocument.class);
 
             List<ProductDocument> products = response.hits().hits().stream()
-                    .map(hit -> hit.source())
+                    .map(Hit::source)
                     .collect(Collectors.toList());
 
             long totalHits = response.hits().total() != null ? response.hits().total().value() : 0;

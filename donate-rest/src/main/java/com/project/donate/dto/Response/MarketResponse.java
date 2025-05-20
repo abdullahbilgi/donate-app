@@ -28,6 +28,6 @@ public class MarketResponse {
 
     private AddressResponse address;
 
-    private Set<ProductResponse> products;
+   // private Set<ProductResponse> products;
 
 }

@@ -33,7 +33,7 @@ public class MarketMapper {
                 .address(addressResponse)
                 .name(market.getName())
                 .status(String.valueOf(market.getStatus()))
-                .products(productResponses)
+                //.products(productResponses)
                 .taxNumber(market.getTaxNumber())
                 .build();
     }
