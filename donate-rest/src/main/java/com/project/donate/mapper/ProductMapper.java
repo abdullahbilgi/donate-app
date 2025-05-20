@@ -1,5 +1,6 @@
 package com.project.donate.mapper;
 
+import com.project.donate.dto.ProductDocument;
 import com.project.donate.dto.Request.ProductRequest;
 import com.project.donate.dto.Response.CategoryResponse;
 import com.project.donate.dto.Response.MarketResponse;
@@ -59,6 +60,30 @@ public class ProductMapper {
                 .productStatus(request.getProductStatus() != null ? request.getProductStatus() : null)
                 .quantity(request.getQuantity())
                 .description(request.getDescription())
+                .build();
+    }
+
+
+
+    public ProductDocument mapToDocument(Product product) {
+        return ProductDocument.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .discountedPrice(product.getDiscountedPrice())
+                .discount(product.getDiscount())
+                .quantity(product.getQuantity())
+                .imageUrl(product.getImageUrl())
+                .isActive(product.getIsActive())
+                .productionDate(product.getProductionDate())
+                .expiryDate(product.getExpiryDate())
+                .lastDonatedDate(product.getLastDonatedDate())
+                .createdDate(product.getCreatedDate())
+                .lastModifiedDate(product.getLastModifiedDate())
+                .marketName(product.getMarket() != null ? product.getMarket().getName() : null)
+                .cityId(product.getMarket().getAddress().getRegion().getCity().getId())
+                .regionId(product.getMarket().getAddress().getRegion().getId())
                 .build();
     }
 }

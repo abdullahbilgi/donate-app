@@ -1,68 +1,24 @@
-version: '3.8'
-
+version: '7.9'
 services:
-  postgres:
-    image: postgres:16.2
-    container_name: donate_postgres
-    restart: always
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
     environment:
-      POSTGRES_DB: donate
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
-      - "5432:5432"
+      - "9200:9200"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "donate"]
-      interval: 10s
-      retries: 5
-      timeout: 5s
-      start_period: 30s
+      - elasticsearch-data:/usr/share/elasticsearch/data
 
-  app:
-    build: .
-    container_name: donate_app
-    depends_on:
-      - postgres
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: kibana
+    ports:
+      - "5601:5601"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/donate
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 12345
-      JWT_SECRET: E3CRQMWY8+rvZI1TPMH6IRkL63tKykcH6ZduYjH5iLg=
-      JWT_EXPIRATION: 600000
-      JWT_REFRESH_EXPIRATION: 86400000
-      CLOUDINARY_CLOUD_NAME: dxa6obkhc
-      CLOUDINARY_API_KEY: 628987816848172
-      CLOUDINARY_SECRET_KEY: rHHpyoRpUdxxYE_qnFrlwd9rMsI
-      SPRING_SERVLET_MULTIPART_ENABLED: true
-      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 10MB
-      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 10MB
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_PROFILES_ACTIVE: bootstrap
-    ports:
-      - "8080:8080"
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      retries: 5
-      timeout: 5s
-      start_period: 30s
-
-  frontend:
-    build:
-      context: ../donate-ui
-      dockerfile: Dockerfile.dev
-    container_name: donate_frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./donate-ui:/app
-      - /app/node_modules
-    stdin_open: true
-    tty: true
-
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
 
 volumes:
-  postgres_data:
+  elasticsearch-data:
