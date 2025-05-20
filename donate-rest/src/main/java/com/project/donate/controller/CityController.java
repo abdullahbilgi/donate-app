@@ -6,6 +6,7 @@ import com.project.donate.dto.Response.CityResponse;
 import com.project.donate.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,11 +35,13 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<CityResponse> updateCity(@PathVariable Long id, @RequestBody CityRequest request) {
         return ResponseEntity.ok(cityService.updateCity(id,request));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         cityService.deleteCity(id);
         return ResponseEntity.noContent().build();

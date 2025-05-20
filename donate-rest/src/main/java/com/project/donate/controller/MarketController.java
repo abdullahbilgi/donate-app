@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/markets")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_MARKET','ROLE_BENEFACTOR')")
 public class MarketController {
     
     private final MarketService marketService;
@@ -41,16 +43,19 @@ public class MarketController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_MARKET')")
     public ResponseEntity<MarketResponse> createMarket(@RequestBody MarketRequest request) {
         return ResponseEntity.ok(marketService.createMarket(request));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_MARKET')")
     public ResponseEntity<MarketResponse> updateMarket(@PathVariable Long id, @RequestBody MarketRequest request) {
         return ResponseEntity.ok(marketService.updateMarket(id,request));
     }
 
     @PostMapping("/enable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> enabledMarket(@PathVariable Long id) {
         marketService.enabledMarket(id);
         return ResponseEntity.ok().build();
@@ -64,6 +69,7 @@ public class MarketController {
      **/
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteMarket(@PathVariable Long id) {
         marketService.deleteMarket(id);
         return ResponseEntity.noContent().build();

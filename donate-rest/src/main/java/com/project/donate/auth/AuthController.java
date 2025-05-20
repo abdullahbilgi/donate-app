@@ -1,6 +1,5 @@
 package com.project.donate.auth;
 
-import com.project.donate.util.GeneralUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

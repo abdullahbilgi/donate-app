@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/organizations")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_MARKET','ROLE_BENEFACTOR')")
 public class OrganizationController {
 
     private final OrganizationService organizationService;
@@ -42,6 +44,7 @@ public class OrganizationController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_BENEFACTOR')")
     public ResponseEntity<OrganizationResponse> createOrganization(@RequestBody OrganizationRequest request) {
         return ResponseEntity.ok(organizationService.createOrganization(request));
     }
@@ -60,17 +63,20 @@ public class OrganizationController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_BENEFACTOR')")
     public ResponseEntity<OrganizationResponse> updateOrganization(@PathVariable Long id, @RequestBody OrganizationRequest request) {
         return ResponseEntity.ok(organizationService.updateOrganization(id, request));
     }
 
     @PostMapping("/enable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> enabledOrganization(@PathVariable Long id) {
         organizationService.enabledOrganization(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteOrganization(@PathVariable Long id) {
         organizationService.deleteOrganization(id);
         return ResponseEntity.noContent().build();

@@ -5,6 +5,7 @@ import com.project.donate.dto.Response.RegionResponse;
 import com.project.donate.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +33,13 @@ public class RegionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RegionResponse> updateCity(@PathVariable Long id, @RequestBody RegionRequest request) {
         return ResponseEntity.ok(regionService.updateRegion(id,request));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         regionService.deleteRegion(id);
         return ResponseEntity.noContent().build();

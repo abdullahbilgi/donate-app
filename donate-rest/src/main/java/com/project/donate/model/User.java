@@ -57,6 +57,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "email_verified")
+    private boolean emailVerified = false;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expiry")
+    private LocalDateTime verificationExpiry;
+
+
     @OneToMany(mappedBy = "user")
     private List<Cart> cart;
 

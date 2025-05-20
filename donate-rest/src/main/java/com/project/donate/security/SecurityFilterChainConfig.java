@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import static com.project.donate.enums.Role.*;
 
 
-/*@Configuration
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityFilterChainConfig {
@@ -34,14 +34,17 @@ public class SecurityFilterChainConfig {
                             .requestMatchers(
                                     "/api/v1/auth/**",
                                     "/api/v1/register/**",
-                                    "/api/v1/cities/**"
-                            )
+                                    "/api/v1/cities/**",
+                                    "/api/v1/mail/**"
+                                    )
                             .permitAll()
                             .requestMatchers(
                                     "/api/v1/users/**"
                             )
                             .hasAnyRole(USER.name(), ADMIN.name())
-                            .requestMatchers("/api/v1/admin/**")
+                            .requestMatchers(
+                                    "/api/v1/admin/**",
+                                    "/api/v1/logs/**")
                             .hasRole(ADMIN.name())
                             .anyRequest()
                             .authenticated();
@@ -56,10 +59,10 @@ public class SecurityFilterChainConfig {
                 })
                 .build();
     }
-}*/
+}
 
 
-@Configuration
+/*@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityFilterChainConfig {
@@ -82,5 +85,5 @@ public class SecurityFilterChainConfig {
                 })
                 .build();
     }
-}
+}*/
 

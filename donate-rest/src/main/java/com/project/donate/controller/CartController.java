@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/carts")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_MARKET','ROLE_BENEFACTOR')")
 public class CartController {
 
     private final CartService cartService;
@@ -28,11 +30,13 @@ public class CartController {
 
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<CartResponse>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCarts());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<CartResponse> getCartById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getCartById(id));
     }
@@ -92,13 +96,15 @@ public class CartController {
     }
 
     @PutMapping("/approveCart/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> approveCart(@PathVariable Long id) {
         cartService.approveCart(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
         cartService.deleteCart(id);
         return ResponseEntity.noContent().build();
     }

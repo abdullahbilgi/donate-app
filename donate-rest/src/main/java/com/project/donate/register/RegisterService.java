@@ -1,17 +1,11 @@
 package com.project.donate.register;
 
-import com.project.donate.dto.Request.AddressRequest;
-import com.project.donate.dto.Response.AddressResponse;
-import com.project.donate.mapper.AddressMapper;
+import com.project.donate.mail.VerificationService;
 import com.project.donate.model.Address;
-import com.project.donate.model.Cart;
-import com.project.donate.model.Region;
 import com.project.donate.model.User;
-import com.project.donate.repository.AddressRepository;
 import com.project.donate.repository.UserRepository;
 import com.project.donate.service.AddressService;
 import com.project.donate.service.CartService;
-import com.project.donate.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +20,7 @@ public class RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
     private final CartService cartService;
+    private final VerificationService verificationService;
 
     public void register(UserRegistrationRequest request) {
 
@@ -43,7 +38,10 @@ public class RegisterService {
                 .role(request.getRole())
                 .address(address)
                 .build();
-        userRepository.save(user);
+        User userForVerify =userRepository.save(user);
+
+        verificationService.sendVerificationEmail(userForVerify);
+
 
         log.info("User registered - {}", user.getUsername() );
     }
