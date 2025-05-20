@@ -20,9 +20,26 @@ services:
       timeout: 5s
       start_period: 30s
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   app:
     build: .
-    container_name: donate_app
+    container_name: donate_rest
     depends_on:
       - postgres
     environment:
@@ -54,7 +71,7 @@ services:
     build:
       context: ../donate-ui
       dockerfile: Dockerfile.dev
-    container_name: donate_frontend
+    container_name: donate_ui
     ports:
       - "5173:5173"
     volumes:
@@ -66,3 +83,4 @@ services:
 
 volumes:
   postgres_data:
+  rabbitmq:

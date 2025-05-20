@@ -10,6 +10,8 @@ import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
 import com.project.donate.exception.ResourceNotFoundException;
+import com.project.donate.mail.MailMessage;
+import com.project.donate.mail.MailProducer;
 import com.project.donate.mapper.CartMapper;
 import com.project.donate.mapper.CartProductMapper;
 import com.project.donate.model.Cart;
@@ -20,12 +22,15 @@ import com.project.donate.repository.CartProductRepository;
 import com.project.donate.repository.CartRepository;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
+import com.project.donate.util.PdfGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +47,8 @@ public class CartServiceImpl implements CartService {
     private final UserService userService;
     private final ProductService productService;
     private final CartProductService cartProductService;
-
-
+    private final PdfGeneratorService pdfGeneratorService;
+    private final MailProducer mailProducer;
 
 
     @Override
@@ -67,24 +72,24 @@ public class CartServiceImpl implements CartService {
     }
 
 
-
     @Override
     public Cart getCartEntityById(Long id) {
         return cartRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("{} Address not found id: {}", GeneralUtil.extractUsername(), id);
-                    return new ResourceNotFoundException("Address not found id: " + id);});
+                    return new ResourceNotFoundException("Address not found id: " + id);
+                });
     }
 
     @Override
     public List<CartResponse> getUserCartsOrderedByDate(Long userId) {
-       /** return cartRepository.findByUserIdOrderByPurchaseDateDesc(userId)
-                .stream()
-                .map(cartMapper::mapToDto)
-                .collect(Collectors.toList());
-        **/
+        /** return cartRepository.findByUserIdOrderByPurchaseDateDesc(userId)
+         .stream()
+         .map(cartMapper::mapToDto)
+         .collect(Collectors.toList());
+         **/
 
-       return null;
+        return null;
     }
 
 
@@ -108,7 +113,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void save(Cart cart) {
-         cartRepository.save(cart);
+        cartRepository.save(cart);
     }
 
     @Override
@@ -122,26 +127,25 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeProductFromCart(RemoveProductFromCartRequest request) {
-        CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(),request.getProductId());
+        CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(), request.getProductId());
         removeProductFromCartHelper(cartProduct);
     }
 
     @Override
     public void updateProductQuantityFromCart(CartProductRequest request) {
-        CartProduct cartProduct = cartProductService.getCartProductById(cartProductService.getUsersCurrentCart(request.getUserId()).getId(),request.getProductId());
-        Integer fark = request.getProductQuantity()-cartProduct.getProductQuantity();
+        CartProduct cartProduct = cartProductService.getCartProductById(cartProductService.getUsersCurrentCart(request.getUserId()).getId(), request.getProductId());
+        Integer fark = request.getProductQuantity() - cartProduct.getProductQuantity();
         Product product = productService.getProductEntityById(request.getProductId());
-        if(product.getQuantity()-(fark) < 0)
-        {
-            throw new  OutOfStockException("product sayısı yetersiz");
-        }else{
-            product.setQuantity(product.getQuantity()-(fark));
-            cartProduct.setProductPrice(cartProduct.getProductPrice() + (fark*product.getDiscountedPrice()));
+        if (product.getQuantity() - (fark) < 0) {
+            throw new OutOfStockException("product sayısı yetersiz");
+        } else {
+            product.setQuantity(product.getQuantity() - (fark));
+            cartProduct.setProductPrice(cartProduct.getProductPrice() + (fark * product.getDiscountedPrice()));
         }
         cartProduct.setProductQuantity(request.getProductQuantity());
         cartProductRepository.save(cartProduct); // cart product tablosu tamam
         Cart cart = cartProductService.getUsersCurrentCart(request.getUserId());
-        cart.setTotalPrice(cart.getTotalPrice() + (fark*product.getDiscountedPrice()));
+        cart.setTotalPrice(cart.getTotalPrice() + (fark * product.getDiscountedPrice()));
         save(cart); // cart tablosu tamam
 
         // eger fark pozitifse eksilecek
@@ -165,16 +169,16 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-    private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
-        double totalPrice  = 0;
-        for (CartProduct cartProduct : cartProducts) {
-            totalPrice+=cartProduct.getProductPrice();
-        }
-        return totalPrice;
-    }
-    **/
+     * private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
+     * double totalPrice  = 0;
+     * for (CartProduct cartProduct : cartProducts) {
+     * totalPrice+=cartProduct.getProductPrice();
+     * }
+     * return totalPrice;
+     * }
+     **/
 
-    public void removeProductFromCartHelper(CartProduct cartProduct){
+    public void removeProductFromCartHelper(CartProduct cartProduct) {
         Product product = cartProduct.getProduct();
         product.setQuantity(product.getQuantity() + cartProduct.getProductQuantity());
         productService.save(product);
@@ -188,7 +192,7 @@ public class CartServiceImpl implements CartService {
 
         Product product = productService.getProductEntityById(request.getProductId());
         Cart cart = cartProductService.getUsersCurrentCart(request.getUserId());
-        if(!product.getIsActive()){
+        if (!product.getIsActive()) {
             log.warn("Product not active: {}", product);
             throw new ResourceNotActiveException("Product is not active");
         }
@@ -197,8 +201,8 @@ public class CartServiceImpl implements CartService {
                     product.getId(), request.getProductQuantity(), product.getQuantity());
             throw new OutOfStockException("Not enough stock for product id: " + product.getId());
         }
-        product.setQuantity(product.getQuantity()-request.getProductQuantity());// hocam onemli
-        cart.setTotalPrice(cart.getTotalPrice() + ((product.getDiscountedPrice())* request.getProductQuantity()));
+        product.setQuantity(product.getQuantity() - request.getProductQuantity());// hocam onemli
+        cart.setTotalPrice(cart.getTotalPrice() + ((product.getDiscountedPrice()) * request.getProductQuantity()));
         cartRepository.save(cart);
         productRepository.save(product);
     }
@@ -239,6 +243,35 @@ public class CartServiceImpl implements CartService {
         cart.setStatus(Status.APPROVED);
         cart.setPurchaseDate(LocalDateTime.now());
         save(cart);
+
+        //TODO: send pdf with mail
+ /*       // Generate PDF
+        ByteArrayInputStream bis = pdfGeneratorService.generateCartPdf(cart);
+
+        // Convert to byte array
+        byte[] pdfBytes;
+        try {
+            pdfBytes = bis.readAllBytes();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read PDF content", e);
+        }
+
+        // Prepare email with attachment
+        String subject = "Your Order Confirmation #" + cart.getId();
+        String message = "Thank you for your order! Please find your invoice attached.";
+
+        MailMessage mailMessage = new MailMessage(
+//                cart.getUser().getEmail(), // assuming Cart has a User with email
+                "losev.app54@gmail.com",
+                subject,
+                message
+        );
+
+        mailMessage.addAttachment("Order_"+cart.getId()+".pdf", pdfBytes);
+
+        // Send to queue
+        mailProducer.sendToQueue(mailMessage);*/
+
     }
 
 
