@@ -27,10 +27,9 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductSearchService productSearchService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+    public ResponseEntity<Page<ProductDocument>> getAllProducts(
             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
     {
         return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
@@ -80,7 +79,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return productSearchService.searchByTextAndCity(keyword, PageRequest.of(page, size));
+        return productService.searchProduct(keyword, PageRequest.of(page, size));
     }
 
 

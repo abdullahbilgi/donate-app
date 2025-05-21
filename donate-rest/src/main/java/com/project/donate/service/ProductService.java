@@ -1,5 +1,6 @@
 package com.project.donate.service;
 
+import com.project.donate.dto.ProductDocument;
 import com.project.donate.dto.Request.ProductRequest;
 import com.project.donate.dto.Response.ProductResponse;
 import com.project.donate.model.Product;
@@ -25,7 +26,7 @@ public interface ProductService {
 
     Product getProductEntityById(Long id);
 
-    Page<ProductResponse> getAllProductsPageable(Pageable pageable);
+    Page<ProductDocument> getAllProductsPageable(Pageable pageable);
 
     void deleteProduct(Long id);
 
@@ -42,6 +43,8 @@ public interface ProductService {
     Page<ProductResponse> getProductsByRegionId(Long id, Pageable pageable);
 
     Page<ProductResponse> getProductsByMarketId(Long id, Pageable pageable);
+
+    Page<ProductDocument> searchProduct(String keyword, Pageable pageable);
 
 
 }

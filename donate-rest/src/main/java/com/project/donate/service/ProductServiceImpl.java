@@ -40,7 +40,8 @@ public class ProductServiceImpl implements ProductService {
     private final Cloudinary cloudinary;
     private final CategoryService categoryService;
     private final MarketService marketService;
-    private final ElasticsearchOperations elasticsearchOperations;
+    private final ElasticSearchService elasticSearchService;
+    private final ProductSearchService productSearchService;
 
 
     @Override
@@ -64,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
 
         // Elasticsearch'e ekleme
         ProductDocument document = productMapper.mapToDocument(savedProduct);
-        elasticsearchOperations.save(document, IndexCoordinates.of("products"));
+        elasticSearchService.save(document);
 
         return productMapper.mapToDto(savedProduct);
     }
@@ -136,6 +137,11 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponse> getProductsByMarketId(Long marketId, Pageable pageable) {
         Page<Product> products = productRepository.findAllByMarketIdAndIsActiveTrue(marketId, pageable);
         return products.map(productMapper::mapToDto);
+    }
+
+    @Override
+    public Page<ProductDocument> searchProduct(String keyword, Pageable pageable) {
+        return productSearchService.searchByTextAndCity(keyword,pageable);
     }
 
 
@@ -256,9 +262,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> getAllProductsPageable(Pageable pageable) {
-        return productRepository.findAllByIsActiveTrue(pageable)
-                .map(productMapper::mapToDto);
+    public Page<ProductDocument> getAllProductsPageable(Pageable pageable) {
+        return productSearchService.getAllProductsPrioritizedByLocation(pageable);
     }
 
     private ProductResponse saveAndMap(Product product, String status) {

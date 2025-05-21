@@ -100,4 +100,58 @@ public class ProductSearchService{
             throw new RuntimeException("Elasticsearch sorgusu başarısız oldu", e);
         }
     }
+
+
+    public Page<ProductDocument> getAllProductsPrioritizedByLocation( Pageable pageable){
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        Long regionId = user.getAddress().getRegion().getId();
+        City city = regionService.getRegionsCityEntityById(regionId);
+        Long cityId = city.getId();
+
+        Query regionQuery = TermQuery.of(t -> t
+                .field("regionId")
+                .value(regionId.toString())
+        )._toQuery();
+
+        Query cityQuery = TermQuery.of(t -> t
+                .field("cityId")
+                .value(cityId.toString())
+        )._toQuery();
+
+        try {
+            SearchRequest request = SearchRequest.of(s -> s
+                    .index("products")
+                    .from((int) pageable.getOffset())
+                    .size(pageable.getPageSize())
+                    .query(q -> q
+                            .functionScore(fs -> fs
+                                    .query(inner -> inner
+                                            .matchAll(m -> m) // Arama yok, tüm ürünler
+                                    )
+                                    .functions(fns -> fns
+                                            .filter(regionQuery).weight(10.0)
+                                    )
+                                    .functions(fns -> fns
+                                            .filter(cityQuery).weight(5.0)
+                                    )
+                                    .boostMode(FunctionBoostMode.Multiply)
+                            )
+                    )
+            );
+
+            SearchResponse<ProductDocument> response = elasticsearchClient.search(request, ProductDocument.class);
+
+            List<ProductDocument> products = response.hits().hits().stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+
+            long totalHits = response.hits().total() != null ? response.hits().total().value() : 0;
+
+            return new PageImpl<>(products, pageable, totalHits);
+
+        } catch (IOException e) {
+            log.error("Elasticsearch search failed: {}", e.getMessage(), e);
+            throw new RuntimeException("Elasticsearch sorgusu başarısız oldu", e);
+        }
+    }
 }

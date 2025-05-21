@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,10 @@ public class RegisterService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
-    private final CartService cartService;
+    //private final CartService cartService;
     private final VerificationService verificationService;
 
+    @Transactional
     public void register(UserRegistrationRequest request) {
 
         Address address = addressService.createAddressEntity(request.getAddress());

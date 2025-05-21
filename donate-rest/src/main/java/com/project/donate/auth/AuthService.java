@@ -25,7 +25,7 @@ import java.io.IOException;
 @Log4j2
 public class AuthService {
 
-    private final AuthenticationManager authenticationManager;//TODO
+    private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
@@ -48,6 +48,8 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .userId(user.getId())
+                .role(user.getRole())
                 .build();
     }
 
