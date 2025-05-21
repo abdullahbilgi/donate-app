@@ -2,6 +2,7 @@ package com.project.donate.mail;
 
 import com.project.donate.model.User;
 import com.project.donate.repository.UserRepository;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,10 @@ import java.time.LocalDateTime;
 public class VerificationController {
 
     private final UserRepository userRepository;
+    private final VerificationService verificationService;
 
     @PostMapping
-    public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
+    public ResponseEntity<String> verifyCode(@RequestParam @Email String email, @RequestParam String code) {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
@@ -44,4 +46,26 @@ public class VerificationController {
             return ResponseEntity.badRequest().body("Code wrong or expired.");
         }
     }
+
+    @PostMapping("/sendCode")
+    public ResponseEntity<String> sendVerifyCode(@RequestParam @Email String email) {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            log.error("User not found with email: {}", email);
+            throw new RuntimeException("User not found");
+        }
+
+        if (user.isEmailVerified()) {
+            return ResponseEntity.ok("Already verified.");
+        }
+
+        verificationService.sendVerificationEmail(user);
+        return ResponseEntity.ok("Send verification mail successful.");
+
+
+
+    }
+
+
 }

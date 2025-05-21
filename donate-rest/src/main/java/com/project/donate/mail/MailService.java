@@ -32,7 +32,7 @@ public class MailService {
             helper.setFrom("donate.app54@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(text,true);
 
             if (attachments != null) {
                 for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
