@@ -7,6 +7,8 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.project.donate.dto.ProductDocument;
 import com.project.donate.model.City;
+import com.project.donate.model.User;
+import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -25,8 +27,12 @@ public class ProductSearchService{
 
     private final ElasticsearchClient elasticsearchClient;
     private final RegionService regionService;
+    private final UserService userService;
 
-    public Page<ProductDocument> searchByTextAndCity(String keyword, Long regionId, Pageable pageable) {
+    public Page<ProductDocument> searchByTextAndCity(String keyword, Pageable pageable) {
+
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        Long regionId = user.getAddress().getRegion().getId();
 
         City city = regionService.getRegionsCityEntityById(regionId);
         Long cityId = city.getId(); // cityId artık veritabanından geldi

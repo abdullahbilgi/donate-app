@@ -76,11 +76,11 @@ public class ProductController {
     @GetMapping("/search")
     public Page<ProductDocument> searchProducts(
             @RequestParam String keyword,
-            @RequestParam(required = false) Long regionId,
+            //@RequestParam(required = false) Long regionId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return productSearchService.searchByTextAndCity(keyword, regionId, PageRequest.of(page, size));
+        return productSearchService.searchByTextAndCity(keyword, PageRequest.of(page, size));
     }
 
 

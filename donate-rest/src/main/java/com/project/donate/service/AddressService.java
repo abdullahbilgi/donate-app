@@ -22,4 +22,6 @@ public interface AddressService {
     Address createAddressEntity(AddressRequest address);
 
     Address saveAddress(Address address);
+
+    Address getAddressByUserId(Long userId);
 }

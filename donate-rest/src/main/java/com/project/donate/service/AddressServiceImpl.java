@@ -59,6 +59,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public Address getAddressByUserId(Long userId) {
+        return null;
+    }
+
+    @Override
     public AddressResponse updateAddress(Long id, AddressRequest request) {
         Address address = getAddressEntityById(id);
         address = addressMapper.mapUpdateAddressRequestToAddress(request,address);

@@ -72,3 +72,16 @@
 2025-05-21 17:44:41 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-05-21 17:44:42 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.018 seconds (process running for 8.135)
 2025-05-21 17:45:34 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : 34534545 - looked market with id: 5
+2025-05-21 18:26:54 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 17816 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-21 18:26:54 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-21 18:26:54 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-21 18:27:00 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-21 18:27:02 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.58 seconds (process running for 8.566)
+2025-05-21 18:27:28 INFO   [login]   c.p.d.a.AuthService : Login Successfully - 34534545
+2025-05-21 18:28:58 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to karakullukcgahmetarif@gmail.com
+2025-05-21 18:28:58 INFO   [register]   c.p.d.r.RegisterService : User registered - abdulkadirrrrr
+2025-05-21 18:28:58 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: karakullukcgahmetarif@gmail.com
+2025-05-21 18:28:59 ERROR  [consume]   c.p.d.m.MailConsumer : Failed to send mail to karakullukcgahmetarif@gmail.com: Authentication failed
+2025-05-21 18:29:16 INFO   [login]   c.p.d.a.AuthService : Login Successfully - abdulkadirrrrr
+2025-05-21 18:30:33 INFO   [login]   c.p.d.a.AuthService : Login Successfully - abdulkadirrrrr
+2025-05-21 18:30:34 INFO   [login]   c.p.d.a.AuthService : Login Successfully - abdulkadirrrrr

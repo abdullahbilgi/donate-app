@@ -30,6 +30,7 @@ public class AddressController {
         return ResponseEntity.ok(addressService.getAddressById(id));
     }
 
+
     @PostMapping
     public ResponseEntity<AddressResponse> createAddress(@RequestBody AddressRequest request) {
         return ResponseEntity.ok(addressService.createAddress(request));
