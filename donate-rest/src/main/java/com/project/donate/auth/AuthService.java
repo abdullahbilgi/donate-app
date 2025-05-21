@@ -62,7 +62,11 @@ public class AuthService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    private void saveUserToken(User user,String jwtToken) {
+    private void saveUserToken(User user,String jwtToken) {s
+        boolean tokenExists = tokenRepository.findByToken(jwtToken).isPresent();
+        if (tokenExists) {
+            return; // Aynı token varsa tekrar ekleme
+        }
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
