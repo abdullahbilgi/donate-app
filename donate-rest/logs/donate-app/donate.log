@@ -66,3 +66,9 @@
 2025-05-09 22:52:20 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
 2025-05-09 22:52:26 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-05-09 22:52:26 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 6.735 seconds (process running for 7.836)
+2025-05-21 17:44:36 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 5360 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-21 17:44:36 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-21 17:44:36 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-21 17:44:41 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-21 17:44:42 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.018 seconds (process running for 8.135)
+2025-05-21 17:45:34 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : 34534545 - looked market with id: 5
