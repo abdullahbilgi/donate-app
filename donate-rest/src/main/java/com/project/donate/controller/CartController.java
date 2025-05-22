@@ -96,7 +96,6 @@ public class CartController {
     }
 
     @PutMapping("/approveCart/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> approveCart(@PathVariable Long id) {
         cartService.approveCart(id);
         return ResponseEntity.ok().build();

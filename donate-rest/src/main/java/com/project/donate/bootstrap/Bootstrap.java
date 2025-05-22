@@ -1235,6 +1235,7 @@ public class Bootstrap implements CommandLineRunner {
                     .age(52)
                     .address(address)
                     .role(Role.ADMIN)
+                    .emailVerified(true)
                     .build();
 
             userRepository.save(user);

@@ -58,7 +58,8 @@ public class User implements UserDetails {
     private Role role;
 
     @Column(name = "email_verified")
-    private boolean emailVerified = false;
+    @Builder.Default
+    private Boolean emailVerified = false ;
 
     @Column(name = "verification_code")
     private String verificationCode;

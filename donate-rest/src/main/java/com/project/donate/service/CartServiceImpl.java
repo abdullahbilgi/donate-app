@@ -242,13 +242,11 @@ public class CartServiceImpl implements CartService {
         }
         cart.setStatus(Status.APPROVED);
         cart.setPurchaseDate(LocalDateTime.now());
-        save(cart);
+        Cart savedCart = cartRepository.save(cart);
 
-        //TODO: send pdf with mail
- /*       // Generate PDF
-        ByteArrayInputStream bis = pdfGeneratorService.generateCartPdf(cart);
+        // Generate PDF for mail
+        ByteArrayInputStream bis = pdfGeneratorService.generateCartPdf(savedCart);
 
-        // Convert to byte array
         byte[] pdfBytes;
         try {
             pdfBytes = bis.readAllBytes();
@@ -256,21 +254,74 @@ public class CartServiceImpl implements CartService {
             throw new RuntimeException("Failed to read PDF content", e);
         }
 
-        // Prepare email with attachment
         String subject = "Your Order Confirmation #" + cart.getId();
-        String message = "Thank you for your order! Please find your invoice attached.";
+        //TODO: fix there "<a href="http://localhost:5173/gfhjg/%s" class="button">View Your Order</a>"
+        String message = """ 
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Order Confirmation</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                color: #333;
+                                padding: 20px;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: auto;
+                                background-color: #fff;
+                                padding: 30px;
+                                border-radius: 10px;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                            }
+                            h2 {
+                                color: #2c3e50;
+                            }
+                            .button {
+                                display: inline-block;
+                                margin-top: 20px;
+                                padding: 10px 20px;
+                                background-color: #3498db;
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 5px;
+                            }
+                            .footer {
+                                font-size: 12px;
+                                color: #888;
+                                margin-top: 30px;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h2>Thank you for your order, %s! 🎉</h2>
+                            <p>Your order has been successfully approved.</p>
+                            <p>You can find your invoice attached to this email.</p>
+                            <p>If you have any questions, feel free to contact our support team.</p>
+                            <a href="http://localhost:5173/jvhvuh/%s" class="button">View Your Order</a>
+                            <div class="footer">
+                                This is an automated message, please do not reply.<br>
+                                © 2025 Your Company. All rights reserved.
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                """.formatted(cart.getUser().getName(), cart.getId());
 
         MailMessage mailMessage = new MailMessage(
-//                cart.getUser().getEmail(), // assuming Cart has a User with email
-                "losev.app54@gmail.com",
+                cart.getUser().getEmail(),
                 subject,
                 message
         );
 
-        mailMessage.addAttachment("Order_"+cart.getId()+".pdf", pdfBytes);
+        mailMessage.addAttachment("Order_" + cart.getId() + ".pdf", pdfBytes);
 
-        // Send to queue
-        mailProducer.sendToQueue(mailMessage);*/
+        mailProducer.sendToQueue(mailMessage);
 
     }
 
