@@ -5,6 +5,7 @@ import com.project.donate.Jwt.JWTService;
 import com.project.donate.Jwt.Token.Token;
 import com.project.donate.Jwt.Token.TokenRepository;
 import com.project.donate.Jwt.Token.TokenType;
+import com.project.donate.exception.EmailNotVerifiedException;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.model.User;
 import com.project.donate.repository.UserRepository;
@@ -30,7 +31,7 @@ public class AuthService {
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
 
-    public AuthResponse login (AuthRequest request){
+    public AuthResponse login(AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserName(),
@@ -38,12 +39,19 @@ public class AuthService {
                 )
         );
         User user = (User) authentication.getPrincipal();
+
+        // ❗ E-posta doğrulanmamışsa girişe izin verme
+        if (!Boolean.TRUE.equals(user.getEmailVerified())) {
+            log.warn("Attempted login without email verification - {}", user.getUsername());
+            throw new EmailNotVerifiedException("Lütfen e-posta adresinizi doğrulayın.");
+        }
+
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user,jwtToken);
+        saveUserToken(user, jwtToken);
 
-        log.info("Login Successfully - {}",user.getUsername());
+        log.info("Login Successfully - {}", user.getUsername());
 
         return AuthResponse.builder()
                 .accessToken(jwtToken)
@@ -86,14 +94,14 @@ public class AuthService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userName;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
         userName = jwtService.extractUsername(refreshToken);
         if (userName != null) {
             var user = userRepository.findUserByUsername(userName)
-                    .orElseThrow(()-> new ResourceNotFoundException(
+                    .orElseThrow(() -> new ResourceNotFoundException(
                             "User with username [%s] is not found".formatted(userName)
                     ));
             if (jwtService.isTokenValid(refreshToken, user)) {
@@ -108,6 +116,6 @@ public class AuthService {
             }
         }
 
-        log.info("Refreshed Token - {}",userName);
+        log.info("Refreshed Token - {}", userName);
     }
 }

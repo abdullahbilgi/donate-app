@@ -35,7 +35,8 @@ public class SecurityFilterChainConfig {
                                     "/api/v1/auth/**",
                                     "/api/v1/register/**",
                                     "/api/v1/cities/**",
-                                    "/api/v1/mail/**"
+                                    "/api/v1/mail/**",
+                                    "/api/v1/verify"
                                     )
                             .permitAll()
                             .requestMatchers(

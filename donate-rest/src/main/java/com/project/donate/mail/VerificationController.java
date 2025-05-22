@@ -31,7 +31,8 @@ public class VerificationController {
             throw new RuntimeException("User not found");
         }
 
-        if (user.isEmailVerified()) {
+        if (user.getEmailVerified()) {
+            log.warn("Already verified email: {}", email);
             return ResponseEntity.ok("Already verified.");
         }
 
@@ -56,11 +57,13 @@ public class VerificationController {
             throw new RuntimeException("User not found");
         }
 
-        if (user.isEmailVerified()) {
+        if (user.getEmailVerified()) {
+            log.warn("Already verified email: {}", email);
             return ResponseEntity.ok("Already verified.");
         }
 
         verificationService.sendVerificationEmail(user);
+        log.info("{} sent mail for verified.", user.getEmail());
         return ResponseEntity.ok("Send verification mail successful.");
 
 
