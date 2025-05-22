@@ -41,8 +41,11 @@ public class JWTService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "access");
+        return generateToken(claims, userDetails);
     }
+
 
     public String generateToken(
             Map<String, Object> extraClaims,
@@ -51,11 +54,12 @@ public class JWTService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    public String generateRefreshToken(
-            UserDetails userDetails
-    ) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "refresh"); // Refresh token olduğunu göster
+        return buildToken(claims, userDetails, refreshExpiration);
     }
+
 
     private String buildToken(
             Map<String, Object> extraClaims,
