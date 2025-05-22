@@ -30,13 +30,13 @@ public class CartController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<CartResponse>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCarts());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<CartResponse> getCartById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getCartById(id));
     }
@@ -102,7 +102,7 @@ public class CartController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
         cartService.deleteCart(id);
         return ResponseEntity.noContent().build();
