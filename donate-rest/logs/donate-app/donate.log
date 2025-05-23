@@ -4109,3 +4109,68 @@ Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: raw time
 2025-05-22 01:06:18 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-05-22 01:06:21 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.822 seconds (process running for 10.961)
 2025-05-22 01:06:23 INFO   [login]   c.p.d.a.AuthService : Login Successfully - abdulkadirrrrr
+2025-05-24 00:56:08 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 20204 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 00:56:08 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 00:56:08 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 00:56:22 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 00:56:28 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 20.515 seconds (process running for 24.073)
+2025-05-24 00:57:01 INFO   [login]   c.p.d.a.AuthService : Login Successfully - deneme11
+2025-05-24 00:59:15 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 15772 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 00:59:15 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 00:59:15 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 00:59:22 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 00:59:33 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 8524 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 00:59:33 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 00:59:33 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 00:59:40 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:02:43 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to ahmetarif547761@gmail.com
+2025-05-24 01:02:43 INFO   [register]   c.p.d.r.RegisterService : User registered - deneme13
+2025-05-24 01:02:43 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: ahmetarif547761@gmail.com
+2025-05-24 01:02:44 ERROR  [consume]   c.p.d.m.MailConsumer : Failed to send mail to ahmetarif547761@gmail.com: Authentication failed
+2025-05-24 01:04:38 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 15512 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 01:04:38 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 01:04:38 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 01:04:44 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:04:45 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.665 seconds (process running for 8.735)
+2025-05-24 01:05:24 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 13488 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 01:05:24 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 01:05:24 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 01:05:31 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:05:33 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 10.062 seconds (process running for 12.013)
+2025-05-24 01:05:52 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to karakullukcuahmetarif@gmail.com
+2025-05-24 01:05:52 INFO   [register]   c.p.d.r.RegisterService : User registered - deneme19
+2025-05-24 01:05:52 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: karakullukcuahmetarif@gmail.com
+2025-05-24 01:05:54 ERROR  [consume]   c.p.d.m.MailConsumer : Failed to send mail to karakullukcuahmetarif@gmail.com: Failed messages: jakarta.mail.MessagingException: IOException while sending message;
+  nested exception is:
+	java.io.IOException: Exception writing Multipart
+2025-05-24 01:07:47 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 18856 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 01:07:47 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 01:07:47 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 01:07:54 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:07:56 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.492 seconds (process running for 11.777)
+2025-05-24 01:08:07 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to karakullukcuahmetarif@gmail.com
+2025-05-24 01:08:07 INFO   [register]   c.p.d.r.RegisterService : User registered - deneme19
+2025-05-24 01:08:07 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: karakullukcuahmetarif@gmail.com
+2025-05-24 01:08:10 DEBUG  [sendMessageWithAttachments]   c.p.d.m.MailService : Email sent to karakullukcuahmetarif@gmail.com with subject 'Mail Verify'
+2025-05-24 01:08:10 INFO   [consume]   c.p.d.m.MailConsumer : Mail sent successfully to: karakullukcuahmetarif@gmail.com
+2025-05-24 01:10:14 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 9464 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 01:10:14 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 01:10:14 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 01:10:22 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:10:24 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.786 seconds (process running for 10.891)
+2025-05-24 01:10:36 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to karakullukcuahmetarif@gmail.com
+2025-05-24 01:10:36 INFO   [register]   c.p.d.r.RegisterService : User registered - deneme19
+2025-05-24 01:10:36 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: karakullukcuahmetarif@gmail.com
+2025-05-24 01:10:38 DEBUG  [sendMessageWithAttachments]   c.p.d.m.MailService : Email sent to karakullukcuahmetarif@gmail.com with subject 'Mail Verify'
+2025-05-24 01:10:38 INFO   [consume]   c.p.d.m.MailConsumer : Mail sent successfully to: karakullukcuahmetarif@gmail.com
+2025-05-24 01:12:04 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 11616 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-24 01:12:04 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-24 01:12:04 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-24 01:12:11 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-24 01:12:13 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.171 seconds (process running for 10.96)
+2025-05-24 01:12:18 INFO   [sendVerificationEmail]   c.p.d.m.VerificationService : Sent verification email to karakullukcuahmetarif@gmail.com
+2025-05-24 01:12:18 INFO   [register]   c.p.d.r.RegisterService : User registered - deneme19
+2025-05-24 01:12:18 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: karakullukcuahmetarif@gmail.com
+2025-05-24 01:12:20 DEBUG  [sendMessageWithAttachments]   c.p.d.m.MailService : Email sent to karakullukcuahmetarif@gmail.com with subject 'Mail Verify'
+2025-05-24 01:12:20 INFO   [consume]   c.p.d.m.MailConsumer : Mail sent successfully to: karakullukcuahmetarif@gmail.com
+2025-05-24 01:15:55 INFO   [verifyCode]   c.p.d.m.VerificationController : karakullukcuahmetarif@gmail.com mail address verified.

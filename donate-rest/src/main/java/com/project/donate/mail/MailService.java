@@ -23,7 +23,7 @@ public class MailService {
         sendMessageWithAttachments(to, subject, text, null);
     }
 
-    public void sendMessageWithAttachments(String to, String subject, String text,
+    public void sendMessageWithAttachments(String to, String subject, String htmlContent,
                                            Map<String, byte[]> attachments) throws MailException {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -32,6 +32,7 @@ public class MailService {
             helper.setFrom("donate.app54@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
+            helper.setText(htmlContent, true); // HTML içeriği burada set ediliyor
 
             if (attachments != null) {
                 for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
@@ -42,6 +43,7 @@ public class MailService {
             mailSender.send(message);
             log.debug("Email sent to {} with subject '{}'", to, subject);
         } catch (MessagingException e) {
+            log.error("Failed to send email to {}: {}", to, e.getMessage(), e);
             throw new MailException("Failed to send email: " + e.getMessage()) {};
         }
     }
