@@ -3,12 +3,12 @@ import Button from "./Button";
 import { RiShoppingBasketLine } from "react-icons/ri";
 import { useState } from "react";
 import SideModalBasket from "./SideModalBasket";
-import { useSelector, UseSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
   const [showBasket, setShowBasket] = useState(false);
-  const basketItems = useSelector((state: any) => state.cart.items);
+  const { cartItems } = useSelector((state: any) => state.Cart);
 
   return (
     <>
@@ -46,7 +46,7 @@ const Header = () => {
               >
                 <RiShoppingBasketLine className="w-6 h-6" />
                 <span className="absolute -top-1 -right-1 text-xs bg-red-400 font-semibold text-white rounded-full w-4 aspect-square flex items-center justify-center">
-                  {basketItems.length}
+                  {cartItems.length}
                 </span>
               </button>
             </li>

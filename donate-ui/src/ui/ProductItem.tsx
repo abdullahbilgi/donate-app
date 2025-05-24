@@ -2,9 +2,8 @@ import { Link } from "react-router";
 import Button from "./Button";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from "react";
-
-import { useDispatch } from "react-redux";
-import { cartActions } from "../store/cart-slice";
+import { addProductToCart } from "../store/CartStore/Cart/thunks";
+import { useAppDispatch } from "../store";
 
 interface ProductItemProps {
   id: number;
@@ -21,18 +20,14 @@ const ProductItem: React.FC<ProductItemProps> = ({
   discountPrice,
 }) => {
   const [dropdown, setDropdown] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const addToCartHandler = () => {
     dispatch(
-      cartActions.addItemToCart({
-        id,
-        image,
-        label,
-        normalPrice,
-        discountPrice,
-        totalPrice: discountPrice,
-        quantity: 1,
+      addProductToCart({
+        userId: 1,
+        productId: id,
+        productQuantity: 1,
       })
     );
   };

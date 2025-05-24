@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import ProductFilter from "../ui/ProductFilter";
 import ProductList from "../ui/ProductsList";
-import { getAllProducts } from "../store/products/thunks";
+import { getAllProducts } from "../store/ProductStore/Products/thunks";
 
 const Products = () => {
   const dispatch = useAppDispatch();

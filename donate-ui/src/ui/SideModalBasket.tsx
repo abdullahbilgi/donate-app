@@ -5,6 +5,7 @@ import BasketItem from "./BasketItem";
 import BasketPriceInfoRow from "./BasketPriceInfoRow";
 import Button from "./Button";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../store";
 interface SideModalBasketProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,8 +16,7 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
   onClose,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const cartQuantity = useSelector((state: any) => state.cart.totalQuantity);
-  const basketItemList = useSelector((basket: any) => basket.cart.items);
+  const { cartItems } = useAppSelector((state: any) => state.Cart);
 
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
             <h2 className="inline-flex items-center gap-2">
               <span className="font-semibold h-6">Sepet Icerigi</span>
               <span className="text-sm bg-blue-400 font-semibold text-white rounded-full w-6 h-6 aspect-square flex items-center justify-center">
-                {basketItemList.length}
+                {cartItems.length}
               </span>
             </h2>
             <button onClick={onClose} className="cursor-pointer">
@@ -54,16 +54,17 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
           </div>
 
           <div className="border-b border-b-gray-300 h-[400px] overflow-y-scroll">
-            {basketItemList.map((item: any) => {
+            {cartItems.map((item: any) => {
               return (
                 <BasketItem
-                  key={item.id}
-                  itemId={item.id}
-                  image={item.image}
-                  title={item.label}
-                  quantity={item.quantity}
-                  normalPrice={item.normalPrice}
-                  discountPrice={item.discountPrice}
+                  key={item.product.id}
+                  itemId={item.product.id}
+                  image={item.product.imageUrl}
+                  name={item.product.name}
+                  quantity={item.productQuantity}
+                  normalPrice={item.product.price}
+                  discountedPrice={item.product.discountedPrice}
+                  productStatus={item.product.productStatus}
                 />
               );
             })}

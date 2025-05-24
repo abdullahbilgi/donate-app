@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProducts } from "./thunks";
+import { deleteProduct, getAllProducts, updateProduct } from "./thunks";
 
 interface Products {
   productsArr: any[];
   loading: boolean;
   error: string | null;
-  number: number; // Şu anki sayfa numarası (0-indexli ise dikkat)
-  size: number; // Sayfa başı kaç ürün var
+  number: number;
+  size: number;
   totalPages: number;
   totalElements: number;
 }
@@ -27,15 +27,15 @@ interface ProductItem {
     name: string;
   };
   imageUrl: string | null;
-  categoryResponse: any; // Belirli değilse any bırakılabilir
+  categoryResponse: any;
 }
 
 const initialState: Products = {
   productsArr: [],
   loading: false,
   error: null,
-  number: 0, // Backend 0-indexli döndürüyor
-  size: 12, // API'den gelen size ya da istediğin default değer
+  number: 0,
+  size: 12,
   totalPages: 0,
   totalElements: 0,
 };
@@ -67,6 +67,36 @@ const ProductsReducer = createSlice({
       state.size = 12;
       state.totalPages = 0;
       state.totalElements = 0;
+    });
+
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      state.loading = false; // Yükleniyor durumu
+      state.error = null; // Hata mesajı sıfırlanıyor
+      state.productsArr = state.productsArr.map((product) => {
+        //bunun nedeni getAll'i beklemeden hemen UIda günceli göstermek icin
+
+        return product.id === action.payload.id
+          ? { ...product, ...action.payload }
+          : product;
+      });
+    });
+
+    builder.addCase(updateProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
+    });
+
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      state.loading = false; // Yükleniyor durumu
+      state.error = null; // Hata mesajı sıfırlanıyor
+      state.productsArr = state.productsArr.filter(
+        (product) => product.id !== action.payload.id
+      );
+    });
+
+    builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
     });
   },
 });

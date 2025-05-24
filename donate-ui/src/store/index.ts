@@ -1,16 +1,14 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import counterSlice from "./counter";
-import authSlice from "./auth";
-import cartSlice from "./cart-slice";
-import productsReducer from "./products/reducers";
+import productsReducer from "./ProductStore/Products/reducers";
+import cartReducer from "./CartStore/Cart/reducers";
+import authReducer from "./Auth/Login/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice,
-    authentication: authSlice,
-    cart: cartSlice.reducer,
+    Cart: cartReducer,
     Product: productsReducer,
+    Auth: authReducer,
   },
 });
 

@@ -1,21 +1,30 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { cartActions } from "../store/cart-slice";
+import { useAppDispatch, useAppSelector } from "../store";
+import {
+  addProductToCart,
+  removeItemFromCart,
+} from "../store/CartStore/Cart/thunks";
 
-const QuantityInput = ({ id }: { id: string }) => {
-  const dispatch = useDispatch();
+const QuantityInput = ({ id }: { id: number }) => {
+  const dispatch = useAppDispatch();
 
-  const currItem = useSelector((item: any) =>
-    item.cart.items.find((item: any) => item.id === id)
+  const currItem = useAppSelector((state: any) =>
+    state.Cart.cartItems.find((item: any) => item.product.id === id)
   );
 
+  console.log(currItem);
+
   function handleIncrease() {
-    dispatch(cartActions.addItemToCart(currItem));
+    dispatch(
+      addProductToCart({
+        userId: 1,
+        productId: id,
+        productQuantity: 1,
+      })
+    );
   }
 
   function handleDecrease() {
-    dispatch(cartActions.removeItemFromCart(currItem.id));
+    dispatch(removeItemFromCart(currItem.id));
   }
 
   return (
@@ -27,7 +36,7 @@ const QuantityInput = ({ id }: { id: string }) => {
         –
       </button>
       <div className="w-10 h-8 flex items-center justify-center border-l border-r border-r-gray-200 border-l-gray-200 text-md">
-        {currItem.quantity}
+        {currItem.productQuantity}
       </div>
       <button
         onClick={handleIncrease}

@@ -16,7 +16,7 @@ interface ProductItem {
     name: string;
   };
   imageUrl: string | null;
-  categoryResponse: any; // Gerekirse daha sonra detaylandırılır
+  categoryResponse: any;
 }
 
 interface ProductListProps {

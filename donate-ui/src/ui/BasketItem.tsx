@@ -1,29 +1,31 @@
 import { IoClose } from "react-icons/io5";
 import QuantityInput from "./QuantityInput";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { cartActions } from "../store/cart-slice";
+
+import { deleteProduct } from "../store/ProductStore/Products/thunks";
+import { useAppDispatch } from "../store";
 
 interface BasketItemProps {
   itemId: any;
   image: string;
   quantity: string;
-  title: string;
+  name: string;
   normalPrice: string;
-  discountPrice: string;
+  discountedPrice: string;
+  productStatus: string;
 }
 const BasketItem: React.FC<BasketItemProps> = ({
   itemId,
   image,
   quantity,
-  title,
+  name,
   normalPrice,
-  discountPrice,
+  discountedPrice,
+  productStatus,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   function handleDelete() {
-    dispatch(cartActions.deleteItemFromCart(itemId));
+    dispatch(deleteProduct(itemId));
   }
 
   return (
@@ -34,16 +36,18 @@ const BasketItem: React.FC<BasketItemProps> = ({
         </div>
         <div className="flex flex-col gap-2">
           <div className="">
-            <h2 className="font-semibold text-sm">{title}</h2>
+            <h2 className="font-semibold text-sm">{name}</h2>
             <p className="font-medium text-md">
-              ${discountPrice}{" "}
+              ${discountedPrice}{" "}
               <span className="text-sm line-through">{normalPrice}</span>
             </p>
           </div>
           <div className="flex items-center justify-between">
             <QuantityInput id={itemId} />
             <span className="font-medium text-md">
-              ${Number(quantity) * Number(discountPrice)}
+              {productStatus === "DONATE"
+                ? "Free"
+                : `$${Number(quantity) * Number(discountedPrice)}`}{" "}
             </span>
           </div>
         </div>

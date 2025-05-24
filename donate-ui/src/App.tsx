@@ -5,8 +5,22 @@ import AppLayout from "./pages/AppLayout";
 import Signup from "./pages/Signup";
 import DonateCellProduct from "./pages/donateSellProduct";
 import Products from "./pages/Products";
+import { useEffect, useState } from "react";
+import { setToken, setupInterceptors } from "./api/interceptors";
 
 function App() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setToken(token);
+      setupInterceptors();
+    }
+    setReady(true); // Token kontrolü yapıldıktan sonra render’a geç
+  }, []);
+
+  if (!ready) return <div>Yükleniyor...</div>; // İlk yükleme sırasında beklet
   return (
     <BrowserRouter>
       <Routes>
