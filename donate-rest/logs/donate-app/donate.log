@@ -4208,3 +4208,13 @@ Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: raw time
 2025-05-28 17:20:37 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-05-28 17:20:39 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 8.77 seconds (process running for 9.982)
 2025-05-28 17:20:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
+2025-05-28 17:37:33 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 2672 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:37:33 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:37:33 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:38:04 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 13084 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:38:04 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:38:04 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:38:10 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:38:11 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 7.978 seconds (process running for 8.987)
+2025-05-28 17:38:27 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
+2025-05-28 17:38:30 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
