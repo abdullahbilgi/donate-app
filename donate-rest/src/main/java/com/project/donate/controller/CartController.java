@@ -4,6 +4,7 @@ import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
 import com.project.donate.dto.Response.AddToCartResponse;
+import com.project.donate.dto.Response.CartProductResponse;
 import com.project.donate.dto.Response.CartResponse;
 import com.project.donate.dto.Response.PurchasesProductResponse;
 import com.project.donate.model.Cart;
@@ -84,9 +85,9 @@ public class CartController {
     }
 
     @PutMapping("/updateCartProduct")
-    public ResponseEntity<Void> updateProductCart(@RequestBody CartProductRequest request) {
-       cartService.updateProductQuantityFromCart(request);
-       return ResponseEntity.ok().build();
+    public ResponseEntity<CartResponse> updateProductCart(@RequestBody CartProductRequest request) {
+    CartResponse cartResponse = cartService.updateProductQuantityFromCart(request);
+       return ResponseEntity.ok(cartResponse);
     }
 
     @PutMapping("/cancelCart/{id}")

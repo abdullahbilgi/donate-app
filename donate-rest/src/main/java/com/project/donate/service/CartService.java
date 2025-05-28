@@ -37,9 +37,15 @@ public interface CartService {
 
     void removeProductFromCart(RemoveProductFromCartRequest request);
 
-    void updateProductQuantityFromCart(CartProductRequest request);
+    CartResponse updateProductQuantityFromCart(CartProductRequest request);
 
     List<PurchasesProductResponse> getPurchasesProductsByUser(Long id);
 
     CartResponse getCurrentUserCart(Long userId);
+
+    void cancelCurrentCart(Long userId);
+
+    void removeProductFromCurrentCart(RemoveProductFromCartRequest request);
+
+
 }

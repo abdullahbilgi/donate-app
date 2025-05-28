@@ -132,7 +132,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void updateProductQuantityFromCart(CartProductRequest request) {
+    public CartResponse updateProductQuantityFromCart(CartProductRequest request) {
+       // Long userId = userService.getUserEntityByUsername(GeneralUtil.extractUsername()).getId();
         CartProduct cartProduct = cartProductService.getCartProductById(cartProductService.getUsersCurrentCart(request.getUserId()).getId(), request.getProductId());
         Integer fark = request.getProductQuantity() - cartProduct.getProductQuantity();
         Product product = productService.getProductEntityById(request.getProductId());
@@ -144,12 +145,14 @@ public class CartServiceImpl implements CartService {
         }
         cartProduct.setProductQuantity(request.getProductQuantity());
         cartProductRepository.save(cartProduct); // cart product tablosu tamam
-        Cart cart = cartProductService.getUsersCurrentCart(request.getUserId());
+        Cart cart = getCartEntityById(request.getCartId());
         cart.setTotalPrice(cart.getTotalPrice() + (fark * product.getDiscountedPrice()));
         save(cart); // cart tablosu tamam
 
         // eger fark pozitifse eksilecek
         productService.save(product);
+
+        return cartMapper.mapToDto(cart);
     }
 
     @Override
@@ -166,6 +169,22 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserIdAndStatus(userId, Status.PENDING)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcının aktif bir sepeti bulunamadı."));
         return cartMapper.mapToDto(cart);
+    }
+
+    @Override
+    public void cancelCurrentCart(Long userId) {
+        Cart cart = cartProductService.getUsersCurrentCart(userId);
+        List<CartProduct> cartProducts = cartProductService.getCartProducts();
+        for (CartProduct cartProduct : cartProducts) {
+            removeProductFromCartHelper(cartProduct);
+        }
+        cart.setTotalPrice(0.0);
+        save(cart);
+    }
+
+    @Override
+    public void removeProductFromCurrentCart(RemoveProductFromCartRequest request) {
+       
     }
 
     /**

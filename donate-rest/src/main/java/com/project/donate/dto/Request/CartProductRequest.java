@@ -9,4 +9,5 @@ public class CartProductRequest {
     private Long productId;
     private Integer productQuantity;
     private Long userId;
+    private Long cartId;
 }

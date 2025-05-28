@@ -4174,3 +4174,37 @@ Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: raw time
 2025-05-24 01:12:20 DEBUG  [sendMessageWithAttachments]   c.p.d.m.MailService : Email sent to karakullukcuahmetarif@gmail.com with subject 'Mail Verify'
 2025-05-24 01:12:20 INFO   [consume]   c.p.d.m.MailConsumer : Mail sent successfully to: karakullukcuahmetarif@gmail.com
 2025-05-24 01:15:55 INFO   [verifyCode]   c.p.d.m.VerificationController : karakullukcuahmetarif@gmail.com mail address verified.
+2025-05-28 14:28:32 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 7852 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 14:28:32 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 14:28:32 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 14:28:50 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 14:28:57 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 26.658 seconds (process running for 29.717)
+2025-05-28 17:04:56 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 17688 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:04:56 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:04:56 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:05:08 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:05:11 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 15.989 seconds (process running for 19.957)
+2025-05-28 17:07:22 INFO   [login]   c.p.d.a.AuthService : Login Successfully - deneme12
+2025-05-28 17:07:54 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
+2025-05-28 17:14:09 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 16828 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:14:09 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:14:09 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:14:16 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:14:19 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.496 seconds (process running for 10.655)
+2025-05-28 17:14:46 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 11732 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:14:46 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:14:46 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:14:53 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:14:55 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.12 seconds (process running for 10.461)
+2025-05-28 17:17:05 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 3012 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:17:05 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:17:05 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:17:12 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:17:15 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 10.206 seconds (process running for 11.523)
+2025-05-28 17:18:14 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
+2025-05-28 17:20:31 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.3 with PID 12532 (C:\bitirme\donate-app\donate-rest\target\classes started by karak in C:\bitirme\donate-app\donate-rest)
+2025-05-28 17:20:31 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-05-28 17:20:31 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-05-28 17:20:37 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-05-28 17:20:39 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 8.77 seconds (process running for 9.982)
+2025-05-28 17:20:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : deneme12 - looked product with id: 3
