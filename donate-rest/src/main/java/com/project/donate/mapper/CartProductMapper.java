@@ -1,9 +1,6 @@
 package com.project.donate.mapper;
 
-import com.project.donate.dto.Response.AddToCartResponse;
-import com.project.donate.dto.Response.CartProductResponse;
-import com.project.donate.dto.Response.CartResponse;
-import com.project.donate.dto.Response.ProductResponse;
+import com.project.donate.dto.Response.*;
 import com.project.donate.model.CartProduct;
 import com.project.donate.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +30,8 @@ public class CartProductMapper {
                 .productResponse(product)
                 .productQuantity(cartProduct.getProductQuantity())
                 .productPrice(cartProduct.getProductPrice())
+                .cartId(cartProduct.getId().getCartId())
                 .build();
     }
+
 }

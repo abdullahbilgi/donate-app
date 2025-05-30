@@ -3,9 +3,7 @@ package com.project.donate.service;
 import com.project.donate.dto.Request.CartProductRequest;
 import com.project.donate.dto.Request.CartRequest;
 import com.project.donate.dto.Request.RemoveProductFromCartRequest;
-import com.project.donate.dto.Response.AddToCartResponse;
-import com.project.donate.dto.Response.CartResponse;
-import com.project.donate.dto.Response.PurchasesProductResponse;
+import com.project.donate.dto.Response.*;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotActiveException;
@@ -49,6 +47,7 @@ public class CartServiceImpl implements CartService {
     private final CartProductService cartProductService;
     private final PdfGeneratorService pdfGeneratorService;
     private final MailProducer mailProducer;
+    private final CartProductMapper cartProductMapper;
 
 
     @Override
@@ -132,7 +131,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse updateProductQuantityFromCart(CartProductRequest request) {
+    public CartProductResponse updateProductQuantityFromCart(CartProductRequest request) {
        // Long userId = userService.getUserEntityByUsername(GeneralUtil.extractUsername()).getId();
         CartProduct cartProduct = cartProductService.getCartProductById(cartProductService.getUsersCurrentCart(request.getUserId()).getId(), request.getProductId());
         Integer fark = request.getProductQuantity() - cartProduct.getProductQuantity();
@@ -152,7 +151,7 @@ public class CartServiceImpl implements CartService {
         // eger fark pozitifse eksilecek
         productService.save(product);
 
-        return cartMapper.mapToDto(cart);
+        return cartProductMapper.mapToCartProductResponse(cartProduct);
     }
 
     @Override
