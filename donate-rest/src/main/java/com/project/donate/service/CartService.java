@@ -33,7 +33,7 @@ public interface CartService {
 
     Cart createCart();
 
-    void removeProductFromCart(RemoveProductFromCartRequest request);
+    CartProductResponse removeProductFromCart(RemoveProductFromCartRequest request);
 
     CartProductResponse updateProductQuantityFromCart(CartProductRequest request);
 

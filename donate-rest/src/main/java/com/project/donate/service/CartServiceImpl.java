@@ -125,9 +125,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeProductFromCart(RemoveProductFromCartRequest request) {
+    public CartProductResponse removeProductFromCart(RemoveProductFromCartRequest request) {
         CartProduct cartProduct = cartProductService.getCartProductById(request.getCartId(), request.getProductId());
         removeProductFromCartHelper(cartProduct);
+        return cartProductMapper.mapToCartProductResponse(cartProduct);
     }
 
     @Override

@@ -70,9 +70,9 @@ public class CartController {
     }
 
     @PostMapping("/removeProduct")
-    public ResponseEntity<Void> removeProductToCart(@RequestBody RemoveProductFromCartRequest request) {
-        cartService.removeProductFromCart(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CartProductResponse> removeProductToCart(@RequestBody RemoveProductFromCartRequest request) {
+    CartProductResponse cartProductResponse = cartService.removeProductFromCart(request);
+        return ResponseEntity.ok(cartProductResponse);
     }
 
 
