@@ -3,7 +3,7 @@ import Button from "./Button";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from "react";
 import { addProductToCart } from "../store/CartStore/Cart/thunks";
-import { useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 
 interface ProductItemProps {
   id: number;
@@ -21,16 +21,22 @@ const ProductItem: React.FC<ProductItemProps> = ({
 }) => {
   const [dropdown, setDropdown] = useState(false);
   const dispatch = useAppDispatch();
+  const { userId } = useAppSelector((state) => state.Auth);
 
   const addToCartHandler = () => {
-    dispatch(
-      addProductToCart({
-        userId: 1,
-        productId: id,
-        productQuantity: 1,
-      })
-    );
+    if (userId !== null) {
+      dispatch(
+        addProductToCart({
+          productId: id,
+          productQuantity: 1,
+        })
+      );
+    } else {
+      console.log("Please first login!!");
+      // burada belki bir modal gösterilebilir
+    }
   };
+
   return (
     <div className="py-4 shadow-md shadow-slate-200 border-0 mb-5 border-transparent md:group-[.gridView]:flex relative bg-gray-50 rounded-md">
       <div className="relative group-[.gridView]:static p-6 group-[.gridView]:p-5">

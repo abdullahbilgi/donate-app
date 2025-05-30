@@ -23,6 +23,7 @@ const Login = () => {
   } = useForm<FormValues>();
 
   const { userId } = useAppSelector((state) => state.Auth);
+  const { cartItems } = useAppSelector((state) => state.Cart);
 
   const navigate = useNavigate();
 

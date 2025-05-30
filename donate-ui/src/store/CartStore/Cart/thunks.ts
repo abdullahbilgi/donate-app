@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosPrivate from "../../../api/axiosPrivate";
 
 interface AddItemRequest {
-  userId: number;
   productId: number;
   productQuantity: number;
 }
@@ -13,32 +13,22 @@ interface DeleteItemRequest {
 }
 
 interface UpdateItemRequest {
-  cartId: number;
   productId: number;
   productQuantity: number;
 }
 
 export const addProductToCart = createAsyncThunk(
   "addProductToCart",
+
   async function (item: AddItemRequest, thunkAPI) {
     console.log(item);
+    const userId = localStorage.getItem("userId");
+
     try {
-      let token =
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlcmF5dGVzdCIsImlhdCI6MTc0NzkxMjkzOSwiZXhwIjoxNzQ3OTk5MzM5fQ.R-_vAAsPfeq6BDza6oTSmVGqq9mV_JqC4q4ibTsfVXg";
-
-      const res = await axios({
-        url: "http://localhost:8080/api/v1/carts/addProduct",
-        method: "POST",
-        data: {
-          userId: item.userId,
-          productId: item.productId,
-          productQuantity: item.productQuantity,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const res = await axiosPrivate.post("/carts/addProduct", {
+        userId: userId,
+        ...item,
       });
-
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue("Ürün eklenirekn bir hata oluştu");
@@ -50,20 +40,8 @@ export const removeItemFromCart = createAsyncThunk(
   "removeItemFromCart",
   async function (deleteItem: DeleteItemRequest, thunkAPI) {
     try {
-      let token =
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlcmF5dGVzdCIsImlhdCI6MTc0NzkxMjkzOSwiZXhwIjoxNzQ3OTk5MzM5fQ.R-_vAAsPfeq6BDza6oTSmVGqq9mV_JqC4q4ibTsfVXg";
-
-      const res = await axios({
-        url: "http://localhost:8080/api/v1/carts/removeProduct",
-        method: "POST",
-        data: {
-          cartId: deleteItem.cartId,
-          productId: deleteItem.productId,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log(deleteItem);
+      const res = await axiosPrivate.post("/carts/removeProduct", deleteItem);
 
       console.log("api delete", res.data);
       return res.data;
@@ -76,21 +54,24 @@ export const removeItemFromCart = createAsyncThunk(
 export const updateCartItem = createAsyncThunk(
   "updateCartItem",
   async function (updateItem: UpdateItemRequest, thunkAPI) {
-    try {
-      const res = await axios({
-        url: "http://localhost:8080/api/v1/carts/updateCartProduct",
-        method: "PUT",
-        data: {
-          cartId: updateItem.cartId,
-          productId: updateItem.productId,
-          productQuantity: updateItem.productQuantity,
-        },
-      });
+    const cartId = Number(localStorage.getItem("cartId"));
+    const userId = Number(localStorage.getItem("userId"));
 
-      console.log("api update", res.data);
+    console.log("update send data", {
+      ...updateItem,
+      cartId,
+      userId,
+    });
+
+    try {
+      const res = await axiosPrivate.put("/carts/updateCartProduct", {
+        ...updateItem,
+        cartId,
+        userId,
+      });
       return res.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue("Bir hata oluştu");
+      return thunkAPI.rejectWithValue("Sepet güncellenirken bir hata oluştu");
     }
   }
 );

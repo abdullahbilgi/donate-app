@@ -7,6 +7,7 @@ import DonateCellProduct from "./pages/donateSellProduct";
 import Products from "./pages/Products";
 import { useEffect, useState } from "react";
 import { setToken, setupInterceptors } from "./api/interceptors";
+import { Markets } from "./pages/Markets";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/donateCellProduct" element={<DonateCellProduct />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/markets" element={<Markets />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

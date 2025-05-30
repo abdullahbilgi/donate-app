@@ -4,22 +4,15 @@ import axiosPrivate from "../../../api/axiosPrivate";
 
 export const getCartById = createAsyncThunk(
   "getCartById",
-  async function (userId: any) {
-    // let token =
-    //   "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlcmF5dGVzdCIsImlhdCI6MTc0NzMyMDA2OCwiZXhwIjoxNzQ3NDA2NDY4fQ.g6qV4UcwIyzymqLIMPDpkxKO36axX7oziiM-QC4x8_A";
+  async function (userId: any, thunkAPI) {
+    try {
+      const res = await axiosPrivate.get(`carts/currentUserCart/${userId}`);
+      console.log("girdi getbyid", res.data);
 
-    // const res = await axios({
-    //   url: `http://localhost:8080/api/v1/carts/${userId}`,
-    //   method: "GET",
-    //   // headers: {
-    //   //   Authorization: `Bearer ${token}`,
-    //   // },
-    // });
-
-    const res = await axiosPrivate.get(`carts/${userId}`);
-
-    // console.log(res.data);
-
-    return res.data;
+      localStorage.setItem("cartId", res.data.id);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Error!");
+    }
   }
 );

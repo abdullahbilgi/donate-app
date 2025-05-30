@@ -3,12 +3,21 @@ import Button from "./Button";
 import { RiShoppingBasketLine } from "react-icons/ri";
 import { useState } from "react";
 import SideModalBasket from "./SideModalBasket";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store";
+import { logout } from "../store/Auth/Login/thunks";
+import { MdLogout } from "react-icons/md";
 
 const Header = () => {
   const navigate = useNavigate();
   const [showBasket, setShowBasket] = useState(false);
-  const { cartItems } = useSelector((state: any) => state.Cart);
+  const { cartItems } = useAppSelector((state: any) => state.Cart);
+  const isLogged = localStorage.getItem("isLogged");
+
+  const dispatch = useAppDispatch();
+  const logoutHandler = async () => {
+    await dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <>
@@ -29,13 +38,13 @@ const Header = () => {
         <div className="flex gap-12 items-center font-semibold ">
           <ul className="flex gap-8">
             <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/bagisyap">Hakkimizda</Link>
-            </li>
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/bagisyap">Donation</Link>
+              <Link to="/donateCellProduct">Donation</Link>
             </li>
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/products">Ürünler</Link>
+            </li>
+            <li className="hover:text-zinc-500 transition-colors duration-300">
+              <Link to="/markets">Marketlerim</Link>
             </li>
             <li className="hover:text-zinc-500 transition-colors duration-300 relative">
               <button
@@ -51,7 +60,14 @@ const Header = () => {
               </button>
             </li>
           </ul>
-          <Button onClick={() => navigate("/login")}>Sign In</Button>
+
+          {isLogged === "false" ? (
+            <Button onClick={() => navigate("/login")}>Sign In</Button>
+          ) : (
+            <Button variation="danger" onClick={logoutHandler}>
+              <MdLogout className="w-5 h-5" />
+            </Button>
+          )}
         </div>
       </header>
 

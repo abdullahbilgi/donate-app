@@ -1,11 +1,27 @@
+import { useEffect, useState } from "react";
 import FilterElements from "./FilterElements";
 import FilterElementsContent from "./FilterElementsContent";
+import { useAppDispatch } from "../store";
+import { searchProduct } from "../store/ProductStore/Products/thunks";
 
-const ProductFilter = () => {
+interface ProductFilterProps {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ProductFilter = ({ searchTerm, setSearchTerm }: ProductFilterProps) => {
   return (
     <div className="hidden bg-gray-50 2xl:col-span-3 2xl:block p-15">
-      <div className="card">
-        <div className="card-body">
+      <div className="flex flex-col gap-6">
+        <input
+          type="text"
+          placeholder="Search product"
+          className="py-3 px-4 border border-gray-200 rounded-md shadow-xs w-full"
+          value={searchTerm}
+          style={{ backgroundColor: "#f1f5f9" }}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div>
           <div className="flex items-center gap-3">
             <h6 className="text-15 grow">Filter</h6>
             <div className="shrink-0">
@@ -14,6 +30,7 @@ const ProductFilter = () => {
               </button>
             </div>
           </div>
+
           <FilterElements title="Price">
             <FilterElementsContent labelText="All" inputId="priceAll" />
             <FilterElementsContent labelText="0.00 - 50.00" inputId="price1" />

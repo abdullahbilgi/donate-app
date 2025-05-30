@@ -1,7 +1,15 @@
 import { Outlet } from "react-router";
 import Header from "../ui/Header";
+import { useEffect } from "react";
+import { useAppDispatch } from "../store";
+import { getCartById } from "../store/CartStore/GetCartById/thunks";
 
 const AppLayout = () => {
+  const dispatch = useAppDispatch();
+  const userId = localStorage.getItem("userId");
+  useEffect(() => {
+    dispatch(getCartById(userId));
+  });
   return (
     <div
       className="grid grid-rows-[auto_1fr] min-h-svh font-poppins"

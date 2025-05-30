@@ -2,29 +2,35 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosPrivate from "../../../api/axiosPrivate";
 
+interface CreateProductRequest {
+  name: string;
+  productionDate: string;
+  lastDonatedDate?: string; //sell icin
+  expiryDate: string;
+  productStatus: string;
+  price?: number;
+  discountedPrice?: number;
+  quantity: number;
+  description: string;
+  categoryId: number;
+  marketId?: number; //market icin
+}
+
 export const getAllProducts = createAsyncThunk(
   "getAllProducts",
-
   async function () {
-    let token =
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlcmF5dGVzdCIsImlhdCI6MTc0NzkxMjkzOSwiZXhwIjoxNzQ3OTk5MzM5fQ.R-_vAAsPfeq6BDza6oTSmVGqq9mV_JqC4q4ibTsfVXg";
-
-    // const res = await axios({
-    //   url: `http://localhost:8080/api/v1/products`,
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-
     const res = await axiosPrivate.get("/products");
     return res.data;
   }
-  // async function () {
-  //   //filter, page falan burda ver o reducera ona göre veri dndürüür
-  //   const res = await axiosPrivate.get("products");
-  //   return res.data;
-  // }
+);
+
+export const createProduct = createAsyncThunk(
+  "createProduct",
+  async function (newProduct: CreateProductRequest) {
+    console.log(newProduct);
+    const res = await axiosPrivate.post("/products", newProduct);
+    return res.data;
+  }
 );
 
 export const updateProduct = createAsyncThunk(
@@ -57,6 +63,16 @@ export const deleteProduct = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
+    return res.data;
+  }
+);
+
+export const searchProduct = createAsyncThunk(
+  "searchProduct",
+  async function (key: string) {
+    const res = await axiosPrivate.get(
+      `/products/search?keyword=${key}&page=0&size=10`
+    );
     return res.data;
   }
 );

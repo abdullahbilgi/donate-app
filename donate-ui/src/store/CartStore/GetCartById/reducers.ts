@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProductToCart, removeItemFromCart, updateCartItem } from "./thunks";
 import { getCartById } from "../GetCartById/thunks";
 
 interface ProductResponse {
@@ -96,15 +95,12 @@ const CartReducer = createSlice({
         state.loading = false;
         state.error = null;
 
-        console.log("gelen:", action.payload);
-
         const existingItem = state.cartItems.find(
-          (item) => item.product.id === action.payload.productResponse.id
+          (item) => item.product.id === action.payload.product.id
         );
 
-        console.log(existingItem);
         if (existingItem) {
-          // existingItem.product = action.payload.product;
+          existingItem.product = action.payload.product;
           existingItem.productQuantity = action.payload.productQuantity;
         }
       })
@@ -121,10 +117,11 @@ const CartReducer = createSlice({
         state.loading = false;
         state.error = null;
 
-        console.log(action.payload);
-        state.cartItems = state.cartItems.filter(
-          (item) => item.product.id !== action.payload.productResponse.id
+        const existingItem = state.cartItems.filter(
+          (item) => item.product.id !== action.payload.product.id
         );
+
+        if (!existingItem) return;
       })
       .addCase(removeItemFromCart.rejected, (state, action) => {
         state.loading = false;

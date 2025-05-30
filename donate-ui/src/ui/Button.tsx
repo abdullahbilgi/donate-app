@@ -37,7 +37,7 @@ const Button: React.FC<ButtonProps> = ({
       "bg-lime-300 text-teal-800 hover:bg-lime-400 border border-lime-400",
     submit:
       "bg-gray-500 text-white hover:bg-gray-600 px-10 py-3 transition-transform duration-300 hover:scale-102 hover:shadow-lg",
-    danger: "bg-red-500 text-white hover:bg-red-600",
+    danger: "bg-red-700 text-white hover:bg-red-800",
     donation: "bg-lime-300 text-teal-800 hover:bg-lime-400 ",
     cell: "bg-gray-600 text-gray-100 hover:bg-gray-700",
     addToCart:

@@ -27,6 +27,20 @@ export const login = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk("logout", async function (_, thunkAPI) {
+  try {
+    const res = await axios({
+      url: "http://localhost:8080/api/v1/auth/logout",
+      method: "POST",
+    });
+
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue("Logout Error!");
+  }
+});
+
 export const refreshToken = createAsyncThunk(
   "refreshToken",
   async function (_, thunkAPI) {

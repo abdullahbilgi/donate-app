@@ -1,8 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteProduct, getAllProducts, updateProduct } from "./thunks";
+import {
+  deleteProduct,
+  getAllProducts,
+  searchProduct,
+  updateProduct,
+} from "./thunks";
 
 interface Products {
   productsArr: any[];
+  searchProducts: any[];
   loading: boolean;
   error: string | null;
   number: number;
@@ -32,6 +38,7 @@ interface ProductItem {
 
 const initialState: Products = {
   productsArr: [],
+  searchProducts: [],
   loading: false,
   error: null,
   number: 0,
@@ -97,6 +104,30 @@ const ProductsReducer = createSlice({
     builder.addCase(deleteProduct.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "Something went wrong";
+    });
+
+    builder.addCase(searchProduct.pending, (state, action) => {
+      state.searchProducts = []; // Önceki verileri temizle
+      state.loading = true; // Yükleniyor durumu
+    });
+
+    builder.addCase(searchProduct.fulfilled, (state, action) => {
+      state.loading = false; // Yükleniyor durumu
+      state.error = null; // Hata mesajı sıfırlanıyor
+      state.number = action.payload.page + 1; // Sayfa numarasını güncelle (0-indexli backend için +1 ekle)
+      state.size = action.payload.limit; // Sayfa başı kaç veri olduğunu güncelle
+
+      state.searchProducts = action.payload.content; // Yeni verilerle listeyi güncelle
+    });
+
+    builder.addCase(searchProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
+      state.searchProducts = [];
+      state.number = 0;
+      state.size = 12;
+      state.totalPages = 0;
+      state.totalElements = 0;
     });
   },
 });

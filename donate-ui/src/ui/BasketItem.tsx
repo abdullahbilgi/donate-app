@@ -3,6 +3,7 @@ import QuantityInput from "./QuantityInput";
 
 import { deleteProduct } from "../store/ProductStore/Products/thunks";
 import { useAppDispatch } from "../store";
+import { removeItemFromCart } from "../store/CartStore/Cart/thunks";
 
 interface BasketItemProps {
   itemId: any;
@@ -24,8 +25,9 @@ const BasketItem: React.FC<BasketItemProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const cartId = Number(localStorage.getItem("cartId"));
   function handleDelete() {
-    dispatch(deleteProduct(itemId));
+    dispatch(removeItemFromCart({ productId: itemId, cartId }));
   }
 
   return (

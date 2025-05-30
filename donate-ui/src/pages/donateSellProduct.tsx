@@ -13,17 +13,23 @@ import { IoPricetagsOutline } from "react-icons/io5";
 import { LiaDonateSolid } from "react-icons/lia";
 import { FaRegImage } from "react-icons/fa6";
 import { BsChatLeftText } from "react-icons/bs";
-import { useState } from "react";
-import { useAppSelector } from "../store";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store";
+import { getCategory } from "../store/Category/thunks";
+import { createProduct } from "../store/ProductStore/Products/thunks";
 
 interface Inputs {
-  productName: string;
-  stt: string;
-  productNumber: number;
-  normalPrice: number;
-  cellPrice: number;
-  image: string;
-  note?: string;
+  name: string;
+  productionDate: string;
+  lastDonateDate: string;
+  expiryDate: string; //stt
+  price: number;
+  discountedPrice: number;
+  productStatus: string;
+  quantity: number;
+  description: string;
+  categoryId: number;
+  marketId: number;
 }
 const DonateCellProduct = () => {
   const {
@@ -33,7 +39,30 @@ const DonateCellProduct = () => {
     getValues,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { categories } = useAppSelector((state) => state.Category);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, []);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+
+    //productStatus, marketId, lastDonatedDate
+    dispatch(
+      createProduct({
+        ...data,
+        lastDonatedDate: `${data.lastDonateDate}T10:00:00`,
+        productionDate: `${data.productionDate}T10:00:00`,
+        expiryDate: `${data.expiryDate}T10:00:00`,
+        price: Number(data.price.toFixed(1)),
+        productStatus: "REAL",
+        marketId: 1,
+      })
+    );
+  };
 
   const [notAccepted, setNotAccepted] = useState(true);
 
@@ -79,13 +108,13 @@ const DonateCellProduct = () => {
                   <MdDriveFileRenameOutline className="w-5 h-5" /> Ürün adi *
                 </>
               }
-              errors={errors?.productName?.message}
+              errors={errors?.name?.message}
             >
               <Input
                 type="text"
-                id="productName"
+                id="name"
                 inputVariation="donate"
-                {...register("productName", {
+                {...register("name", {
                   required: "This field is required!",
                   maxLength: {
                     value: 20,
@@ -98,33 +127,20 @@ const DonateCellProduct = () => {
                 })}
               />
             </FormRow>
-            <FormRow
-              labelText={
-                <>
-                  <MdDateRange /> STT(Son Tüketim Tarihi) *
-                </>
-              }
-            >
-              <Input
-                type="date"
-                id="stt"
-                inputVariation="donate"
-                {...register("stt")}
-              />
-            </FormRow>
+
             <FormRow
               labelText={
                 <>
                   <BsBoxes /> Ürün Adeti *
                 </>
               }
-              errors={errors?.productNumber?.message}
+              errors={errors?.quantity?.message}
             >
               <Input
                 type="number"
-                id="productNumber"
+                id="quantity"
                 inputVariation="donate"
-                {...register("productNumber", {
+                {...register("quantity", {
                   required: "This field is required!",
                   min: {
                     value: 1,
@@ -134,45 +150,83 @@ const DonateCellProduct = () => {
                     value: 1000,
                     message: "Maximum price can be 1000",
                   },
+                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
                 })}
               />
             </FormRow>
+
+            <FormRow
+              labelText={
+                <>
+                  <MdDateRange /> ÜT(Üretim Tarihi) *
+                </>
+              }
+            >
+              <Input
+                type="date"
+                id="productionDate"
+                inputVariation="donate"
+                {...register("productionDate", {
+                  required: "This field is required!",
+                })}
+              />
+            </FormRow>
+            <FormRow
+              labelText={
+                <>
+                  <MdDateRange /> STT(Son Tüketim Tarihi) *
+                </>
+              }
+            >
+              <Input
+                type="date"
+                id="expiryDate"
+                inputVariation="donate"
+                {...register("expiryDate", {
+                  required: "This field is required!",
+                })}
+              />
+            </FormRow>
+
             <FormRow
               labelText={
                 <>
                   <IoPricetagsOutline /> Ürün Normal Fiyati *
                 </>
               }
-              errors={errors?.normalPrice?.message}
+              errors={errors?.price?.message}
             >
               <Input
                 type="text"
-                id="normalPrice"
+                id="price"
                 inputVariation="donate"
-                {...register("normalPrice", {
+                {...register("price", {
                   required: "This field is required!",
                   min: { value: 1, message: "Minimum price should be 1" },
+                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
                 })}
               />
             </FormRow>
             <FormRow
               labelText={
                 <>
-                  <LiaDonateSolid /> Ürünü Satacaginiz Fiyat *
+                  <LiaDonateSolid /> Indirimli Fiyat *
                 </>
               }
-              errors={errors?.cellPrice?.message}
+              errors={errors?.discountedPrice?.message}
             >
               <Input
                 type="text"
-                id="cellPrice"
+                id="discountedPrice"
                 inputVariation="donate"
-                {...register("cellPrice", {
+                {...register("discountedPrice", {
                   required: "This field is required!",
                   min: { value: 1, message: "Minimum price should be 1" },
+                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
+
                   validate: (price) => {
                     return (
-                      price < Number(getValues("normalPrice")) ||
+                      price < Number(getValues("price")) ||
                       "Discount should be less than regular price"
                     );
                   },
@@ -183,29 +237,69 @@ const DonateCellProduct = () => {
             <FormRow
               labelText={
                 <>
-                  <FaRegImage /> Ürün Resmi *
+                  <FaRegImage /> Ürün Kategorisi
                 </>
               }
-              errors={errors?.image?.message}
+            >
+              <select
+                className="bg-gray-100 p-3 rounded-lg w-90 border border-gray-300"
+                {...register("categoryId", {
+                  required: "This field is required!",
+                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                })}
+              >
+                <option value="">Kategori Sec</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </FormRow>
+
+            <FormRow
+              labelText={
+                <>
+                  <FaRegImage /> Ürün Resmi
+                </>
+              }
+            >
+              <Input type="file" id="image" inputVariation="donate" />
+            </FormRow>
+
+            <FormRow
+              labelText={
+                <>
+                  <MdDateRange /> Son Bagis Tarihi*
+                </>
+              }
             >
               <Input
-                type="file"
-                id="image"
+                type="date"
+                id="lastDonateDate"
                 inputVariation="donate"
-                {...register("image", {
+                {...register("lastDonateDate", {
                   required: "This field is required!",
                 })}
               />
             </FormRow>
+
             <FormRow
               labelText={
                 <>
-                  <BsChatLeftText /> Not(Istege Bagli)
+                  <BsChatLeftText /> Ürün Bilgisi
                 </>
               }
               className="col-span-2"
             >
-              <Input type="textarea" id="note" inputVariation="donate" />
+              <Input
+                type="textarea"
+                id="description"
+                inputVariation="donate"
+                {...register("description", {
+                  required: "This field is required!",
+                })}
+              />
             </FormRow>
 
             <div className="col-span-2 flex justify-between items-center mt-5">

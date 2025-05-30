@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, refreshToken } from "./thunks";
+import { login, logout, refreshToken } from "./thunks";
 import { setToken, setupInterceptors } from "../../../api/interceptors";
 
 interface LoginState {
@@ -13,10 +13,10 @@ interface LoginState {
 }
 
 const initialState: LoginState = {
-  userId: null,
-  role: null,
-  token: null,
-  refreshToken: null,
+  userId: Number(localStorage.getItem("userId")),
+  role: localStorage.getItem("role"),
+  token: localStorage.getItem("accessToken"),
+  refreshToken: localStorage.getItem("refreshToken"),
   error: "",
   loading: false,
   isLogged: false,
@@ -26,13 +26,6 @@ const authReducer = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      state.token = null;
-      state.refreshToken = null;
-      state.isLogged = false;
-      state.error = "";
-      state.loading = false;
-    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -48,6 +41,7 @@ const authReducer = createSlice({
     builder.addCase(login.fulfilled, (state: any, action: any) => {
       console.log("login: ", action.payload?.access_token);
       console.log("login: ", action.payload?.refresh_token);
+      console.log(action.payload);
       state.loading = false;
       state.token = action.payload?.access_token;
       state.refreshToken = action.payload?.refresh_token;
@@ -56,38 +50,64 @@ const authReducer = createSlice({
 
       localStorage.setItem("accessToken", action.payload.access_token);
       localStorage.setItem("refreshToken", action.payload.refresh_token);
+      localStorage.setItem("userId", action.payload.userId);
+      localStorage.setItem("role", action.payload.role);
+      localStorage.setItem("isLogged", "true");
       state.isLogged = true;
     });
 
-    builder.addCase(login.rejected, (state, action) => {
-      state.loading = false;
-      state.error = (action.payload as string) || "Something Went Wrong";
-    });
+    builder
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Something Went Wrong";
+      })
+      //LOGOUT
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
 
-    //REFRESH_TOKEN
-    builder.addCase(refreshToken.pending, (state) => {
-      state.loading = true;
-    });
+      .addCase(logout.fulfilled, (state: any, action: any) => {
+        console.log("logout: ", action.payload);
+        state.loading = false;
+        state.token = null;
+        state.refreshToken = null;
+        state.userId = null;
+        state.role = null;
 
-    builder.addCase(refreshToken.fulfilled, (state: any, action: any) => {
-      console.log("refresh: ", action.payload?.access_token);
-      console.log("refresh: ", action.payload?.refresh_token);
-      state.loading = false;
-      state.error = "";
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
+        localStorage.setItem("isLogged", "false");
+        state.isLogged = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Something Went Wrong";
+      })
 
-      state.token = action.payload?.access_token;
-      state.refreshToken = action.payload?.refresh_token;
-    });
+      //REFRESH_TOKEN
+      .addCase(refreshToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(refreshToken.fulfilled, (state: any, action: any) => {
+        console.log("refresh: ", action.payload?.access_token);
+        console.log("refresh: ", action.payload?.refresh_token);
+        state.loading = false;
+        state.error = "";
 
-    builder.addCase(refreshToken.rejected, (state, action) => {
-      state.loading = false;
-      state.isLogged = false;
-      state.error = (action.payload as string) || "Something Went Wrong";
-    });
+        state.token = action.payload?.access_token;
+        state.refreshToken = action.payload?.refresh_token;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.loading = false;
+        state.isLogged = false;
+        state.error = (action.payload as string) || "Something Went Wrong";
+      });
   },
 });
 
-export const { logout, setError } = authReducer.actions;
+export const { setError } = authReducer.actions;
 
 export default authReducer.reducer;
 

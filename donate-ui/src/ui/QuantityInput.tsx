@@ -2,29 +2,41 @@ import { useAppDispatch, useAppSelector } from "../store";
 import {
   addProductToCart,
   removeItemFromCart,
+  updateCartItem,
 } from "../store/CartStore/Cart/thunks";
 
 const QuantityInput = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
-
   const currItem = useAppSelector((state: any) =>
     state.Cart.cartItems.find((item: any) => item.product.id === id)
   );
 
   console.log(currItem);
+  const cartId = Number(localStorage.getItem("cartId"));
 
   function handleIncrease() {
     dispatch(
-      addProductToCart({
-        userId: 1,
+      updateCartItem({
         productId: id,
-        productQuantity: 1,
+        productQuantity: currItem.productQuantity + 1,
       })
     );
   }
 
   function handleDecrease() {
-    dispatch(removeItemFromCart(currItem.id));
+    currItem.productQuantity > 1
+      ? dispatch(
+          updateCartItem({
+            productId: id,
+            productQuantity: currItem.productQuantity - 1,
+          })
+        )
+      : dispatch(
+          removeItemFromCart({
+            productId: id,
+            cartId: cartId,
+          })
+        );
   }
 
   return (
