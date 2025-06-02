@@ -119,6 +119,13 @@ public class MarketServiceImpl implements MarketService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<MarketResponse> getMarketsByUserId(Long userId) {
+        return marketRepository.findAllByUserIdAndIsActiveTrue(userId)
+                .stream().map(marketMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
     private MarketResponse saveAndMap(Market market, String status) {
         Market savedMarket = marketRepository.save(market);
 

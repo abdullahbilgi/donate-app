@@ -16,4 +16,6 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     List<Market> getMarketsByStatusAndIsActiveTrue(Status status);
 
     Page<Market> getMarketsByStatusAndIsActiveTrue(Status status, Pageable pageable);
+
+    List<Market> findAllByUserIdAndIsActiveTrue(Long userId);
 }

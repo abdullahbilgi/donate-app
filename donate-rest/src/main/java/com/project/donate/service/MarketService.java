@@ -30,4 +30,6 @@ public interface MarketService {
     Page<MarketResponse> getMarketsByStatusPageable(Status status ,Pageable pageable);
 
     List<MarketResponse> getMarketsByStatus(Status status);
+
+    List<MarketResponse> getMarketsByUserId(Long userId);
 }

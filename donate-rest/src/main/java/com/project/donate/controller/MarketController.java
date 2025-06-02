@@ -37,6 +37,13 @@ public class MarketController {
         );
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<MarketResponse>> getMarketsByUserId(@PathVariable Long userId)
+    {
+        return ResponseEntity.ok(marketService.getMarketsByUserId(userId));
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<MarketResponse> getMarketById(@PathVariable Long id) {
         return ResponseEntity.ok(marketService.getMarketById(id));
