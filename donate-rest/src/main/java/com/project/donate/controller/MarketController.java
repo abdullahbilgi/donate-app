@@ -62,7 +62,7 @@ public class MarketController {
     }
 
     @PostMapping("/enable/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MARKET')")
     public ResponseEntity<Void> enabledMarket(@PathVariable Long id) {
         marketService.enabledMarket(id);
         return ResponseEntity.ok().build();
@@ -76,7 +76,7 @@ public class MarketController {
      **/
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MARKET')")
     public ResponseEntity<Void> deleteMarket(@PathVariable Long id) {
         marketService.deleteMarket(id);
         return ResponseEntity.noContent().build();
