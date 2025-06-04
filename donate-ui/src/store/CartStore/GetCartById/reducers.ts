@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCartById } from "../GetCartById/thunks";
+import { addProductToCart } from "../Cart/thunks";
 
 interface ProductResponse {
   id: number;

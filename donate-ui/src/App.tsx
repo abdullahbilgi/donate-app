@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import { useEffect, useState } from "react";
 import { setToken, setupInterceptors } from "./api/interceptors";
 import { Markets } from "./pages/Markets";
+import ProductsByMarket from "./pages/ProductsByMarket";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/donateCellProduct" element={<DonateCellProduct />} />
           <Route path="/products" element={<Products />} />
           <Route path="/markets" element={<Markets />} />
+          <Route path="/productsByMarket/:id" element={<ProductsByMarket />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

@@ -3,6 +3,8 @@ import productsReducer from "./ProductStore/Products/reducers";
 import cartReducer from "./CartStore/Cart/reducers";
 import authReducer from "./Auth/Login/reducers";
 import categoryReducer from "./Category/reducers";
+import marketReducer from "./MarketStore/Market/reducers";
+import productByMarket from "./ProductStore/GetProductByMarket/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
@@ -11,6 +13,8 @@ const store = configureStore({
     Category: categoryReducer,
     Product: productsReducer,
     Auth: authReducer,
+    Market: marketReducer,
+    ProductsByMarket: productByMarket,
   },
 });
 
