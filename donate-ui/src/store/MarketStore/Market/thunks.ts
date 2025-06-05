@@ -15,3 +15,18 @@ export const getMarketByUser = createAsyncThunk(
     }
   }
 );
+
+export const deleteMarket = createAsyncThunk(
+  "getMarketByUser",
+  async (marketId: any, thunkAPI) => {
+    console.log("thunk");
+    try {
+      const res = await axiosPrivate.delete(`/markets/${marketId}`);
+
+      console.log(res.data);
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("Ürün silinirken bir hata oluştu");
+    }
+  }
+);

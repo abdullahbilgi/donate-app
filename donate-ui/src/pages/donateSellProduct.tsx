@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getCategory } from "../store/Category/thunks";
 import { createProduct } from "../store/ProductStore/Products/thunks";
+import { getMarketByUser } from "../store/MarketStore/Market/thunks";
 
 interface Inputs {
   name: string;
@@ -40,17 +41,21 @@ const DonateCellProduct = () => {
   } = useForm<Inputs>();
 
   const { categories } = useAppSelector((state) => state.Category);
+  const { marketsArr } = useAppSelector((state) => state.Market);
 
+  const userId = localStorage.getItem("userId");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getCategory());
+
+    dispatch(getMarketByUser(userId));
   }, []);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
 
-    //productStatus, marketId, lastDonatedDate
+    //productStatus, lastDonatedDate
     dispatch(
       createProduct({
         ...data,
@@ -59,7 +64,6 @@ const DonateCellProduct = () => {
         expiryDate: `${data.expiryDate}T10:00:00`,
         price: Number(data.price.toFixed(1)),
         productStatus: "REAL",
-        marketId: 1,
       })
     );
   };
@@ -282,6 +286,29 @@ const DonateCellProduct = () => {
                   required: "This field is required!",
                 })}
               />
+            </FormRow>
+
+            <FormRow
+              labelText={
+                <>
+                  <BsChatLeftText /> Market
+                </>
+              }
+            >
+              <select
+                className="bg-gray-100 p-3 rounded-lg w-90 border border-gray-300"
+                {...register("marketId", {
+                  required: "This field is required!",
+                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                })}
+              >
+                <option value="">Market Sec</option>
+                {marketsArr.map((market) => (
+                  <option key={market.id} value={market.id}>
+                    {market.name}
+                  </option>
+                ))}
+              </select>
             </FormRow>
 
             <FormRow

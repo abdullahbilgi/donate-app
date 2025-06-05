@@ -9,7 +9,8 @@ interface ButtonProps {
     | "donation"
     | "cell"
     | "addToCart"
-    | "basketButton";
+    | "basketButton"
+    | "pagination";
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
@@ -36,7 +37,7 @@ const Button: React.FC<ButtonProps> = ({
     primary:
       "bg-lime-300 text-teal-800 hover:bg-lime-400 border border-lime-400",
     submit:
-      "bg-gray-500 text-white hover:bg-gray-600 px-10 py-3 transition-transform duration-300 hover:scale-102 hover:shadow-lg",
+      "bg-gray-500 text-white hover:bg-gray-600 px-5 py-3 transition-transform duration-300 hover:shadow-lg",
     danger: "bg-red-700 text-white hover:bg-red-800",
     donation: "bg-lime-300 text-teal-800 hover:bg-lime-400 ",
     cell: "bg-gray-600 text-gray-100 hover:bg-gray-700",
@@ -44,6 +45,8 @@ const Button: React.FC<ButtonProps> = ({
       "bg-gray-300 text-teal-800 hover:text-gray-100 hover:bg-gray-400 border border-gray-300",
     basketButton:
       "bg-gray-300 text-teal-800 hover:text-gray-100 hover:bg-gray-400",
+    pagination:
+      "bg-gray-300 text-teal-800 hover:text-gray-50 hover:bg-gray-400/50 rounded-sm",
   };
   return (
     <button

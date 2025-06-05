@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMarketByUser } from "./thunks";
+import { deleteMarket, getMarketByUser } from "./thunks";
 
 export interface IUCity {
   id: number;
@@ -44,21 +44,30 @@ const marketReducer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getMarketByUser.pending, (state, action) => {
-        console.log("market dönen pending: ", action.payload);
         state.loading = true;
       })
       .addCase(getMarketByUser.fulfilled, (state, action) => {
-        console.log("market dönens: ", action.payload);
         state.loading = false;
         state.error = null;
         state.marketsArr = action.payload;
       })
       .addCase(getMarketByUser.rejected, (state, action) => {
-        console.log("market dönen error: ", action.payload);
         state.loading = false;
         state.error = null;
         state.marketsArr = [];
       });
+    // .addCase(deleteMarket.pending, (state, action) => {
+    //   state.loading = true;
+    // })
+    // .addCase(deleteMarket.fulfilled, (state, action) => {
+    //   state.loading = false;
+    //   state.error = null;
+    //   state.marketsArr = action.payload;
+    // })
+    // .addCase(deleteMarket.rejected, (state, action) => {
+    //   state.loading = false;
+    //   state.error = null;
+    // });
   },
 });
 

@@ -38,7 +38,7 @@ const Header = () => {
         <div className="flex gap-12 items-center font-semibold ">
           <ul className="flex gap-8">
             <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/donateCellProduct">Donation</Link>
+              <Link to="/donateCellProduct">Ürün Ekle</Link>
             </li>
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/products">Ürünler</Link>

@@ -16,10 +16,14 @@ interface CreateProductRequest {
   marketId?: number; //market icin
 }
 
-export const getAllProducts = createAsyncThunk(
+type GetAllProductsArgs = {
+  page?: number;
+};
+
+export const getAllProducts = createAsyncThunk<any, GetAllProductsArgs>(
   "getAllProducts",
-  async function () {
-    const res = await axiosPrivate.get("/products");
+  async function ({ page = 0 }) {
+    const res = await axiosPrivate.get(`/products?page=${page}`);
     return res.data;
   }
 );

@@ -58,11 +58,13 @@ const ProductsReducer = createSlice({
     });
 
     builder.addCase(getAllProducts.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.loading = false; // Yükleniyor durumu
       state.error = null; // Hata mesajı sıfırlanıyor
-      state.number = action.payload.page + 1; // Sayfa numarasını güncelle (0-indexli backend için +1 ekle)
+      state.number = action.payload.number; // Sayfa numarasını güncelle
       state.size = action.payload.limit; // Sayfa başı kaç veri olduğunu güncelle
-
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
       state.productsArr = action.payload.content; // Yeni verilerle listeyi güncelle
     });
 
