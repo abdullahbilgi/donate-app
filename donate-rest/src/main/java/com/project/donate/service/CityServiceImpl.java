@@ -62,6 +62,12 @@ public class CityServiceImpl implements CityService {
                 .orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
     }
 
+    @Override
+    public City getCityEntityByName(String cityName) {
+        return cityRepository.findByName(cityName)
+                .orElseThrow(() -> new ResourceNotFoundException("City not found name: " + cityName));
+    }
+
     private CityResponse saveAndMap(City city) {
         City savedCity = cityRepository.save(city);
         return cityMapper.mapToDto(savedCity);

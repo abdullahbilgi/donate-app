@@ -18,4 +18,6 @@ public interface CityService {
     void deleteCity(Long id);
 
     City getCityEntityById(Long id);
+
+    City getCityEntityByName(String cityName);
 }

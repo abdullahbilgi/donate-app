@@ -73,6 +73,12 @@ public class RegionServiceImpl implements RegionService {
         return region.getCity();
     }
 
+    @Override
+    public Region getRegionEntityByName(String regionName,String cityName) {
+        return regionRepository.findByNameAndCityName(  regionName,cityName)
+                .orElseThrow(() -> new ResourceNotFoundException("Region not found name: " + regionName));
+    }
+
     private RegionResponse saveAndMap(Region region) {
         Region savedRegion = regionRepository.save(region);
         return regionMapper.mapToDto(savedRegion);

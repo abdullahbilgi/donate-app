@@ -5,10 +5,7 @@ import com.project.donate.dto.Response.MarketResponse;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.ResourceNotFoundException;
 import com.project.donate.mapper.MarketMapper;
-import com.project.donate.model.Address;
-import com.project.donate.model.Market;
-import com.project.donate.model.Product;
-import com.project.donate.model.User;
+import com.project.donate.model.*;
 import com.project.donate.repository.MarketRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +26,8 @@ public class MarketServiceImpl implements MarketService {
     private final MarketMapper marketMapper;
     private final AddressService addressService;
     private final UserService userService;
+    private final CityService cityService;
+    private final RegionService regionService;
 
 
     @Override
@@ -47,7 +46,16 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public MarketResponse createMarket(MarketRequest marketDTO) {
         Market market = marketMapper.mapToEntity(marketDTO);
-        Address address = addressService.createAddressEntity(marketDTO.getAddress());
+        Address address = new Address();
+        City city = cityService.getCityEntityByName(marketDTO.getCityName());
+        Region region = regionService.getRegionEntityByName(marketDTO.getRegionName(),city.getName());
+        //Address doldurma
+        address.setLatitude(marketDTO.getLatitude());
+        address.setLongitude(marketDTO.getLongitude());
+        address.setRegion(region);
+        address.setName(marketDTO.getDisplayName());
+        address.setZipCode(marketDTO.getZipCode());
+        //
         addressService.saveAddress(address);
         User user = userService.getUserEntityById(marketDTO.getUserId());
         market.setUser(user);
@@ -70,7 +78,17 @@ public class MarketServiceImpl implements MarketService {
     public MarketResponse updateMarket(Long id, MarketRequest request) {
         Market market = getMarketEntityById(id);
         marketMapper.mapUpdateAddressRequestToMarket(request, market);
-        Address address = addressService.createAddressEntity(request.getAddress());
+        Address address = market.getAddress();
+
+        City city = cityService.getCityEntityByName(request.getCityName());
+        Region region = regionService.getRegionEntityByName(request.getRegionName(),city.getName());
+        //Address doldurma
+        address.setLatitude(request.getLatitude());
+        address.setLongitude(request.getLongitude());
+        address.setRegion(region);
+        address.setName(request.getDisplayName());
+        address.setZipCode(request.getZipCode());
+
         addressService.saveAddress(address);
         market.setAddress(address);
         return saveAndMap(market, "update");

@@ -30,7 +30,17 @@ public class MarketRequest {
 
     private Long userId;
 
-    private AddressRequest address;
+    private String cityName;
+
+    private String regionName;
+
+    private String zipCode;
+
+    private String displayName;
 
     private Boolean isActive;
+
+    private Double latitude;
+
+    private Double longitude;
 }

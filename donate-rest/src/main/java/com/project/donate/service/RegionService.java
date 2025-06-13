@@ -21,4 +21,6 @@ public interface RegionService {
     Region getRegionEntityById(Long id);
 
     City getRegionsCityEntityById(Long id);
+
+    Region getRegionEntityByName(String regionName,String cityName);
 }
