@@ -1,6 +1,5 @@
 package com.project.donate.util;
 
-import com.project.donate.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
