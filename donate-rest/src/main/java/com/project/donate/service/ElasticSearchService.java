@@ -4,12 +4,15 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import com.project.donate.dto.ProductDocument;
 import com.project.donate.dto.Request.ProductRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
+
 public class ElasticSearchService {
 
     private final ElasticsearchOperations elasticsearchOperations;
@@ -18,9 +21,25 @@ public class ElasticSearchService {
         elasticsearchOperations.save(document, IndexCoordinates.of("products"));
     }
 
-    public void delete(Long productId){
-        elasticsearchOperations.delete(productId, IndexCoordinates.of("products"));
+    public void delete(ProductDocument document) {
+        try {
+            if (document == null || document.getId() == null) {
+                log.warn("Güncellenecek Elasticsearch dokümanı geçersiz.");
+                return;
+            }
+
+            // Elasticsearch'te güncelleme yapılır
+            elasticsearchOperations.save(document, IndexCoordinates.of("products"));
+
+            log.info("Elasticsearch dokümanı güncellendi: id={}", document.getId());
+
+        } catch (Exception e) {
+            log.error("Elasticsearch güncelleme hatası: {}", e.getMessage(), e);
+            throw new RuntimeException("Elasticsearch güncelleme başarısız", e);
+        }
     }
+
+
 
     public void update(Long productId, ProductRequest updateRequest) {
         ProductDocument existing = elasticsearchOperations.get(String.valueOf(productId), ProductDocument.class);

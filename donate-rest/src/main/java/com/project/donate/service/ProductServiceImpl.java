@@ -85,11 +85,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+        // Ürünü veritabanından bul
         Product product = getProductEntityById(id);
+
+        // Aktiflik durumunu false yap
         product.setIsActive(false);
-        log.info("{} Deleted product: {}", GeneralUtil.extractUsername(), product);
         productRepository.save(product);
+
+        log.info("{} ürün pasifleştirildi: {}", GeneralUtil.extractUsername(), product);
+
+        // Elasticsearch dokümanını da pasifleştir
+        ProductDocument document = productMapper.mapToDocument(product); // Mapper üzerinden dönüştür
+        elasticSearchService.delete(document); // Daha anlamlı method adıyla
     }
+
+
 
     @Override
     public String uploadImage(MultipartFile file) {
@@ -208,6 +218,22 @@ public class ProductServiceImpl implements ProductService {
 
         log.info("Product statuses updated after 00:01:00");
     }
+
+    @Scheduled(cron = "0 1 0 * * ?") // Her gün saat 00:01:00'da çalışır
+    public void deactivateExpiredProducts() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Product> products = productRepository.findAll();
+
+        for (Product product : products) {
+            if (product.getExpiryDate() != null && now.isAfter(product.getExpiryDate()) && product.getIsActive()) {
+                // Ürünün süresi geçmiş ve hala aktifse pasifleştir
+                deleteProduct(product.getId()); // Daha önce yazdığın deleteProduct fonksiyonunu kullan
+            }
+        }
+
+        log.info("Expired products deactivated after 00:01:00");
+    }
+
 
 
     @Override

@@ -30,14 +30,11 @@ public class ProductSearchService{
     private final UserService userService;
 
     public Page<ProductDocument> searchByTextAndCity(String keyword, Pageable pageable) {
-
         User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
         Long regionId = user.getAddress().getRegion().getId();
-
         City city = regionService.getRegionsCityEntityById(regionId);
-        Long cityId = city.getId(); // cityId artık veritabanından geldi
+        Long cityId = city.getId();
 
-        // Text bazlı fuzzy match'ler
         Query nameQuery = MatchQuery.of(m -> m
                 .field("name")
                 .query(keyword)
@@ -50,7 +47,6 @@ public class ProductSearchService{
                 .fuzziness("AUTO")
         )._toQuery();
 
-        // Region ve City filtreleri
         Query regionQuery = TermQuery.of(t -> t
                 .field("regionId")
                 .value(regionId.toString())
@@ -59,6 +55,12 @@ public class ProductSearchService{
         Query cityQuery = TermQuery.of(t -> t
                 .field("cityId")
                 .value(cityId.toString())
+        )._toQuery();
+
+        // isActive == true filtresi
+        Query isActiveQuery = TermQuery.of(t -> t
+                .field("isActive")
+                .value("true")
         )._toQuery();
 
         try {
@@ -72,25 +74,18 @@ public class ProductSearchService{
                                             .bool(b -> b
                                                     .should(nameQuery)
                                                     .should(descriptionQuery)
+                                                    .filter(isActiveQuery) // sadece aktif ürünler
                                             )
                                     )
-                                    .functions(fns -> fns
-                                            .filter(regionQuery).weight(10.0)
-                                    )
-                                    .functions(fns -> fns
-                                            .filter(cityQuery).weight(5.0)
-                                    )
+                                    .functions(fns -> fns.filter(regionQuery).weight(10.0))
+                                    .functions(fns -> fns.filter(cityQuery).weight(5.0))
                                     .boostMode(FunctionBoostMode.Multiply)
                             )
                     )
             );
 
             SearchResponse<ProductDocument> response = elasticsearchClient.search(request, ProductDocument.class);
-
-            List<ProductDocument> products = response.hits().hits().stream()
-                    .map(Hit::source)
-                    .collect(Collectors.toList());
-
+            List<ProductDocument> products = response.hits().hits().stream().map(Hit::source).collect(Collectors.toList());
             long totalHits = response.hits().total() != null ? response.hits().total().value() : 0;
 
             return new PageImpl<>(products, pageable, totalHits);
@@ -102,7 +97,8 @@ public class ProductSearchService{
     }
 
 
-    public Page<ProductDocument> getAllProductsPrioritizedByLocation( Pageable pageable){
+
+    public Page<ProductDocument> getAllProductsPrioritizedByLocation(Pageable pageable) {
         User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
         Long regionId = user.getAddress().getRegion().getId();
         City city = regionService.getRegionsCityEntityById(regionId);
@@ -118,6 +114,11 @@ public class ProductSearchService{
                 .value(cityId.toString())
         )._toQuery();
 
+        Query isActiveQuery = TermQuery.of(t -> t
+                .field("isActive")
+                .value("true")
+        )._toQuery();
+
         try {
             SearchRequest request = SearchRequest.of(s -> s
                     .index("products")
@@ -126,25 +127,19 @@ public class ProductSearchService{
                     .query(q -> q
                             .functionScore(fs -> fs
                                     .query(inner -> inner
-                                            .matchAll(m -> m) // Arama yok, tüm ürünler
+                                            .bool(b -> b
+                                                    .must(isActiveQuery) // sadece aktif ürünler
+                                            )
                                     )
-                                    .functions(fns -> fns
-                                            .filter(regionQuery).weight(10.0)
-                                    )
-                                    .functions(fns -> fns
-                                            .filter(cityQuery).weight(5.0)
-                                    )
+                                    .functions(fns -> fns.filter(regionQuery).weight(10.0))
+                                    .functions(fns -> fns.filter(cityQuery).weight(5.0))
                                     .boostMode(FunctionBoostMode.Multiply)
                             )
                     )
             );
 
             SearchResponse<ProductDocument> response = elasticsearchClient.search(request, ProductDocument.class);
-
-            List<ProductDocument> products = response.hits().hits().stream()
-                    .map(Hit::source)
-                    .collect(Collectors.toList());
-
+            List<ProductDocument> products = response.hits().hits().stream().map(Hit::source).collect(Collectors.toList());
             long totalHits = response.hits().total() != null ? response.hits().total().value() : 0;
 
             return new PageImpl<>(products, pageable, totalHits);
