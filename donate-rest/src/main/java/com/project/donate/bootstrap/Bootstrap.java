@@ -1223,8 +1223,6 @@ public class Bootstrap implements CommandLineRunner {
             addressRepository.save(address);
 
 
-            addressRepository.save(address);
-
             User user = User.builder()
                     .name("Admin")
                     .surname("Admin")
