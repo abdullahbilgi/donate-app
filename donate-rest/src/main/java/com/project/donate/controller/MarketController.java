@@ -76,7 +76,7 @@ public class MarketController {
      **/
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MARKET')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MARKET','ROLE_USER')")
     public ResponseEntity<Void> deleteMarket(@PathVariable Long id) {
         marketService.deleteMarket(id);
         return ResponseEntity.noContent().build();
