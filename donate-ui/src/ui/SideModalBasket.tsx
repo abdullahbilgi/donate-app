@@ -16,9 +16,19 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
   onClose,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { cartItems } = useAppSelector((state: any) => state.Cart);
+  const { cartItems, subTotal, totalDiscPrice, totalPrice } = useAppSelector(
+    (state: any) => state.Cart
+  );
 
-  const navigate = useNavigate();
+  // const { subTotal, totalDisc } = cartItems.reduce(
+  //   (acc: { subTotal: number; totalDisc: number }, item: any) => {
+  //     acc.subTotal += Number(item.product.price);
+  //     acc.totalDisc +=
+  //       Number(item.product.price) - Number(item.product.discountedPrice);
+  //     return acc;
+  //   },
+  //   { subTotal: 0, totalDisc: 0 }
+  // );
 
   useEffect(() => {
     function handleClickOutside(e: any) {
@@ -72,9 +82,15 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
 
           <div className="flex flex-col justify-between min-h-55 pt-6">
             <div>
-              <BasketPriceInfoRow rowTitle="Sub Total" rowValue="55" />
-              <BasketPriceInfoRow rowTitle="Discount" rowValue="45" />
-              <BasketPriceInfoRow rowTitle="Total Price" rowValue="78.45" />
+              <BasketPriceInfoRow rowTitle="Sub Total" rowValue={subTotal} />
+              <BasketPriceInfoRow
+                rowTitle="Discount"
+                rowValue={totalDiscPrice}
+              />
+              <BasketPriceInfoRow
+                rowTitle="Total Price"
+                rowValue={totalPrice}
+              />
             </div>
             <div className="flex items-center justify-between px-4">
               <Button

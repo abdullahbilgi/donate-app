@@ -31,12 +31,18 @@ interface CartItem {
 
 interface CartState {
   cartItems: CartItem[];
+  subTotal: number;
+  totalDiscPrice: number;
+  totalPrice: 0;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CartState = {
   cartItems: [],
+  subTotal: 0,
+  totalDiscPrice: 0,
+  totalPrice: 0,
   loading: false,
   error: null,
 };
@@ -48,13 +54,27 @@ const CartReducer = createSlice({
     builder
       .addCase(getCartById.fulfilled, (state, action) => {
         // sayfa ilk yüklendiginde(applayout) cart verilerini getirir
-        console.log("getirdi:", action.payload.productItems);
+        console.log("getirdi:", action.payload);
         state.loading = false;
         state.error = null;
         state.cartItems = action.payload.productItems.map((item: any) => ({
           product: item.productResponse,
           productQuantity: item.productQuantity,
         }));
+        state.subTotal = action.payload.productItems.reduce(
+          (acc: number, item: any) =>
+            acc + item.productResponse.price * item.productQuantity,
+          0
+        );
+        state.totalDiscPrice = action.payload.productItems.reduce(
+          (acc: number, item: any) =>
+            acc +
+            (item.productResponse.price -
+              item.productResponse.discountedPrice) *
+              item.productQuantity,
+          0
+        );
+        state.totalPrice = action.payload.totalPrice;
       })
       .addCase(getCartById.rejected, (state, action) => {
         // sayfa ilk yüklendiginde(applayout) cart verilerini getirir
@@ -78,9 +98,14 @@ const CartReducer = createSlice({
           console.log(action.payload.productQuantity);
           existingItem.productQuantity = action.payload.productQuantity;
         } else {
-          console.log("yok");
           state.cartItems.push(action.payload);
         }
+
+        state.subTotal += Number(action.payload.product.price);
+        state.totalDiscPrice +=
+          Number(action.payload.product.price) -
+          Number(action.payload.product.discountedPrice);
+        state.totalPrice += Number(action.payload.product.discountedPrice);
       })
       .addCase(addProductToCart.rejected, (state, action) => {
         state.loading = false;
@@ -102,10 +127,19 @@ const CartReducer = createSlice({
           (item) => item.product.id === action.payload.productResponse.id
         );
 
-        console.log(existingItem);
         if (existingItem) {
+          console.log(action.payload);
+          const diff =
+            action.payload.productQuantity - existingItem.productQuantity;
           // existingItem.product = action.payload.product;
           existingItem.productQuantity = action.payload.productQuantity;
+          state.subTotal += Number(action.payload.productResponse.price) * diff;
+          state.totalDiscPrice +=
+            (Number(action.payload.productResponse.price) -
+              Number(action.payload.productResponse.discountedPrice)) *
+            diff;
+          state.totalPrice +=
+            Number(action.payload.productResponse.discountedPrice) * diff;
         }
       })
       .addCase(updateCartItem.rejected, (state, action) => {
@@ -122,9 +156,32 @@ const CartReducer = createSlice({
         state.error = null;
 
         console.log(action.payload);
+        const existingItem = state.cartItems.find(
+          (item) => item.product.id === action.payload.productResponse.id
+        );
+
         state.cartItems = state.cartItems.filter(
           (item) => item.product.id !== action.payload.productResponse.id
         );
+
+        console.log(state.totalDiscPrice);
+        console.log(
+          (Number(existingItem?.product.price) -
+            Number(existingItem?.product.discountedPrice)) *
+            Number(existingItem?.productQuantity)
+        );
+        state.totalDiscPrice =
+          state.totalDiscPrice -
+          (Number(existingItem?.product.price) -
+            Number(existingItem?.product.discountedPrice)) *
+            Number(existingItem?.productQuantity);
+        state.subTotal -=
+          Number(existingItem?.product.price) *
+          Number(existingItem?.productQuantity);
+
+        state.totalPrice -=
+          Number(existingItem?.product.discountedPrice) *
+          Number(existingItem?.productQuantity);
       })
       .addCase(removeItemFromCart.rejected, (state, action) => {
         state.loading = false;

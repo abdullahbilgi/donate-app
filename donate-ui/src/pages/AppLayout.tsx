@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import Header from "../ui/Header";
 import { useEffect } from "react";
-import { useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { getCartById } from "../store/CartStore/GetCartById/thunks";
 
 const AppLayout = () => {
@@ -10,6 +10,11 @@ const AppLayout = () => {
   useEffect(() => {
     dispatch(getCartById(userId));
   });
+  // const { cartItems, subTotal, totalDiscPrice, totalPrice } = useAppSelector(
+  //   (state: any) => state.Cart
+  // );
+
+  // console.log(subTotal, totalPrice);
   return (
     <div
       className="grid grid-rows-[auto_1fr] min-h-svh font-poppins"

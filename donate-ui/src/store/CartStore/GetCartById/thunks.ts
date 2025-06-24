@@ -10,6 +10,8 @@ export const getCartById = createAsyncThunk(
       console.log("girdi getbyid", res.data);
 
       localStorage.setItem("cartId", res.data.id);
+
+      console.log("CART", res.data);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("Error!");

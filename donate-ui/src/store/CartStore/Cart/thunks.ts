@@ -29,6 +29,7 @@ export const addProductToCart = createAsyncThunk(
         userId: userId,
         ...item,
       });
+
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue("Ürün eklenirekn bir hata oluştu");
