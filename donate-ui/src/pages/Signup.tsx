@@ -10,11 +10,17 @@ const Signup = () => {
     <SignupLoginLayout>
       <h1 className="text-2xl font-bold">Sign Up</h1>
 
-      <Form formVariation="sign" onSubmit={() => console.log("submit")}>
-        <FormRow labelText="Full Name">
+      <Form formVariation="donate" onSubmit={() => console.log("submit")}>
+        <FormRow labelText="Name">
           <Input type="text" id="name" disabled={false} />
         </FormRow>
+        <FormRow labelText="Surname">
+          <Input type="text" id="surname" disabled={false} />
+        </FormRow>
         <FormRow labelText="Username">
+          <Input type="text" id="username" disabled={false} />
+        </FormRow>
+        <FormRow labelText="Phone">
           <Input type="text" id="username" disabled={false} />
         </FormRow>
         <FormRow labelText="Email">

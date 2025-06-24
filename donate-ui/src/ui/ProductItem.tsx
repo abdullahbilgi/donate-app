@@ -56,7 +56,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
             <Link to={"/home"}>{label}</Link>
           </h6>
           <h5 className="mt-4 text-xl font-medium">
-            ₺{discountPrice}
+            ₺{discountPrice}{" "}
             <small className="font-medium line-through text-slate-500 dark:text-zink-200">
               {normalPrice}
             </small>

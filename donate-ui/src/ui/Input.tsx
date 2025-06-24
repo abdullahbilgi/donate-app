@@ -10,7 +10,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
   ({ inputVariation = "sign", type, className, ...props }, ref) => {
     const variations = {
       sign: "bg-gray-100 p-3 rounded-3xl w-72",
-      donate: "bg-gray-100 p-3 rounded-lg w-90 border border-gray-300",
+      donate: "bg-gray-100 p-3 rounded-lg border border-gray-300",
     };
 
     if (type === "textarea") {

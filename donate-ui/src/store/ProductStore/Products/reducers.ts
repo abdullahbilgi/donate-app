@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  createProduct,
   deleteProduct,
   getAllProducts,
   searchProduct,
@@ -62,7 +63,7 @@ const ProductsReducer = createSlice({
       state.loading = false; // Yükleniyor durumu
       state.error = null; // Hata mesajı sıfırlanıyor
       state.number = action.payload.number; // Sayfa numarasını güncelle
-      state.size = action.payload.limit; // Sayfa başı kaç veri olduğunu güncelle
+      state.size = action.payload.size; // Sayfa başı kaç veri olduğunu güncelle
       state.totalPages = action.payload.totalPages;
       state.totalElements = action.payload.totalElements;
       state.productsArr = action.payload.content; // Yeni verilerle listeyi güncelle
@@ -76,6 +77,22 @@ const ProductsReducer = createSlice({
       state.size = 12;
       state.totalPages = 0;
       state.totalElements = 0;
+    });
+
+    builder.addCase(createProduct.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    builder.addCase(createProduct.fulfilled, (state, action) => {
+      state.loading = false; // Yükleniyor durumu
+      state.error = null; // Hata mesajı sıfırlanıyor
+
+      state.productsArr = [...state.productsArr, action.payload.content]; // Yeni verilerle listeyi güncelle
+    });
+
+    builder.addCase(createProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
     });
 
     builder.addCase(updateProduct.fulfilled, (state, action) => {
@@ -117,8 +134,9 @@ const ProductsReducer = createSlice({
       state.loading = false; // Yükleniyor durumu
       state.error = null; // Hata mesajı sıfırlanıyor
       state.number = action.payload.page + 1; // Sayfa numarasını güncelle (0-indexli backend için +1 ekle)
-      state.size = action.payload.limit; // Sayfa başı kaç veri olduğunu güncelle
-
+      state.size = action.payload.size; // Sayfa başı kaç veri olduğunu güncelle
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
       state.searchProducts = action.payload.content; // Yeni verilerle listeyi güncelle
     });
 

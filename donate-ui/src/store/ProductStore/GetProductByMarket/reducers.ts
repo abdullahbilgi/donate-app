@@ -83,6 +83,7 @@ const productByMarket = createSlice({
       .addCase(getProductsByMarket.fulfilled, (state, action) => {
         const marketId = action.meta.arg;
 
+        console.log("77", action.payload);
         state[marketId] = {
           loading: false,
           error: null,

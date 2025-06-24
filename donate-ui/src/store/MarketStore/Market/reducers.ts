@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteMarket, getMarketByUser } from "./thunks";
+import { createMarket, deleteMarket, getMarketByUser } from "./thunks";
 
 export interface IUCity {
   id: number;
@@ -55,19 +55,33 @@ const marketReducer = createSlice({
         state.loading = false;
         state.error = null;
         state.marketsArr = [];
+      })
+      .addCase(createMarket.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createMarket.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.marketsArr = [...state.marketsArr, action.payload];
+      })
+      .addCase(createMarket.rejected, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteMarket.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(deleteMarket.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.marketsArr = state.marketsArr.filter(
+          (market) => market.id !== action.payload.id
+        );
+      })
+      .addCase(deleteMarket.rejected, (state, action) => {
+        state.loading = false;
+        state.error = null;
       });
-    // .addCase(deleteMarket.pending, (state, action) => {
-    //   state.loading = true;
-    // })
-    // .addCase(deleteMarket.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   state.error = null;
-    //   state.marketsArr = action.payload;
-    // })
-    // .addCase(deleteMarket.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = null;
-    // });
   },
 });
 

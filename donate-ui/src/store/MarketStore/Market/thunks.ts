@@ -17,7 +17,7 @@ export const getMarketByUser = createAsyncThunk(
 );
 
 export const deleteMarket = createAsyncThunk(
-  "getMarketByUser",
+  "deleteMarket",
   async (marketId: any, thunkAPI) => {
     console.log("thunk");
     try {
@@ -27,6 +27,32 @@ export const deleteMarket = createAsyncThunk(
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue("Ürün silinirken bir hata oluştu");
+    }
+  }
+);
+
+type LocationInfo = {
+  cityName: string;
+  displayName: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+  regionName: string;
+  taxNumber: string;
+  userId: number;
+  zipCode: string;
+};
+
+export const createMarket = createAsyncThunk(
+  "createMarket",
+  async (newMarket: LocationInfo, thunkAPI) => {
+    try {
+      const res = await axiosPrivate.post("/markets", newMarket);
+
+      console.log(res.data);
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue("Market eklenirken bir hata oluştu");
     }
   }
 );

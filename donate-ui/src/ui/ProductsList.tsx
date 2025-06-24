@@ -26,13 +26,8 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <div className="2xl:col-span-9">
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="grow">
-          Showing All <b>545</b> items results
-        </p>
-      </div>
       <div
-        className="grid grid-cols-1 mt-5 md:grid-cols-2 [&.gridView]:grid-cols-1 xl:grid-cols-4 group [&.gridView]:xl:grid-cols-1 gap-x-5"
+        className="grid grid-cols-1 md:grid-cols-2 [&.gridView]:grid-cols-1 xl:grid-cols-4 group [&.gridView]:xl:grid-cols-1 gap-x-5"
         id="cardGridView"
       >
         {products.map((item) => {

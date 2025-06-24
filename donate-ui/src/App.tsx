@@ -3,12 +3,12 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AppLayout from "./pages/AppLayout";
 import Signup from "./pages/Signup";
-import DonateCellProduct from "./pages/donateSellProduct";
 import Products from "./pages/Products";
 import { useEffect, useState } from "react";
 import { setToken, setupInterceptors } from "./api/interceptors";
 import { Markets } from "./pages/Markets";
 import ProductsByMarket from "./pages/ProductsByMarket";
+import AddProductForm from "./pages/AddProductForm";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -29,7 +29,7 @@ function App() {
         <Route element={<AppLayout />}>
           <Route index element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/donateCellProduct" element={<DonateCellProduct />} />
+          <Route path="/addProduct" element={<AddProductForm />} />
           <Route path="/products" element={<Products />} />
           <Route path="/markets" element={<Markets />} />
           <Route path="/productsByMarket/:id" element={<ProductsByMarket />} />
@@ -45,4 +45,5 @@ function App() {
 export default App;
 
 // product ekleme donate - normal
-// sonra products pagination bak
+// market ekleme, güncelleme, silme
+// sonra delete modali ayarla gerekli yerlere

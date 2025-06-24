@@ -24,6 +24,7 @@ export const getAllProducts = createAsyncThunk<any, GetAllProductsArgs>(
   "getAllProducts",
   async function ({ page = 0 }) {
     const res = await axiosPrivate.get(`/products?page=${page}`);
+
     return res.data;
   }
 );
@@ -77,6 +78,7 @@ export const searchProduct = createAsyncThunk(
     const res = await axiosPrivate.get(
       `/products/search?keyword=${key}&page=0&size=10`
     );
+
     return res.data;
   }
 );

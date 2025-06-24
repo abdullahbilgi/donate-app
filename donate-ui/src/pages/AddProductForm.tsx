@@ -22,7 +22,7 @@ import { getMarketByUser } from "../store/MarketStore/Market/thunks";
 interface Inputs {
   name: string;
   productionDate: string;
-  lastDonateDate: string;
+  lastDonatedDate: string;
   expiryDate: string; //stt
   price: number;
   discountedPrice: number;
@@ -32,7 +32,14 @@ interface Inputs {
   categoryId: number;
   marketId: number;
 }
-const DonateCellProduct = () => {
+
+interface AddProductFormProps {
+  type?: string; // opsiyonel olsun istiyorsan
+  marketId?: number;
+}
+
+const AddProductForm = ({ type = "", marketId }: AddProductFormProps) => {
+  console.log(type);
   const {
     register,
     handleSubmit,
@@ -40,16 +47,19 @@ const DonateCellProduct = () => {
     getValues,
   } = useForm<Inputs>();
 
-  const { categories } = useAppSelector((state) => state.Category);
-  const { marketsArr } = useAppSelector((state) => state.Market);
-
   const userId = localStorage.getItem("userId");
   const dispatch = useAppDispatch();
 
+  const { categories } = useAppSelector((state) => state.Category);
+  const { marketsArr } = useAppSelector((state) => state.Market);
+
   useEffect(() => {
     dispatch(getCategory());
-
-    dispatch(getMarketByUser(userId));
+  }, []);
+  useEffect(() => {
+    if (type !== "modal") {
+      dispatch(getMarketByUser(userId));
+    }
   }, []);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -59,11 +69,12 @@ const DonateCellProduct = () => {
     dispatch(
       createProduct({
         ...data,
-        lastDonatedDate: `${data.lastDonateDate}T10:00:00`,
+        lastDonatedDate: `${data.lastDonatedDate}T10:00:00`,
         productionDate: `${data.productionDate}T10:00:00`,
         expiryDate: `${data.expiryDate}T10:00:00`,
         price: Number(data.price.toFixed(1)),
         productStatus: "REAL",
+        marketId: marketId,
       })
     );
   };
@@ -72,36 +83,46 @@ const DonateCellProduct = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="relative bg-[url('/images/donation.jpg')] bg-cover bg-center h-[70vh]">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="absolute p-20 text-center text-gray-200">
-          <h1 className="text-4xl font-bold mb-10">
-            Seninle Büyüyen Bir İyilik Hareketi
-          </h1>
-          <p className="text-xl font-medium  tracking-wider leading-relaxed mb-13">
-            Tarihi yaklaşan ürünlerini veya tüketemeyecegin ürünlerini
-            paylaşarak hem ihtiyacı olanlara destek ol, hem de israfı önle.
-            Seninle birlikte bu zinciri büyütelim. Her yeni ürün, her paylaşım,
-            her katkı bizi biraz daha büyütüyor.
-            <strong>Sen de bu topluluğun bir parçası ol.</strong> Bugün bir
-            paylaşım senden, yarın binlerce iyilik hepimizden.
-          </p>
-          <p className="text-xl font-medium  tracking-wider leading-relaxed">
-            LastBite'i daha yakından tanımak ister misiniz? Biz, ihtiyaç
-            sahipleriyle fazla ürünleri buluşturarak israfı önlemeyi ve
-            toplumsal dayanışmayı büyütmeyi hedefliyoruz. Misyonumuz,
-            değerlerimiz ve diger tüm sürecler hakkında daha fazla bilgi almak
-            için lütfen Hakkımızda sayfamıza göz atın!
-          </p>
-        </div>
+      {type !== "modal" && (
+        <div className="relative bg-[url('/images/donation.jpg')] bg-cover bg-center h-[70vh]">
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute p-20 text-center text-gray-200">
+            <h1 className="text-4xl font-bold mb-10">
+              Seninle Büyüyen Bir İyilik Hareketi
+            </h1>
+            <p className="text-xl font-medium  tracking-wider leading-relaxed mb-13">
+              Tarihi yaklaşan ürünlerini veya tüketemeyecegin ürünlerini
+              paylaşarak hem ihtiyacı olanlara destek ol, hem de israfı önle.
+              Seninle birlikte bu zinciri büyütelim. Her yeni ürün, her
+              paylaşım, her katkı bizi biraz daha büyütüyor.
+              <strong>Sen de bu topluluğun bir parçası ol.</strong> Bugün bir
+              paylaşım senden, yarın binlerce iyilik hepimizden.
+            </p>
+            <p className="text-xl font-medium  tracking-wider leading-relaxed">
+              LastBite'i daha yakından tanımak ister misiniz? Biz, ihtiyaç
+              sahipleriyle fazla ürünleri buluşturarak israfı önlemeyi ve
+              toplumsal dayanışmayı büyütmeyi hedefliyoruz. Misyonumuz,
+              değerlerimiz ve diger tüm sürecler hakkında daha fazla bilgi almak
+              için lütfen Hakkımızda sayfamıza göz atın!
+            </p>
+          </div>
 
-        <div className="flex items-center gap-2 absolute -bottom-8 left-1/2 -translate-x-1/2 bg-lime-300 text-teal-800 font-semibold text-xl py-3 px-9 rounded-md ">
-          Donation Form <FaArrowDown />
+          <div className="flex items-center gap-2 absolute -bottom-8 left-1/2 -translate-x-1/2 bg-lime-300 text-teal-800 font-semibold text-xl py-3 px-9 rounded-md ">
+            Donation Form <FaArrowDown />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="py-15 flex items-center justify-center">
-        <div className="p-20 border border-gray-300 shadow-lg">
+      <div
+        className={`${
+          type !== "modal" ? "py-15" : ""
+        }  flex items-center justify-center`}
+      >
+        <div
+          className={`${
+            type !== "modal" ? "p-20" : "p-10"
+          } border border-gray-300 shadow-lg`}
+        >
           <Form
             onSubmit={handleSubmit(onSubmit, (errors) => console.log(errors))}
             formVariation="donate"
@@ -280,36 +301,38 @@ const DonateCellProduct = () => {
             >
               <Input
                 type="date"
-                id="lastDonateDate"
+                id="lastDonatedDate"
                 inputVariation="donate"
-                {...register("lastDonateDate", {
+                {...register("lastDonatedDate", {
                   required: "This field is required!",
                 })}
               />
             </FormRow>
 
-            <FormRow
-              labelText={
-                <>
-                  <BsChatLeftText /> Market
-                </>
-              }
-            >
-              <select
-                className="bg-gray-100 p-3 rounded-lg w-90 border border-gray-300"
-                {...register("marketId", {
-                  required: "This field is required!",
-                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
-                })}
+            {type !== "modal" && (
+              <FormRow
+                labelText={
+                  <>
+                    <BsChatLeftText /> Market
+                  </>
+                }
               >
-                <option value="">Market Sec</option>
-                {marketsArr.map((market) => (
-                  <option key={market.id} value={market.id}>
-                    {market.name}
-                  </option>
-                ))}
-              </select>
-            </FormRow>
+                <select
+                  className="bg-gray-100 p-3 rounded-lg w-90 border border-gray-300"
+                  {...register("marketId", {
+                    required: "This field is required!",
+                    setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                  })}
+                >
+                  <option value="">Market Sec</option>
+                  {marketsArr.map((market) => (
+                    <option key={market.id} value={market.id}>
+                      {market.name}
+                    </option>
+                  ))}
+                </select>
+              </FormRow>
+            )}
 
             <FormRow
               labelText={
@@ -355,4 +378,4 @@ const DonateCellProduct = () => {
   );
 };
 
-export default DonateCellProduct;
+export default AddProductForm;
