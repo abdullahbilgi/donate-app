@@ -39,6 +39,17 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartById(id));
     }
 
+    @GetMapping("/purchasedProducts/{userId}")
+    public ResponseEntity<List<CartResponse>> getPurchasedProductsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(cartService.getPurchasedProductsByUserId(userId));
+    }
+
+    @GetMapping("/soldProducts/{userId}")
+    public ResponseEntity<List<CartResponse>> getSoldProductsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(cartService.getSoldProductsByUserId(userId));
+    }
+
+
     @GetMapping("/currentUserCart/{userId}")
     public ResponseEntity<CartResponse> getCurrentUserCart(@PathVariable Long userId) {
         return ResponseEntity.ok(cartService.getCurrentUserCart(userId));
@@ -106,8 +117,10 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
     @GetMapping("/purchasedProducts/{id}")
     public ResponseEntity<List<PurchasesProductResponse>> getPurchasesProductByUser(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getPurchasesProductsByUser(id));
     }
+    **/
 }

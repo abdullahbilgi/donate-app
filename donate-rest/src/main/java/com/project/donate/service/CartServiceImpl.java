@@ -187,6 +187,25 @@ public class CartServiceImpl implements CartService {
        
     }
 
+    @Override
+    public List<CartResponse> getPurchasedProductsByUserId(Long userId) {
+        List<Cart> approvedCarts = cartRepository.findAllByUserIdAndStatusOrderByPurchaseDateDesc(userId, Status.APPROVED);
+
+        return approvedCarts.stream()
+                .map(cartMapper::mapToDto)
+                .toList();
+    }
+
+
+    @Override
+    public List<CartResponse> getSoldProductsByUserId(Long userId) {
+        List<Cart> carts = cartRepository.findApprovedCartsByProductSellerUserId(userId, Status.APPROVED);
+        return carts.stream()
+                .map(cartMapper::mapToDto)
+                .toList();
+    }
+
+
     /**
      * private double calculateNewCartTotalPrice(List<CartProduct> cartProducts) {
      * double totalPrice  = 0;

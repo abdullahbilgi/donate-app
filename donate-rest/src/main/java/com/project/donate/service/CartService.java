@@ -45,5 +45,11 @@ public interface CartService {
 
     void removeProductFromCurrentCart(RemoveProductFromCartRequest request);
 
+    List<CartResponse> getPurchasedProductsByUserId(Long userId);
+
+    List<CartResponse> getSoldProductsByUserId(Long userId);
+
+
+
 
 }
