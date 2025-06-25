@@ -47,7 +47,7 @@ public interface CartService {
 
     List<CartResponse> getPurchasedProductsByUserId(Long userId);
 
-    List<CartResponse> getSoldProductsByUserId(Long userId);
+    List<GetSoldProductsResponse> getSoldProductsByUserId(Long userId);
 
 
 
