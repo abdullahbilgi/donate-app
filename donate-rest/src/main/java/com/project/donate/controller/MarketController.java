@@ -31,7 +31,7 @@ public class MarketController {
     @GetMapping("/status/{status}")
     public ResponseEntity<Page<MarketResponse>> getMarketsByStatus(
             @PathVariable Status status,
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(
                 marketService.getMarketsByStatusPageable(status,pageable)
         );

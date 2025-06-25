@@ -32,7 +32,7 @@ public class OrganizationController {
     @GetMapping("/status/{status}")
     public ResponseEntity<Page<OrganizationResponse>> getMarketsByStatus(
             @PathVariable Status status,
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(
                 organizationService.getOrganizationsByStatusPageable(status, pageable)
         );

@@ -30,14 +30,14 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<ProductDocument>> getAllProducts(
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
     {
         return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCategory(
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -46,7 +46,7 @@ public class ProductController {
 
     @GetMapping("/city/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCity(
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -56,7 +56,7 @@ public class ProductController {
 
     @GetMapping("/region/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByRegion(
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -65,7 +65,7 @@ public class ProductController {
 
     @GetMapping("/market/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByMarket(
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -77,7 +77,7 @@ public class ProductController {
             @RequestParam String keyword,
             //@RequestParam(required = false) Long regionId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "12") int size
     ) {
         return productService.searchProduct(keyword, PageRequest.of(page, size));
     }
