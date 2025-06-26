@@ -105,9 +105,8 @@ public class CartController {
     }
 
     @PutMapping("/approveCart/{id}")
-    public ResponseEntity<Void> approveCart(@PathVariable Long id) {
-        cartService.approveCart(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CartResponse> approveCart(@PathVariable Long id) {
+        return ResponseEntity.ok(cartService.approveCart(id));
     }
 
     @DeleteMapping("/{id}")

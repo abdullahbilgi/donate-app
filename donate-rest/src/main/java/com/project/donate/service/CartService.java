@@ -23,7 +23,7 @@ public interface CartService {
 
     void cancelCart(Long id);
 
-    void approveCart(Long id);
+    CartResponse approveCart(Long id);
 
     void deleteCart(Long id);
 

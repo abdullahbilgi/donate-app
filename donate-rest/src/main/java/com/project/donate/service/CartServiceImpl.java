@@ -274,7 +274,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void approveCart(Long id) {
+    public CartResponse approveCart(Long id) {
         Cart cart = cartProductService.getUsersCurrentCart(id);
         List<CartProduct> cartProducts = cartProductService.getCartProducts();
         for (CartProduct cartProduct : cartProducts) {
@@ -364,6 +364,7 @@ public class CartServiceImpl implements CartService {
 
         mailProducer.sendToQueue(mailMessage);
 
+        return cartMapper.mapToDto(cart);
     }
 
 

@@ -77,8 +77,9 @@ public class MarketController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MARKET','ROLE_USER')")
-    public ResponseEntity<Void> deleteMarket(@PathVariable Long id) {
+    public ResponseEntity<Long> deleteMarket(@PathVariable Long id) {
         marketService.deleteMarket(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(id); // id'yi başarılı bir şekilde döndürüyor
     }
+
 }
