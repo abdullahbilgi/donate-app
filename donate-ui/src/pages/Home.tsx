@@ -2,8 +2,7 @@ import { useNavigate } from "react-router";
 import Button from "../ui/Button";
 import { FaHandHoldingHeart } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
-import { getAllProducts } from "../store/products/thunks";
-import { useAppDispatch, useAppSelector } from "../store";
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -24,7 +23,7 @@ const Home = () => {
             {" "}
             <Button
               onClick={() => {
-                navigate("/donateCellProduct");
+                navigate("/addProduct");
               }}
               size="xxl"
               variation="donation"

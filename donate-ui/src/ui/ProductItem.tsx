@@ -4,6 +4,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from "react";
 import { addProductToCart } from "../store/CartStore/Cart/thunks";
 import { useAppDispatch, useAppSelector } from "../store";
+import QuantityInput from "./QuantityInput";
 
 interface ProductItemProps {
   id: number;
@@ -63,6 +64,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
           </h5>
         </div>
         <div className="flex items-center gap-2 mt-4 group-[.gridView]:mt-0 group-[.gridView]:self-end">
+          {/* <QuantityInput id={id} /> */}
           <Button
             className="w-full h-[38.39px] rounded-xs"
             onClick={addToCartHandler}

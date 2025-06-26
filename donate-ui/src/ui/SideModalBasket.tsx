@@ -5,7 +5,10 @@ import BasketItem from "./BasketItem";
 import BasketPriceInfoRow from "./BasketPriceInfoRow";
 import Button from "./Button";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
+import { createOrder } from "../store/Order/thunks";
+import Modal from "./Modal";
+import { CreateOrderModalContent } from "./CreateOrderModalContent";
 interface SideModalBasketProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,19 +19,10 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
   onClose,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+
   const { cartItems, subTotal, totalDiscPrice, totalPrice } = useAppSelector(
     (state: any) => state.Cart
   );
-
-  // const { subTotal, totalDisc } = cartItems.reduce(
-  //   (acc: { subTotal: number; totalDisc: number }, item: any) => {
-  //     acc.subTotal += Number(item.product.price);
-  //     acc.totalDisc +=
-  //       Number(item.product.price) - Number(item.product.discountedPrice);
-  //     return acc;
-  //   },
-  //   { subTotal: 0, totalDisc: 0 }
-  // );
 
   useEffect(() => {
     function handleClickOutside(e: any) {
@@ -100,12 +94,19 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
               >
                 Continue Shopping
               </Button>
-              <Button
-                variation="basketButton"
-                className="rounded-xs bg-red-400 text-white hover:bg-red-500"
-              >
-                Checkout
-              </Button>
+              <Modal>
+                <Modal.Open modalName="createOrder">
+                  <Button
+                    variation="basketButton"
+                    className="rounded-xs bg-red-400 text-white hover:bg-red-500"
+                  >
+                    Checkout
+                  </Button>
+                </Modal.Open>
+                <Modal.Window name="createOrder">
+                  <CreateOrderModalContent onClose={onClose} />
+                </Modal.Window>
+              </Modal>
             </div>
           </div>
         </div>

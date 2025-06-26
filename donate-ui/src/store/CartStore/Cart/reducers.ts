@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isFulfilled } from "@reduxjs/toolkit";
 import { addProductToCart, removeItemFromCart, updateCartItem } from "./thunks";
 import { getCartById } from "../GetCartById/thunks";
+import { createOrder } from "../../Order/thunks";
 
 interface ProductResponse {
   id: number;
@@ -75,6 +76,12 @@ const CartReducer = createSlice({
           0
         );
         state.totalPrice = action.payload.totalPrice;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.cartItems = [];
+        state.totalDiscPrice = 0;
+        state.subTotal = 0;
+        state.totalPrice = 0;
       })
       .addCase(getCartById.rejected, (state, action) => {
         // sayfa ilk yüklendiginde(applayout) cart verilerini getirir

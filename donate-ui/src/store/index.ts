@@ -6,6 +6,7 @@ import categoryReducer from "./Category/reducers";
 import marketReducer from "./MarketStore/Market/reducers";
 import productByMarket from "./ProductStore/GetProductByMarket/reducers";
 import citiesReducer from "./City/reducers";
+import ordersReducer from "./Order/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
@@ -17,14 +18,15 @@ const store = configureStore({
     Market: marketReducer,
     ProductsByMarket: productByMarket,
     City: citiesReducer,
+    Order: ordersReducer,
   },
 });
 
-// 🔸 Burada tipleri tanımlıyoruz:
+// Burada tipleri tanımlıyoruz:
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// 🔸 useDispatch ve useSelector'u tipli hale getiriyoruz:
+// useDispatch ve useSelector'u tipli hale getiriyoruz:
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 

@@ -10,11 +10,7 @@ const AppLayout = () => {
   useEffect(() => {
     dispatch(getCartById(userId));
   });
-  // const { cartItems, subTotal, totalDiscPrice, totalPrice } = useAppSelector(
-  //   (state: any) => state.Cart
-  // );
 
-  // console.log(subTotal, totalPrice);
   return (
     <div
       className="grid grid-rows-[auto_1fr] min-h-svh font-poppins"

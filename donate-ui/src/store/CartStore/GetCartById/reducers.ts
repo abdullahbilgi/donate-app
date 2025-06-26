@@ -87,48 +87,6 @@ const CartReducer = createSlice({
         state.error = action.payload as
           | string
           | "Ürün eklenirken bir hata oluştu";
-      })
-
-      .addCase(updateCartItem.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateCartItem.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-
-        const existingItem = state.cartItems.find(
-          (item) => item.product.id === action.payload.product.id
-        );
-
-        if (existingItem) {
-          existingItem.product = action.payload.product;
-          existingItem.productQuantity = action.payload.productQuantity;
-        }
-      })
-      .addCase(updateCartItem.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as
-          | string
-          | "Ürün eklenirken bir hata oluştu";
-      })
-      .addCase(removeItemFromCart.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(removeItemFromCart.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-
-        const existingItem = state.cartItems.filter(
-          (item) => item.product.id !== action.payload.product.id
-        );
-
-        if (!existingItem) return;
-      })
-      .addCase(removeItemFromCart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as
-          | string
-          | "Ürün eklenirken bir hata oluştu";
       });
   },
 });

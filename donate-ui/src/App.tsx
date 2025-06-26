@@ -9,6 +9,7 @@ import { setToken, setupInterceptors } from "./api/interceptors";
 import { Markets } from "./pages/Markets";
 import ProductsByMarket from "./pages/ProductsByMarket";
 import AddProductForm from "./pages/AddProductForm";
+import { Orders } from "./pages/Orders";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -32,6 +33,7 @@ function App() {
           <Route path="/addProduct" element={<AddProductForm />} />
           <Route path="/products" element={<Products />} />
           <Route path="/markets" element={<Markets />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/productsByMarket/:id" element={<ProductsByMarket />} />
         </Route>
 

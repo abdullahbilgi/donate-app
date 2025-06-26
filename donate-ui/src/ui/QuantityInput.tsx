@@ -7,6 +7,7 @@ import {
 
 const QuantityInput = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
+  console.log(id);
   const currItem = useAppSelector((state: any) =>
     state.Cart.cartItems.find((item: any) => item.product.id === id)
   );

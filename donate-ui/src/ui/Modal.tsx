@@ -70,7 +70,6 @@ function Window({ children, name }: WindowProps) {
 
   const ref = useOutsideClick<HTMLDivElement>(close);
 
-  console.log(name, openName);
   if (name !== openName) return null;
 
   return (
