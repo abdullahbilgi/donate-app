@@ -44,9 +44,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.getPurchasedProductsByUserId(userId));
     }
 
-    @GetMapping("/soldProducts/{userId}")
-    public ResponseEntity<List<GetSoldProductsResponse>> getSoldProductsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(cartService.getSoldProductsByUserId(userId));
+    @GetMapping("/soldProducts/{marketId}")
+    public ResponseEntity<List<GetSoldProductsResponse>> getSoldProductsByUser(@PathVariable Long marketId) {
+        return ResponseEntity.ok(cartService.getSoldProductsByMarketId(marketId));
     }
 
 

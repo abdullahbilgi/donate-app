@@ -24,12 +24,12 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     FROM Cart c
     JOIN c.cartProducts cp
     JOIN cp.product p
-    JOIN p.market m
     WHERE c.status = :status
-      AND m.user.id = :userId
+      AND p.market.id = :marketId
     ORDER BY c.purchaseDate DESC
 """)
-    List<Cart> findApprovedCartsByProductSellerUserId(@Param("userId") Long userId, @Param("status") Status status);
+    List<Cart> findApprovedCartsByMarketId(@Param("marketId") Long marketId, @Param("status") Status status);
+
 
 
 

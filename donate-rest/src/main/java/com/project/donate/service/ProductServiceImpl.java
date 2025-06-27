@@ -190,11 +190,14 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Expiry date must be after production date!");
         }
 
-        if (product.getLastDonatedDate() != null && product.getExpiryDate() != null && product.getProductStatus()!=ProductStatus.DONATE &&
-                !product.getLastDonatedDate().isEqual(product.getExpiryDate().minusDays(3))) {
-            log.warn("{} Last donated date must be 3 days before expiry date!", GeneralUtil.extractUsername());
-            throw new IllegalArgumentException("Last donated date must be 3 days before expiry date!");
+        if (product.getLastDonatedDate() != null && product.getExpiryDate() != null &&
+                product.getProductStatus() != ProductStatus.DONATE &&
+                product.getLastDonatedDate().isAfter(product.getExpiryDate().minusDays(3))) {
+
+            log.warn("{} Last donated date must be at least 3 days before expiry date!", GeneralUtil.extractUsername());
+            throw new IllegalArgumentException("Last donated date must be at least 3 days before expiry date!");
         }
+
     }
 
     @Scheduled(cron = "0 1 0 * * ?") // Her gün saat 00:01:00'da çalışır
