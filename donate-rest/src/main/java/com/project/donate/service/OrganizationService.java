@@ -41,4 +41,6 @@ public interface OrganizationService {
     OrganizationResponse confirmOrganization(Long organizationId);
 
     OrganizationResponse rejectOrganization(Long organizationId);
+
+    List<OrganizationResponse> getPendingOrganizations();
 }

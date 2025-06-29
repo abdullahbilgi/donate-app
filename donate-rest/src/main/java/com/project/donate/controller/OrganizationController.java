@@ -49,6 +49,11 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationService.applyOrganization(request));
     }
 
+    @GetMapping("/applies")
+    public ResponseEntity<List<OrganizationResponse>> getOrganizationApplies() {
+        return ResponseEntity.ok(organizationService.getPendingOrganizations());
+    }
+
     @PostMapping("/confirm/{organizationId}")
     public ResponseEntity<OrganizationResponse> confirmOrganization(@PathVariable Long organizationId) {
         return ResponseEntity.ok(organizationService.confirmOrganization(organizationId));

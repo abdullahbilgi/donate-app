@@ -48,4 +48,11 @@ public class OrganizationMapper{
         organization.setName(request.getName());
         organization.setTaxNumber(request.getTaxNumber());
     }
+
+    public List<OrganizationResponse> mapToDtoList(List<Organization> organizations) {
+        return organizations.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -252,6 +252,12 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationMapper.mapToDto(organization);
     }
 
+    public List<OrganizationResponse> getPendingOrganizations() {
+        List<Organization> pendingOrgs = organizationRepository.findAllByStatus(Status.PENDING);
+        return organizationMapper.mapToDtoList(pendingOrgs);
+    }
+
+
     private OrganizationResponse saveAndMap(Organization organization, String status) {
         Organization savedOrganization = organizationRepository.save(organization);
 

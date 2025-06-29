@@ -18,4 +18,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     List<Organization> getOrganizationsByStatusAndIsActiveTrue(Status status);
 
     Page<Organization> getOrganizationsByStatusAndIsActiveTrue(Status status, Pageable pageable);
+
+    List<Organization> findAllByStatus(Status status);
 }
