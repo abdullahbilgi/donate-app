@@ -52,7 +52,9 @@ public class Organization {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
+    /**
     @Column(columnDefinition = "jsonb")
     @Type(JsonType.class)
     private List<ProductItem> productItems;
+    **/
 }

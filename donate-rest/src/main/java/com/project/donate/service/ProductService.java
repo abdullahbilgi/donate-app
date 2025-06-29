@@ -46,6 +46,8 @@ public interface ProductService {
 
     Page<ProductDocument> searchProduct(String keyword, Pageable pageable);
 
+    Page<ProductDocument> getDonatedProducts(Pageable pageable);
+
 
 }
 

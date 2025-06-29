@@ -1,5 +1,6 @@
 package com.project.donate.controller;
 
+import com.project.donate.dto.Request.ApplyOrganizationRequest;
 import com.project.donate.dto.Request.OrganizationRequest;
 import com.project.donate.dto.Response.OrganizationResponse;
 import com.project.donate.enums.Status;
@@ -43,6 +44,25 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationService.getOrganizationById(id));
     }
 
+    @PostMapping("/apply")
+    public ResponseEntity<OrganizationResponse> createOrganization(@RequestBody ApplyOrganizationRequest request) {
+        return ResponseEntity.ok(organizationService.applyOrganization(request));
+    }
+
+    @PostMapping("/confirm/{organizationId}")
+    public ResponseEntity<OrganizationResponse> confirmOrganization(@PathVariable Long organizationId) {
+        return ResponseEntity.ok(organizationService.confirmOrganization(organizationId));
+    }
+
+    @PostMapping("/reject/{organizationId}")
+    public ResponseEntity<OrganizationResponse> rejectOrganization(@PathVariable Long organizationId) {
+        return ResponseEntity.ok(organizationService.rejectOrganization(organizationId));
+    }
+
+
+
+    /**
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_BENEFACTOR')")
     public ResponseEntity<OrganizationResponse> createOrganization(@RequestBody OrganizationRequest request) {
@@ -61,6 +81,7 @@ public class OrganizationController {
             @RequestParam(defaultValue = "1") int quantity) {
         return ResponseEntity.ok(organizationService.removeProduct(id, productId, quantity));
     }
+     **/
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_BENEFACTOR')")

@@ -23,4 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllByMarket_Address_Region_City_IdAndIsActiveTrue(Long cityId, Pageable pageable);
 
     Page<Product> findAllByMarketIdAndIsActiveTrue(Long cityId, Pageable pageable);
+
+
+    Page<Product> findAllByCategory_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(Long categoryId, Double price, Pageable pageable);
+    Page<Product> findAllByMarket_Address_Region_City_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(Long cityId, Double price, Pageable pageable);
+    Page<Product> findAllByMarket_Address_Region_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(Long regionId, Double price, Pageable pageable);
+    Page<Product> findAllByMarketIdAndIsActiveTrueAndDiscountedPriceGreaterThan(Long marketId, Double price, Pageable pageable);
+
 }

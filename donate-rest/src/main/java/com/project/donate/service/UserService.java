@@ -10,4 +10,6 @@ public interface UserService {
     User getUserEntityById(Long id);
 
     User getUserEntityByUsername(String username);
+
+    void save(User user);
 }

@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

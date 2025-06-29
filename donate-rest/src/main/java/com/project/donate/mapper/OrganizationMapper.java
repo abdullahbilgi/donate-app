@@ -1,6 +1,7 @@
 package com.project.donate.mapper;
 
 
+import com.project.donate.dto.Request.ApplyOrganizationRequest;
 import com.project.donate.dto.Request.MarketRequest;
 import com.project.donate.dto.Request.OrganizationRequest;
 import com.project.donate.dto.Response.*;
@@ -31,14 +32,13 @@ public class OrganizationMapper{
                 .address(addressResponse)
                 .name(organization.getName())
                 .status(String.valueOf(organization.getStatus()))
-                .productItems(organization.getProductItems())
+                //.productItems(organization.getProductItems())
                 .taxNumber(organization.getTaxNumber())
                 .build();
     }
 
-    public Organization mapToEntity(OrganizationRequest request) {
+    public Organization mapToEntity(ApplyOrganizationRequest request) {
         return Organization.builder()
-                .id(request.getId())
                 .name(request.getName())
                 .taxNumber(request.getTaxNumber())
                 .build();

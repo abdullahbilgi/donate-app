@@ -12,6 +12,7 @@ import com.project.donate.mapper.ProductMapper;
 import com.project.donate.model.Category;
 import com.project.donate.model.Market;
 import com.project.donate.model.Product;
+import com.project.donate.model.User;
 import com.project.donate.repository.ProductRepository;
 import com.project.donate.util.GeneralUtil;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
     private final MarketService marketService;
     private final ElasticSearchService elasticSearchService;
     private final ProductSearchService productSearchService;
+    private final UserService userService;
 
 
     @Override
@@ -126,32 +128,81 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponse> getProductsByCategoryId(Long id, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByCategory_IdAndIsActiveTrue(id, pageable);
-        return products.map(productMapper::mapToDto); // Mapper'ı kendi yapına göre uyarla
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        boolean isBenefactor = user.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ROLE_BENEFACTOR"));
+
+        Page<Product> products;
+
+        if (isBenefactor) {
+            products = productRepository.findAllByCategory_IdAndIsActiveTrue(id, pageable);
+        } else {
+            products = productRepository.findAllByCategory_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(id, 0.0, pageable);
+        }
+
+        return products.map(productMapper::mapToDto);
     }
 
     @Override
     public Page<ProductResponse> getProductsByCityId(Long cityId, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByMarket_Address_Region_City_IdAndIsActiveTrue(cityId, pageable);
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        boolean isBenefactor = user.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ROLE_BENEFACTOR"));
+
+        Page<Product> products;
+
+        if (isBenefactor) {
+            products = productRepository.findAllByMarket_Address_Region_City_IdAndIsActiveTrue(cityId, pageable);
+        } else {
+            products = productRepository.findAllByMarket_Address_Region_City_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(cityId, 0.0, pageable);
+        }
+
         return products.map(productMapper::mapToDto);
     }
 
-
     @Override
     public Page<ProductResponse> getProductsByRegionId(Long regionId, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByMarket_Address_Region_IdAndIsActiveTrue(regionId, pageable);
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        boolean isBenefactor = user.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ROLE_BENEFACTOR"));
+
+        Page<Product> products;
+
+        if (isBenefactor) {
+            products = productRepository.findAllByMarket_Address_Region_IdAndIsActiveTrue(regionId, pageable);
+        } else {
+            products = productRepository.findAllByMarket_Address_Region_IdAndIsActiveTrueAndDiscountedPriceGreaterThan(regionId, 0.0, pageable);
+        }
+
         return products.map(productMapper::mapToDto);
     }
 
     @Override
     public Page<ProductResponse> getProductsByMarketId(Long marketId, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByMarketIdAndIsActiveTrue(marketId, pageable);
+        User user = userService.getUserEntityByUsername(GeneralUtil.extractUsername());
+        boolean isBenefactor = user.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ROLE_BENEFACTOR"));
+
+        Page<Product> products;
+
+        if (isBenefactor) {
+            products = productRepository.findAllByMarketIdAndIsActiveTrue(marketId, pageable);
+        } else {
+            products = productRepository.findAllByMarketIdAndIsActiveTrueAndDiscountedPriceGreaterThan(marketId, 0.0, pageable);
+        }
+
         return products.map(productMapper::mapToDto);
     }
+
 
     @Override
     public Page<ProductDocument> searchProduct(String keyword, Pageable pageable) {
         return productSearchService.searchByTextAndCity(keyword,pageable);
+    }
+
+    @Override
+    public Page<ProductDocument> getDonatedProducts(Pageable pageable) {
+        return productSearchService.getAllDonatedProductsPrioritizedByLocation(pageable);
     }
 
 

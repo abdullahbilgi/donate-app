@@ -1,7 +1,9 @@
 package com.project.donate.service;
 
+import com.project.donate.dto.Request.ApplyOrganizationRequest;
 import com.project.donate.dto.Request.OrganizationRequest;
 import com.project.donate.dto.Response.OrganizationResponse;
+import com.project.donate.enums.Role;
 import com.project.donate.enums.Status;
 import com.project.donate.exception.OutOfStockException;
 import com.project.donate.exception.ResourceNotFoundException;
@@ -32,6 +34,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final ProductRepository productRepository;
     private final UserService userService;
 
+    private final CityService cityService;
+    private final RegionService regionService;
 
     @Override
     public List<OrganizationResponse> getAllOrganization() {
@@ -55,7 +59,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 });
     }
 
-
+/**
     @Override
     public OrganizationResponse createOrganization(OrganizationRequest organizationDTO) {
         Organization organization = organizationMapper.mapToEntity(organizationDTO);
@@ -66,6 +70,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         organization.setAddress(address);
         return saveAndMap(organization, "save");
     }
+ **/
 
     @Override
     public OrganizationResponse updateOrganization(Long id, OrganizationRequest request) {
@@ -86,6 +91,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         organizationRepository.save(organization);
 
     }
+
+    /**
 
     @Override
     public OrganizationResponse assignProduct(Long organizationId, ProductItem newItem) {
@@ -129,6 +136,9 @@ public class OrganizationServiceImpl implements OrganizationService {
         organizationRepository.save(organization);
         return organizationMapper.mapToDto(organization);
     }
+     **/
+
+    /**
 
     @Override
     public OrganizationResponse removeProduct(Long organizationId, Long productId, int quantityToRemove) {
@@ -168,6 +178,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationMapper.mapToDto(organization);
     }
 
+     **/
+
 
 
 
@@ -192,6 +204,52 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationRepository.getOrganizationsByStatusAndIsActiveTrue(status)
                 .stream().map(organizationMapper::mapToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrganizationResponse applyOrganization(ApplyOrganizationRequest request) {
+        Organization organization = organizationMapper.mapToEntity(request);
+        User user = userService.getUserEntityById(request.getUserId());
+        organization.setUser(user);
+        organization.setStatus(Status.PENDING);
+
+        Address address = new Address();
+        City city = cityService.getCityEntityByName(request.getCityName());
+        Region region = regionService.getRegionEntityByName(request.getRegionName(),city.getName());
+
+        //Address doldurma
+
+        address.setLatitude(request.getLatitude());
+        address.setLongitude(request.getLongitude());
+        address.setRegion(region);
+        address.setName(request.getDisplayName());
+        address.setZipCode(request.getZipCode());
+        addressService.saveAddress(address);
+        organization.setAddress(address);
+
+        organizationRepository.save(organization);
+
+        return organizationMapper.mapToDto(organization);
+    }
+
+    @Override
+    public OrganizationResponse confirmOrganization(Long organizationId) {
+        Organization organization = getOrganizationEntityById(organizationId);
+        organization.setStatus(Status.APPROVED);
+        organization.setIsActive(true);
+        organizationRepository.save(organization);
+        User user = userService.getUserEntityById(organization.getUser().getId());
+        user.setRole(Role.BENEFACTOR);
+        userService.save(user);
+        return organizationMapper.mapToDto(organization);
+    }
+
+    @Override
+    public OrganizationResponse rejectOrganization(Long organizationId) {
+        Organization organization = getOrganizationEntityById(organizationId);
+        organization.setStatus(Status.REJECTED);
+        organizationRepository.save(organization);
+        return organizationMapper.mapToDto(organization);
     }
 
     private OrganizationResponse saveAndMap(Organization organization, String status) {

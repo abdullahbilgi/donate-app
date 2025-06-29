@@ -35,6 +35,14 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
     }
 
+
+    @GetMapping("/donated")
+    public ResponseEntity<Page<ProductDocument>> getAllDonatedProducts(
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        return ResponseEntity.ok(productService.getDonatedProducts(pageable));
+    }
+
     @GetMapping("/category/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCategory(
             @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,

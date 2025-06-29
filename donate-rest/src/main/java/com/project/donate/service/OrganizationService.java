@@ -1,5 +1,6 @@
 package com.project.donate.service;
 
+import com.project.donate.dto.Request.ApplyOrganizationRequest;
 import com.project.donate.dto.Request.OrganizationRequest;
 import com.project.donate.dto.Response.OrganizationResponse;
 import com.project.donate.enums.Status;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface OrganizationService {
 
-    OrganizationResponse createOrganization(OrganizationRequest request);
+   // OrganizationResponse createOrganization(OrganizationRequest request);
 
     OrganizationResponse updateOrganization(Long id, OrganizationRequest request);
 
@@ -24,9 +25,9 @@ public interface OrganizationService {
 
     void enabledOrganization(Long id);
 
-    OrganizationResponse assignProduct(Long organizationId, ProductItem productItems);
+   // OrganizationResponse assignProduct(Long organizationId, ProductItem productItems);
 
-    OrganizationResponse removeProduct(Long organizationId, Long productId, int quantityToRemove);
+    //OrganizationResponse removeProduct(Long organizationId, Long productId, int quantityToRemove);
 
     void deleteOrganization(Long id);
 
@@ -34,5 +35,10 @@ public interface OrganizationService {
 
     List<OrganizationResponse> getOrganizationsByStatus(Status status);
 
+    OrganizationResponse applyOrganization(ApplyOrganizationRequest request);
 
+
+    OrganizationResponse confirmOrganization(Long organizationId);
+
+    OrganizationResponse rejectOrganization(Long organizationId);
 }
