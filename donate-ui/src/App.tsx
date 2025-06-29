@@ -10,18 +10,26 @@ import { Markets } from "./pages/Markets";
 import ProductsByMarket from "./pages/ProductsByMarket";
 import AddProductForm from "./pages/AddProductForm";
 import { Orders } from "./pages/Orders";
+import SoldProductByMarket from "./pages/SoldProductByMarket";
+import ProtectedRoute from "./Routes/ProtectedRoute";
+import { useAppDispatch, useAppSelector } from "./store";
+import { getMe } from "./store/Auth/Login/thunks";
+import ApplyOrganization from "./pages/ApplyOrganization";
+import AppliesOrganization from "./pages/AppliesOrganization";
 
 function App() {
   const [ready, setReady] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       setToken(token);
       setupInterceptors();
+      dispatch(getMe()); // user Redux update
     }
     setReady(true); // Token kontrolü yapıldıktan sonra render’a geç
-  }, []);
+  }, [dispatch]);
 
   if (!ready) return <div>Yükleniyor...</div>; // İlk yükleme sırasında beklet
   return (
@@ -29,15 +37,82 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<Navigate replace to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/addProduct" element={<AddProductForm />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/markets" element={<Markets />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/productsByMarket/:id" element={<ProductsByMarket />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addProduct"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <AddProductForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/markets"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <Markets />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/productsByMarket/:id"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <ProductsByMarket />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/soldProductByMarket/:id"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <SoldProductByMarket />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/applyOrganization"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <ApplyOrganization />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/appliesOrganization"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <AppliesOrganization />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route path="/login" element={<Login />} />
+
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>

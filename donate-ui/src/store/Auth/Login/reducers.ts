@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout, refreshToken } from "./thunks";
+import { getMe, login, logout, refreshToken } from "./thunks";
 import { setToken, setupInterceptors } from "../../../api/interceptors";
+import { Role } from "../../../permissions/permissions";
 
 interface LoginState {
   userId: number | null;
-  role: string | null;
+  role: Role | null;
   token: string | null;
   refreshToken: string | null;
   error: string;
@@ -13,17 +14,17 @@ interface LoginState {
 }
 
 const initialState: LoginState = {
-  userId: Number(localStorage.getItem("userId")),
-  role: localStorage.getItem("role"),
-  token: localStorage.getItem("accessToken"),
-  refreshToken: localStorage.getItem("refreshToken"),
+  userId: null,
+  role: null,
+  token: null,
+  refreshToken: null,
   error: "",
   loading: false,
   isLogged: false,
 };
 
 const authReducer = createSlice({
-  name: "auth",
+  name: "Auth",
   initialState,
   reducers: {
     setError: (state, action) => {
@@ -40,7 +41,7 @@ const authReducer = createSlice({
 
     builder.addCase(login.fulfilled, (state: any, action: any) => {
       console.log("login: ", action.payload?.access_token);
-      console.log("login: ", action.payload?.refresh_token);
+
       console.log(action.payload);
       state.loading = false;
       state.token = action.payload?.access_token;
@@ -61,6 +62,30 @@ const authReducer = createSlice({
         state.loading = false;
         state.error = (action.payload as string) || "Something Went Wrong";
       })
+
+      //Update redux
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+      });
+
+    builder.addCase(getMe.fulfilled, (state: any, action: any) => {
+      console.log("login: ", action.payload?.access_token);
+
+      console.log(action.payload);
+      state.loading = false;
+      state.userId = action.payload.userId;
+      state.role = action.payload.role;
+      state.token = localStorage.getItem("accessToken"); // tekrar yükle
+      state.refreshToken = localStorage.getItem("refreshToken"); // tekrar yükle
+      state.isLogged = true;
+    });
+
+    builder
+      .addCase(getMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Something Went Wrong";
+      })
+
       //LOGOUT
       .addCase(logout.pending, (state) => {
         state.loading = true;
@@ -78,6 +103,7 @@ const authReducer = createSlice({
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("userId");
         localStorage.removeItem("role");
+        localStorage.removeItem("cartId");
         localStorage.setItem("isLogged", "false");
         state.isLogged = false;
       })
@@ -107,26 +133,6 @@ const authReducer = createSlice({
   },
 });
 
-export const { setError } = authReducer.actions;
+export const AuthActions = authReducer.actions;
 
 export default authReducer.reducer;
-
-// builder.addCase(companyLogin.pending, (state) => {
-//   state.loading = true;
-// });
-// builder.addCase(companyLogin.fulfilled, (state: any, action: any) => {
-//   state.loading = false;
-//   state.success = true;
-//   state.token = action.payload?.access_token;
-//   localStorage.setItem("token", action.payload?.access_token);
-//   localStorage.setItem("token_refresh", action.payload?.refresh_token);
-//   state.isLoggedIn = true;
-//   state.user = action.payload.user;
-//   state.type = "COMPANY";
-// });
-// builder.addCase(companyLogin.rejected, (state, action) => {
-//   state.loading = false;
-//   state.success = false;
-//   state.error = action.error.message || "Something Went Wrong";
-//   state.user = null;
-// });

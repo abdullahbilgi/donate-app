@@ -72,10 +72,11 @@ const marketReducer = createSlice({
         state.loading = true;
       })
       .addCase(deleteMarket.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.loading = false;
         state.error = null;
         state.marketsArr = state.marketsArr.filter(
-          (market) => market.id !== action.payload.id
+          (market) => market.id !== action.payload
         );
       })
       .addCase(deleteMarket.rejected, (state, action) => {

@@ -23,6 +23,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const [dropdown, setDropdown] = useState(false);
   const dispatch = useAppDispatch();
   const { userId } = useAppSelector((state) => state.Auth);
+  const onCart = useAppSelector((state: any) =>
+    state.Cart.cartItems.find((item: any) => item.product.id === id)
+  );
 
   const addToCartHandler = () => {
     if (userId !== null) {
@@ -64,14 +67,18 @@ const ProductItem: React.FC<ProductItemProps> = ({
           </h5>
         </div>
         <div className="flex items-center gap-2 mt-4 group-[.gridView]:mt-0 group-[.gridView]:self-end">
-          {/* <QuantityInput id={id} /> */}
-          <Button
-            className="w-full h-[38.39px] rounded-xs"
-            onClick={addToCartHandler}
-            variation="addToCart"
-          >
-            <span className="align-middle">Add to Cart</span>
-          </Button>
+          {onCart ? (
+            <QuantityInput id={id} />
+          ) : (
+            <Button
+              className="w-full h-[38.39px] rounded-xs"
+              onClick={addToCartHandler}
+              variation="addToCart"
+            >
+              <span className="align-middle">Add to Cart</span>
+            </Button>
+          )}
+
           <div className="dropdown relative float-right dropdown">
             <button
               onClick={() => setDropdown(!dropdown)}

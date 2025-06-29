@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import Button from "../ui/Button";
 import { FaHandHoldingHeart } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
+import { GrOrganization } from "react-icons/gr";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -41,6 +42,18 @@ const Home = () => {
             >
               <div className="flex items-center gap-1.5">
                 <span>Get yours</span> <FaCartShopping />
+              </div>
+            </Button>
+            <p className="text-5xl font-bold text-gray-200 text-center">or</p>
+            <Button
+              onClick={() => {
+                navigate("/applyOrganization");
+              }}
+              size="xxl"
+              variation="cell"
+            >
+              <div className="flex items-center gap-1.5">
+                <span>Apply for Organization</span> <GrOrganization />
               </div>
             </Button>
           </div>

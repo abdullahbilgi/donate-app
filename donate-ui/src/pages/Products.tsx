@@ -21,6 +21,9 @@ const Products = () => {
     totalPages,
     totalElements,
   } = useAppSelector((state: any) => state.Product);
+  const { role, token, isLogged } = useAppSelector((state) => state.Auth);
+
+  console.log(role, token, isLogged);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(0);

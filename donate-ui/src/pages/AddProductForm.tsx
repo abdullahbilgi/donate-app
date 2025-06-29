@@ -36,9 +36,14 @@ interface Inputs {
 interface AddProductFormProps {
   type?: string; // opsiyonel olsun istiyorsan
   marketId?: number;
+  onCloseModal?: () => void;
 }
 
-const AddProductForm = ({ type = "", marketId }: AddProductFormProps) => {
+const AddProductForm = ({
+  type = "",
+  marketId,
+  onCloseModal,
+}: AddProductFormProps) => {
   console.log(type);
   const {
     register,
@@ -52,6 +57,7 @@ const AddProductForm = ({ type = "", marketId }: AddProductFormProps) => {
 
   const { categories } = useAppSelector((state) => state.Category);
   const { marketsArr } = useAppSelector((state) => state.Market);
+  const { loading } = useAppSelector((state) => state.Product);
 
   useEffect(() => {
     dispatch(getCategory());
@@ -77,6 +83,11 @@ const AddProductForm = ({ type = "", marketId }: AddProductFormProps) => {
         marketId: marketId,
       })
     );
+
+    if (!loading && onCloseModal) {
+      dispatch(getMarketByUser(userId));
+      onCloseModal();
+    }
   };
 
   const [notAccepted, setNotAccepted] = useState(true);

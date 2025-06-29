@@ -54,7 +54,9 @@ export const ShowOrderProductModal = ({ productItems }: Props) => {
                   <ShowOrderModalRow>
                     {product.productResponse.name}
                   </ShowOrderModalRow>
-                  <ShowOrderModalRow>{product.productPrice}</ShowOrderModalRow>
+                  <ShowOrderModalRow>
+                    {product.productQuantity}
+                  </ShowOrderModalRow>
                   <ShowOrderModalRow>
                     {product.productResponse.price}
                   </ShowOrderModalRow>

@@ -27,6 +27,12 @@ export const login = createAsyncThunk(
   }
 );
 
+export const getMe = createAsyncThunk("getMe", async function () {
+  const res = await axiosPrivate.get("/users/me");
+  console.log("GETMEE", res.data);
+  return res.data;
+});
+
 export const logout = createAsyncThunk("logout", async function (_, thunkAPI) {
   try {
     const res = await axios({

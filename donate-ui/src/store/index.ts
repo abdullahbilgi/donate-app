@@ -7,6 +7,9 @@ import marketReducer from "./MarketStore/Market/reducers";
 import productByMarket from "./ProductStore/GetProductByMarket/reducers";
 import citiesReducer from "./City/reducers";
 import ordersReducer from "./Order/reducers";
+import getSoldProductByMarket from "./ProductStore/GetSoldProductByMarket/reducers";
+import applyOrganizationReducer from "./Organization/ApplyOrganization/reducers";
+import organizationReducer from "./Organization/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
@@ -17,8 +20,11 @@ const store = configureStore({
     Auth: authReducer,
     Market: marketReducer,
     ProductsByMarket: productByMarket,
+    SoldProductsByMarket: getSoldProductByMarket,
     City: citiesReducer,
     Order: ordersReducer,
+    ApplyOrganizations: applyOrganizationReducer,
+    Organization: organizationReducer,
   },
 });
 

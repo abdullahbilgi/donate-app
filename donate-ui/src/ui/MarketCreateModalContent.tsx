@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { createMarket } from "../store/MarketStore/Market/thunks";
 import MarketMap from "./MarketMap";
+import { applyOrganization } from "../store/Organization/ApplyOrganization/thunks";
 
 export interface Address {
   country: string;
@@ -35,21 +36,27 @@ interface Inputs {
 
 interface CreateMarketModalContentProps {
   onCloseModal?: () => void;
+  type?: string;
 }
 
 const MarketCreateModalContent = ({
   onCloseModal,
+  type,
 }: CreateMarketModalContentProps) => {
   const {
     handleSubmit,
     formState: { errors },
     register,
     setValue,
+    reset,
   } = useForm<Inputs>();
 
   const dispatch = useAppDispatch();
 
   const { loading, error } = useAppSelector((state) => state.Market);
+  const { applyLoading, applyError } = useAppSelector(
+    (state) => state.ApplyOrganizations
+  );
 
   const [address, setAddress] = useState<LocationData | null>(null);
 
@@ -81,11 +88,18 @@ const MarketCreateModalContent = ({
 
     console.log(sendObject);
 
-    dispatch(createMarket(sendObject));
+    if (type && type === "organization") {
+      dispatch(applyOrganization({ ...sendObject, userId }));
+    } else {
+      dispatch(createMarket(sendObject));
+    }
 
-    if (!loading && !error && onCloseModal) {
-      console.log("girdi");
+    if (!loading && !error && onCloseModal && type !== "organization") {
+      reset();
       onCloseModal();
+    }
+    if (type === "organization" && !applyLoading && !applyError) {
+      reset();
     }
   };
 
@@ -97,7 +111,8 @@ const MarketCreateModalContent = ({
       <FormRow
         labelText={
           <>
-            <MdDriveFileRenameOutline className="w-5 h-5" /> Market adi *
+            <MdDriveFileRenameOutline className="w-5 h-5" />
+            {type === "organization" ? "Organization Name" : "Market Name"}*
           </>
         }
         errors={errors?.name?.message}
@@ -244,7 +259,11 @@ const MarketCreateModalContent = ({
       </FormRow>
       <div className="flex justify-end col-span-2">
         <Button disabled={loading}>
-          {loading ? "Spinner" : "Market Ekle"}
+          {loading
+            ? "Spinner"
+            : type === "organization"
+            ? "Apply"
+            : "Market Ekle"}
         </Button>
       </div>
     </Form>

@@ -3,10 +3,12 @@ import Header from "../ui/Header";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getCartById } from "../store/CartStore/GetCartById/thunks";
+import { getMe } from "../store/Auth/Login/thunks";
 
 const AppLayout = () => {
   const dispatch = useAppDispatch();
   const userId = localStorage.getItem("userId");
+
   useEffect(() => {
     dispatch(getCartById(userId));
   });
@@ -17,6 +19,7 @@ const AppLayout = () => {
       style={{ backgroundColor: "#f1f5f9" }}
     >
       <Header />
+
       <main className="flex-1">
         <Outlet />
       </main>

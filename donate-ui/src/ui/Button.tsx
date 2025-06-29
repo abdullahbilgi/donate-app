@@ -6,6 +6,7 @@ interface ButtonProps {
     | "primary"
     | "submit"
     | "danger"
+    | "accept"
     | "donation"
     | "cell"
     | "addToCart"
@@ -40,6 +41,8 @@ const Button: React.FC<ButtonProps> = ({
       "bg-gray-500 text-white hover:bg-gray-600 px-5 py-3 transition-transform duration-300 hover:shadow-lg",
     danger:
       "bg-red-700 text-white hover:bg-red-800 px-5 py-3 transition-transform duration-300 hover:shadow-lg",
+    accept:
+      "bg-green-700 text-white hover:bg-green-800 px-5 py-3 transition-transform duration-300 hover:shadow-lg",
     donation: "bg-lime-300 text-teal-800 hover:bg-lime-400 ",
     cell: "bg-gray-600 text-gray-100 hover:bg-gray-700",
     addToCart:

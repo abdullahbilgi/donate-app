@@ -4410,3 +4410,25 @@ Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: raw time
 2025-06-25 01:47:58 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest - looked product with id: 20
 2025-06-25 01:48:00 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest - looked product with id: 26
 2025-06-25 01:48:01 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest - looked product with id: 26
+2025-06-29 11:24:48 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 25752 (C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest)
+2025-06-29 11:24:48 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-06-29 11:24:48 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-06-29 11:28:17 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 28752 (C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest)
+2025-06-29 11:28:17 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-06-29 11:28:17 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-06-29 11:29:09 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 26692 (C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\DonateApp\donate-app\donate-rest)
+2025-06-29 11:29:09 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-06-29 11:29:09 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : The following 1 profile is active: "bootstrap"
+2025-06-29 11:29:16 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-06-29 11:29:19 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 11.175 seconds (process running for 12.891)
+2025-06-29 11:29:42 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 13:11:43 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 13:11:46 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 13:11:46 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 13:11:46 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 13:12:18 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 15:11:47 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - admin
+2025-06-29 15:49:07 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest
+2025-06-29 16:15:33 INFO   [login]   c.p.d.a.AuthService : Login Successfully - admin
+2025-06-29 17:33:43 INFO   [login]   c.p.d.a.AuthService : Login Successfully - cr77
+2025-06-29 17:35:23 INFO   [login]   c.p.d.a.AuthService : Login Successfully - admin

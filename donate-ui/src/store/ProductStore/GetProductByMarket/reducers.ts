@@ -81,7 +81,7 @@ const productByMarket = createSlice({
         };
       })
       .addCase(getProductsByMarket.fulfilled, (state, action) => {
-        const marketId = action.meta.arg;
+        const marketId = action.meta.arg; // thunk'a gönderilen marketId
 
         state[marketId] = {
           loading: false,

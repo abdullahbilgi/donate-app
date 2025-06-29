@@ -6,6 +6,7 @@ import SideModalBasket from "./SideModalBasket";
 import { useAppDispatch, useAppSelector } from "../store";
 import { logout } from "../store/Auth/Login/thunks";
 import { MdLogout } from "react-icons/md";
+import { hasPermission } from "../utils/permissionUtils";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,12 +14,14 @@ const Header = () => {
   const { cartItems } = useAppSelector((state: any) => state.Cart);
   const isLogged = localStorage.getItem("isLogged");
 
+  const { role } = useAppSelector((state) => state.Auth);
   const dispatch = useAppDispatch();
   const logoutHandler = async () => {
     await dispatch(logout());
     navigate("/login");
   };
 
+  console.log(role);
   return (
     <>
       <header
@@ -46,8 +49,13 @@ const Header = () => {
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/markets">Marketlerim</Link>
             </li>
+
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/orders">Siparislerim</Link>
+            </li>
+
+            <li className="hover:text-zinc-500 transition-colors duration-300">
+              <Link to="/appliesOrganization">Basvurular</Link>
             </li>
             <li className="hover:text-zinc-500 transition-colors duration-300 relative">
               <button

@@ -17,6 +17,7 @@ import MarketCreateModalContent from "../ui/MarketCreateModalContent";
 import DeleteModalContent from "../ui/DeleteModalContent";
 import AddProductForm from "./AddProductForm";
 import { getProductsByMarket } from "../store/ProductStore/GetProductByMarket/thunks";
+import { getSoldProductByMarket } from "../store/ProductStore/GetSoldProductByMarket/thunks";
 
 export const Markets = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ export const Markets = () => {
   );
 
   const totals = useAppSelector((state) => state.ProductsByMarket);
+  const sold = useAppSelector((state) => state.SoldProductsByMarket);
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -32,12 +34,13 @@ export const Markets = () => {
     dispatch(getAllCity());
   }, []);
 
-  const onDeleteMarket = (marketId: any) => {
-    dispatch(deleteMarket(marketId));
-  };
-
   useEffect(() => {
-    marketsArr.forEach((market) => dispatch(getProductsByMarket(market.id)));
+    if (marketsArr && marketsArr.length > 0) {
+      marketsArr.forEach((market) => {
+        dispatch(getProductsByMarket(market.id));
+        dispatch(getSoldProductByMarket(market.id));
+      });
+    }
   }, [marketsArr]);
 
   return (
@@ -68,7 +71,7 @@ export const Markets = () => {
             </div>
           </div>
 
-          {loading ? (
+          {loading && sold ? (
             "loading"
           ) : (
             <table className="bordered group dataTable w-full text-sm align-middle whitespace-nowrap no-footer">
@@ -78,6 +81,7 @@ export const Markets = () => {
                   <TablesColumn title="Address" />
                   <TablesColumn title="Tax Number" />
                   <TablesColumn title="Product" />
+                  <TablesColumn title="Products Sold" />
                   <TablesColumn title="" />
                 </tr>
               </thead>
@@ -120,7 +124,18 @@ export const Markets = () => {
                           </div>
                         </div>
                       </TablesCell>
-
+                      <TablesCell>
+                        <div className="flex items-center justify-between">
+                          {sold[market.id]?.soldProducts?.length}
+                          {sold[market.id]?.soldProducts?.length > 0 && (
+                            <Button variation="cell">
+                              <Link to={`/soldProductByMarket/${market.id}`}>
+                                Show Sold Products
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
+                      </TablesCell>
                       <TablesCell>
                         <div className="flex justify-around">
                           {/*Her bir market icin ayri modal, bu sebeple isimler birbirine karismaz ,birbirinden bagimsizlar*/}
