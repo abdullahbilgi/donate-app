@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getApplies } from "./thunks";
+import { acceptApply, rejectedApply } from "./AcceptRejectApplies/thunks";
+import { deleteOrganization, getAllOrganizations } from "./thunks";
 
 export interface IUCity {
   id: number;
@@ -37,14 +38,14 @@ export interface IUOrganization {
 }
 
 interface IUInitialState {
-  AllApplies: IUOrganization[];
-  appliesLoading: boolean;
-  appliesError: null | string;
+  Organizations: IUOrganization[];
+  loading: boolean;
+  error: null | string;
 }
 const initialState: IUInitialState = {
-  AllApplies: [],
-  appliesLoading: false,
-  appliesError: null,
+  Organizations: [],
+  loading: false,
+  error: null,
 };
 const OrganizationReducer = createSlice({
   name: "Organization",
@@ -52,18 +53,46 @@ const OrganizationReducer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getApplies.pending, (state, action) => {
-        state.appliesLoading = true;
+      .addCase(getAllOrganizations.pending, (state) => {
+        state.loading = true;
       })
-      .addCase(getApplies.fulfilled, (state, action) => {
+      .addCase(getAllOrganizations.fulfilled, (state, action) => {
         console.log(action.payload);
-        state.appliesLoading = false;
-        state.appliesError = null;
-        state.AllApplies = action.payload;
+        state.loading = false;
+        state.error = null;
+        state.Organizations = action.payload;
       })
-      .addCase(getApplies.rejected, (state, action) => {
-        state.appliesLoading = false;
-        state.appliesError = null;
+      .addCase(getAllOrganizations.rejected, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(acceptApply.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(acceptApply.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loading = false;
+        state.error = null;
+        state.Organizations = [...state.Organizations, action.payload];
+      })
+      .addCase(acceptApply.rejected, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteOrganization.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loading = false;
+        state.error = null;
+        state.Organizations = state.Organizations.filter(
+          (apply) => apply.id !== action.payload.id
+        );
+      })
+      .addCase(deleteOrganization.rejected, (state) => {
+        state.loading = false;
+        state.error = null;
       });
   },
 });

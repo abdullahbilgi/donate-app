@@ -9,6 +9,7 @@ import citiesReducer from "./City/reducers";
 import ordersReducer from "./Order/reducers";
 import getSoldProductByMarket from "./ProductStore/GetSoldProductByMarket/reducers";
 import applyOrganizationReducer from "./Organization/ApplyOrganization/reducers";
+import acceptReceptOrganizationReducer from "./Organization/AcceptRejectApplies/reducers";
 import organizationReducer from "./Organization/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
@@ -24,6 +25,7 @@ const store = configureStore({
     City: citiesReducer,
     Order: ordersReducer,
     ApplyOrganizations: applyOrganizationReducer,
+    AcceptRejectOrganization: acceptReceptOrganizationReducer,
     Organization: organizationReducer,
   },
 });

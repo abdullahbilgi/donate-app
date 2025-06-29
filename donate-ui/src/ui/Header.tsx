@@ -49,6 +49,9 @@ const Header = () => {
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/markets">Marketlerim</Link>
             </li>
+            <li className="hover:text-zinc-500 transition-colors duration-300">
+              <Link to="/organization">Organizasyonlar</Link>
+            </li>
 
             <li className="hover:text-zinc-500 transition-colors duration-300">
               <Link to="/orders">Siparislerim</Link>

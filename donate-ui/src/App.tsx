@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "./store";
 import { getMe } from "./store/Auth/Login/thunks";
 import ApplyOrganization from "./pages/ApplyOrganization";
 import AppliesOrganization from "./pages/AppliesOrganization";
+import Organization from "./pages/Organizations";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -105,6 +106,15 @@ function App() {
             path="/appliesOrganization"
             element={
               <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                <AppliesOrganization />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/organization"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
                 <AppliesOrganization />
               </ProtectedRoute>
             }
