@@ -7,9 +7,16 @@ import { searchProduct } from "../store/ProductStore/Products/thunks";
 interface ProductFilterProps {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setDonateProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  donateProducts: boolean;
 }
 
-const ProductFilter = ({ searchTerm, setSearchTerm }: ProductFilterProps) => {
+const ProductFilter = ({
+  searchTerm,
+  setSearchTerm,
+  setDonateProducts,
+  donateProducts,
+}: ProductFilterProps) => {
   return (
     <div className="hidden bg-gray-50 2xl:col-span-3 2xl:block p-15">
       <div className="flex flex-col gap-6">
@@ -33,13 +40,13 @@ const ProductFilter = ({ searchTerm, setSearchTerm }: ProductFilterProps) => {
 
           <FilterElements title="Price">
             <FilterElementsContent labelText="All" inputId="priceAll" />
-            <FilterElementsContent labelText="0.00 - 50.00" inputId="price1" />
             <FilterElementsContent
-              labelText="50.00 - 100.00"
-              inputId="price2"
+              labelText="Donate"
+              inputId="donate"
+              onClick={() => setDonateProducts(!donateProducts)}
             />
-            <FilterElementsContent labelText="100.00+" inputId="price3" />
           </FilterElements>
+
           <FilterElements title="Category">
             <FilterElementsContent labelText="All" inputId="priceAll" />
             <FilterElementsContent labelText="Icecek" inputId="icecek" />

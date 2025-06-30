@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createProduct,
   deleteProduct,
+  getAllDonatedProducts,
   getAllProducts,
   searchProduct,
   updateProduct,
@@ -131,19 +132,45 @@ const ProductsReducer = createSlice({
     });
 
     builder.addCase(searchProduct.fulfilled, (state, action) => {
-      state.loading = false; // Yükleniyor durumu
-      state.error = null; // Hata mesajı sıfırlanıyor
-      state.number = action.payload.page + 1; // Sayfa numarasını güncelle (0-indexli backend için +1 ekle)
+      state.loading = false;
+      state.error = null;
+      state.number = action.payload.page + 1;
       state.size = action.payload.size; // Sayfa başı kaç veri olduğunu güncelle
       state.totalPages = action.payload.totalPages;
       state.totalElements = action.payload.totalElements;
-      state.searchProducts = action.payload.content; // Yeni verilerle listeyi güncelle
+      state.searchProducts = action.payload.content;
     });
 
     builder.addCase(searchProduct.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "Something went wrong";
       state.searchProducts = [];
+      state.number = 0;
+      state.size = 12;
+      state.totalPages = 0;
+      state.totalElements = 0;
+    });
+
+    builder.addCase(getAllDonatedProducts.pending, (state, action) => {
+      state.productsArr = [];
+      state.loading = true;
+    });
+
+    builder.addCase(getAllDonatedProducts.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.loading = false; // Yükleniyor durumu
+      state.error = null; // Hata mesajı sıfırlanıyor
+      state.number = action.payload.number; // Sayfa numarasını güncelle
+      state.size = action.payload.size; // Sayfa başı kaç veri olduğunu güncelle
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
+      state.productsArr = action.payload.content; // Yeni verilerle listeyi güncelle
+    });
+
+    builder.addCase(getAllDonatedProducts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
+      state.productsArr = [];
       state.number = 0;
       state.size = 12;
       state.totalPages = 0;

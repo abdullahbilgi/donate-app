@@ -55,6 +55,8 @@ const AddProductForm = ({
   const userId = localStorage.getItem("userId");
   const dispatch = useAppDispatch();
 
+  const [donate, setDonate] = useState(false);
+
   const { categories } = useAppSelector((state) => state.Category);
   const { marketsArr } = useAppSelector((state) => state.Market);
   const { loading } = useAppSelector((state) => state.Product);
@@ -69,20 +71,23 @@ const AddProductForm = ({
   }, []);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    const productData = {
+      ...data,
+      productionDate: `${!donate ? data.productionDate + "T10:00:00" : ""}`,
+      expiryDate: `${!donate ? data.expiryDate + "T10:00:00" : ""}`,
+      lastDonatedDate: `${!donate ? data.lastDonatedDate + "T10:00:00" : ""}`,
+      price: !donate ? Number(data.price.toFixed(1)) : Number(0.0),
+      productStatus: `${!donate ? "REAL" : "DONATE"}`,
+    };
 
     //productStatus, lastDonatedDate
-    dispatch(
-      createProduct({
-        ...data,
-        lastDonatedDate: `${data.lastDonatedDate}T10:00:00`,
-        productionDate: `${data.productionDate}T10:00:00`,
-        expiryDate: `${data.expiryDate}T10:00:00`,
-        price: Number(data.price.toFixed(1)),
-        productStatus: "REAL",
-        marketId: marketId,
-      })
-    );
+    if (!donate) {
+      console.log(productData);
+      dispatch(createProduct(productData));
+    } else {
+      console.log(productData);
+      dispatch(createProduct(productData));
+    }
 
     if (!loading && onCloseModal) {
       dispatch(getMarketByUser(userId));
@@ -119,7 +124,7 @@ const AddProductForm = ({
           </div>
 
           <div className="flex items-center gap-2 absolute -bottom-8 left-1/2 -translate-x-1/2 bg-lime-300 text-teal-800 font-semibold text-xl py-3 px-9 rounded-md ">
-            Donation Form <FaArrowDown />
+            Product Form <FaArrowDown />
           </div>
         </div>
       )}
@@ -134,6 +139,20 @@ const AddProductForm = ({
             type !== "modal" ? "p-20" : "p-10"
           } border border-gray-300 shadow-lg`}
         >
+          <div className="flex items-center gap-2 mb-10">
+            <input
+              type="checkbox"
+              id="donate"
+              required
+              onClick={() => {
+                setDonate(!donate);
+              }}
+              className="w-4 h-4 focus:ring-teal-800 focus:ring-2"
+            />
+            <label htmlFor="donate" className="font-semibold text-lg">
+              Donate yapmak istiyorum
+            </label>
+          </div>
           <Form
             onSubmit={handleSubmit(onSubmit, (errors) => console.log(errors))}
             formVariation="donate"
@@ -224,51 +243,55 @@ const AddProductForm = ({
               />
             </FormRow>
 
-            <FormRow
-              labelText={
-                <>
-                  <IoPricetagsOutline /> Ürün Normal Fiyati *
-                </>
-              }
-              errors={errors?.price?.message}
-            >
-              <Input
-                type="text"
-                id="price"
-                inputVariation="donate"
-                {...register("price", {
-                  required: "This field is required!",
-                  min: { value: 1, message: "Minimum price should be 1" },
-                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
-                })}
-              />
-            </FormRow>
-            <FormRow
-              labelText={
-                <>
-                  <LiaDonateSolid /> Indirimli Fiyat *
-                </>
-              }
-              errors={errors?.discountedPrice?.message}
-            >
-              <Input
-                type="text"
-                id="discountedPrice"
-                inputVariation="donate"
-                {...register("discountedPrice", {
-                  required: "This field is required!",
-                  min: { value: 1, message: "Minimum price should be 1" },
-                  setValueAs: (v) => (v === "" ? undefined : Number(v)),
+            {!donate && (
+              <>
+                <FormRow
+                  labelText={
+                    <>
+                      <IoPricetagsOutline /> Ürün Normal Fiyati *
+                    </>
+                  }
+                  errors={errors?.price?.message}
+                >
+                  <Input
+                    type="text"
+                    id="price"
+                    inputVariation="donate"
+                    {...register("price", {
+                      required: "This field is required!",
+                      min: { value: 1, message: "Minimum price should be 1" },
+                      setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                    })}
+                  />
+                </FormRow>
+                <FormRow
+                  labelText={
+                    <>
+                      <LiaDonateSolid /> Indirimli Fiyat *
+                    </>
+                  }
+                  errors={errors?.discountedPrice?.message}
+                >
+                  <Input
+                    type="text"
+                    id="discountedPrice"
+                    inputVariation="donate"
+                    {...register("discountedPrice", {
+                      required: "This field is required!",
+                      min: { value: 1, message: "Minimum price should be 1" },
+                      setValueAs: (v) => (v === "" ? undefined : Number(v)),
 
-                  validate: (price) => {
-                    return (
-                      price < Number(getValues("price")) ||
-                      "Discount should be less than regular price"
-                    );
-                  },
-                })}
-              />
-            </FormRow>
+                      validate: (price) => {
+                        return (
+                          price < Number(getValues("price")) ||
+                          "Discount should be less than regular price"
+                        );
+                      },
+                    })}
+                  />
+                </FormRow>
+              </>
+            )}
 
             <FormRow
               labelText={
@@ -303,22 +326,24 @@ const AddProductForm = ({
               <Input type="file" id="image" inputVariation="donate" />
             </FormRow>
 
-            <FormRow
-              labelText={
-                <>
-                  <MdDateRange /> Son Bagis Tarihi*
-                </>
-              }
-            >
-              <Input
-                type="date"
-                id="lastDonatedDate"
-                inputVariation="donate"
-                {...register("lastDonatedDate", {
-                  required: "This field is required!",
-                })}
-              />
-            </FormRow>
+            {!donate && (
+              <FormRow
+                labelText={
+                  <>
+                    <MdDateRange /> Son Bagis Tarihi*
+                  </>
+                }
+              >
+                <Input
+                  type="date"
+                  id="lastDonatedDate"
+                  inputVariation="donate"
+                  {...register("lastDonatedDate", {
+                    required: "This field is required!",
+                  })}
+                />
+              </FormRow>
+            )}
 
             {type !== "modal" && (
               <FormRow
@@ -332,7 +357,7 @@ const AddProductForm = ({
                   className="bg-gray-100 p-3 rounded-lg w-90 border border-gray-300"
                   {...register("marketId", {
                     required: "This field is required!",
-                    setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                    setValueAs: (v) => (v === "" ? "" : Number(v)),
                   })}
                 >
                   <option value="">Market Sec</option>

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { logout } from "../store/Auth/Login/thunks";
 import { MdLogout } from "react-icons/md";
 import { hasPermission } from "../utils/permissionUtils";
+import { ROUTES } from "../Routes/HeaderLinks";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ const Header = () => {
     navigate("/login");
   };
 
-  console.log(role);
   return (
     <>
       <header
@@ -40,26 +40,15 @@ const Header = () => {
         </div>
         <div className="flex gap-12 items-center font-semibold ">
           <ul className="flex gap-8">
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/addProduct">Ürün Ekle</Link>
-            </li>
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/products">Ürünler</Link>
-            </li>
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/markets">Marketlerim</Link>
-            </li>
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/organization">Organizasyonlar</Link>
-            </li>
+            {ROUTES.map(({ label, path, permission }) => {
+              if (permission && !hasPermission(role, permission)) return null;
+              return (
+                <li className="hover:text-zinc-500 transition-colors duration-300">
+                  <Link to={`${path}`}>{label}</Link>
+                </li>
+              );
+            })}
 
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/orders">Siparislerim</Link>
-            </li>
-
-            <li className="hover:text-zinc-500 transition-colors duration-300">
-              <Link to="/appliesOrganization">Basvurular</Link>
-            </li>
             <li className="hover:text-zinc-500 transition-colors duration-300 relative">
               <button
                 onClick={() => {

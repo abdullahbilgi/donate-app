@@ -82,3 +82,16 @@ export const searchProduct = createAsyncThunk(
     return res.data;
   }
 );
+
+type GetAllDonatedProductsArgs = {
+  page?: number;
+};
+
+export const getAllDonatedProducts = createAsyncThunk<
+  any,
+  GetAllDonatedProductsArgs
+>("getAllDonatedProducts", async function ({ page = 0 }) {
+  const res = await axiosPrivate.get(`/products/donated?page=${page}`);
+
+  return res.data;
+});

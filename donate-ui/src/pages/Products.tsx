@@ -3,10 +3,12 @@ import { useAppDispatch, useAppSelector } from "../store";
 import ProductFilter from "../ui/ProductFilter";
 import ProductList from "../ui/ProductsList";
 import {
+  getAllDonatedProducts,
   getAllProducts,
   searchProduct,
 } from "../store/ProductStore/Products/thunks";
 import Button from "../ui/Button";
+import { hasPermission } from "../utils/permissionUtils";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -23,10 +25,9 @@ const Products = () => {
   } = useAppSelector((state: any) => state.Product);
   const { role, token, isLogged } = useAppSelector((state) => state.Auth);
 
-  console.log(role, token, isLogged);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
+  const [donateProducts, setDonateProducts] = useState(false);
 
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -46,14 +47,32 @@ const Products = () => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  console.log(pageNumber, size);
+  console.log(donateProducts);
   useEffect(() => {
-    if (debouncedSearchTerm.trim() !== "") {
+    if (
+      debouncedSearchTerm.trim() !== "" &&
+      hasPermission(role, "view:products")
+    ) {
       dispatch(searchProduct(debouncedSearchTerm));
     } else {
-      dispatch(getAllProducts({ page: pageNumber }));
+      {
+        if (
+          hasPermission(role, "view:donateProducts") &&
+          !hasPermission(role, "view:products")
+        ) {
+          // Bu sadece BENEFACTOR için geçerli: sadece bağış ürünlerini görebilir
+          dispatch(getAllDonatedProducts({ page: pageNumber }));
+        } else if (hasPermission(role, "view:products")) {
+          // USER burada olacak: donateProducts kontrolüne göre yönlendir
+          if (donateProducts) {
+            dispatch(getAllDonatedProducts({ page: pageNumber }));
+          } else {
+            dispatch(getAllProducts({ page: pageNumber }));
+          }
+        }
+      }
     }
-  }, [dispatch, pageNumber, size, debouncedSearchTerm]);
+  }, [dispatch, pageNumber, size, debouncedSearchTerm, donateProducts, role]);
 
   const showResults = searchTerm ? searchProducts : productsArr;
 
@@ -65,6 +84,8 @@ const Products = () => {
             <ProductFilter
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
+              setDonateProducts={setDonateProducts}
+              donateProducts={donateProducts}
             />
           </div>
           <div className="xl:col-span-9 flex flex-col gap-4">

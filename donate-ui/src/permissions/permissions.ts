@@ -1,11 +1,23 @@
 export const rolePermissions = {
-  ADMIN: ["view:donations", "edit:donations", "delete:donations", "view:users"],
-  BENEFACTOR: ["view:getAllDonations"],
+  ADMIN: [
+    "view:donations",
+    "view:donateProducts",
+    "edit:donations",
+    "delete:donations",
+    "view:users",
+    "create:product",
+    "view:organizations",
+    "view:applies",
+    "view:markets",
+  ],
+  BENEFACTOR: ["view:donateProducts", "view:my-orders"],
   USER: [
     "create:product",
     "create:donations",
+    "view:donateProducts",
     "view:products",
     "view:my-orders",
+    "view:markets",
   ],
 } as const;
 
