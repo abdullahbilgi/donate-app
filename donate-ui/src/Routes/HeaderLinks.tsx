@@ -12,7 +12,7 @@ export const ROUTES: {
   },
   {
     label: "Ürünler",
-    path: "/product",
+    path: "/products",
   },
   {
     label: "Marketlerim",

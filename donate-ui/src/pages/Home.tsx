@@ -3,9 +3,11 @@ import Button from "../ui/Button";
 import { FaHandHoldingHeart } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
 import { GrOrganization } from "react-icons/gr";
+import { useAppSelector } from "../store";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { role } = useAppSelector((state) => state.Auth);
 
   return (
     <div className="h-full px-8 pb-6">
@@ -22,40 +24,51 @@ const Home = () => {
           </div>
           <div className="p-20 flex flex-col gap-5">
             {" "}
-            <Button
-              onClick={() => {
-                navigate("/addProduct");
-              }}
-              size="xxl"
-              variation="donation"
-            >
-              <div className="flex items-center gap-1.5">
-                <span>Donate or Share Now</span> <FaHandHoldingHeart />
-              </div>
-            </Button>
-            <Button
-              onClick={() => {
-                navigate("/products");
-              }}
-              size="xxl"
-              variation="cell"
-            >
-              <div className="flex items-center gap-1.5">
-                <span>Get yours</span> <FaCartShopping />
-              </div>
-            </Button>
-            <p className="text-5xl font-bold text-gray-200 text-center">or</p>
-            <Button
-              onClick={() => {
-                navigate("/applyOrganization");
-              }}
-              size="xxl"
-              variation="cell"
-            >
-              <div className="flex items-center gap-1.5">
-                <span>Apply for Organization</span> <GrOrganization />
-              </div>
-            </Button>
+            {role === "USER" && (
+              <Button
+                onClick={() => {
+                  navigate("/addProduct");
+                }}
+                size="xxl"
+                variation="donation"
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Donate or Share Now</span> <FaHandHoldingHeart />
+                </div>
+              </Button>
+            )}
+            {role === "USER" ||
+              (role === "BENEFACTOR" && (
+                <Button
+                  onClick={() => {
+                    navigate("/products");
+                  }}
+                  size="xxl"
+                  variation="cell"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>Get yours</span> <FaCartShopping />
+                  </div>
+                </Button>
+              ))}
+            {role === "USER" && (
+              <>
+                <p className="text-5xl font-bold text-gray-200 text-center">
+                  or
+                </p>
+                <Button
+                  onClick={() => {
+                    navigate("/applyOrganization");
+                  }}
+                  size="xxl"
+                  variation="cell"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>Apply for Organization</span> <GrOrganization />
+                  </div>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
