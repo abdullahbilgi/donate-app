@@ -21,14 +21,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-
-  const { userId } = useAppSelector((state) => state.Auth);
-  const { cartItems } = useAppSelector((state) => state.Cart);
-
   const navigate = useNavigate();
 
   async function onSubmit(data: FormValues) {
-    console.log(data);
     const resultAction = await dispatch(login(data));
 
     if (login.fulfilled.match(resultAction)) {

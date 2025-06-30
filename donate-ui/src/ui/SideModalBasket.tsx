@@ -1,12 +1,9 @@
 import { useEffect, useRef } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useSelector } from "react-redux";
 import BasketItem from "./BasketItem";
 import BasketPriceInfoRow from "./BasketPriceInfoRow";
 import Button from "./Button";
-import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../store";
-import { createOrder } from "../store/Order/thunks";
+import { useAppSelector } from "../store";
 import Modal from "./Modal";
 import { CreateOrderModalContent } from "./CreateOrderModalContent";
 interface SideModalBasketProps {
@@ -76,14 +73,17 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
 
           <div className="flex flex-col justify-between min-h-55 pt-6">
             <div>
-              <BasketPriceInfoRow rowTitle="Sub Total" rowValue={subTotal} />
+              <BasketPriceInfoRow
+                rowTitle="Sub Total"
+                rowValue={subTotal.toFixed(2)}
+              />
               <BasketPriceInfoRow
                 rowTitle="Discount"
-                rowValue={totalDiscPrice}
+                rowValue={totalDiscPrice.toFixed(2)}
               />
               <BasketPriceInfoRow
                 rowTitle="Total Price"
-                rowValue={totalPrice}
+                rowValue={totalPrice.toFixed(2)}
               />
             </div>
             <div className="flex items-center justify-between px-4">

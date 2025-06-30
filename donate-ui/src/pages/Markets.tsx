@@ -51,8 +51,8 @@ export const Markets = () => {
           <div className="flex justify-between items-center p-2 mt-5 bg-yellow-100 mb-4">
             <h3 className="font-medium text-md">
               {marketsArr.length === 0
-                ? "Herhangi bir marketiniz bulunmuyor!"
-                : "Yeni bir market ekle"}
+                ? "You currently have no markets! You can now add a new market."
+                : "Add one more market"}
             </h3>
             <div className="flex justify-end">
               <Modal>
@@ -61,7 +61,7 @@ export const Markets = () => {
                     variation="pagination"
                     className="hover:bg-gray-400 hover:text-green-800 shadow-none"
                   >
-                    Market Ekle
+                    Add Market
                   </Button>
                 </Modal.Open>
                 <Modal.Window name="createMarket">

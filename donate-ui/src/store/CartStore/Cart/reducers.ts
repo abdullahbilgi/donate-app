@@ -67,6 +67,7 @@ const CartReducer = createSlice({
             acc + item.productResponse.price * item.productQuantity,
           0
         );
+
         state.totalDiscPrice = action.payload.productItems.reduce(
           (acc: number, item: any) =>
             acc +
@@ -75,7 +76,8 @@ const CartReducer = createSlice({
               item.productQuantity,
           0
         );
-        state.totalPrice = action.payload.totalPrice;
+        state.totalPrice =
+          state.cartItems.length > 0 ? action.payload.totalPrice : 0;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.cartItems = [];

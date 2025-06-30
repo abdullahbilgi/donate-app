@@ -6,31 +6,31 @@ export const ROUTES: {
   permission?: Permission;
 }[] = [
   {
-    label: "Ürün Ekle",
+    label: "Add Product",
     path: "/addProduct",
     permission: "create:product",
   },
   {
-    label: "Ürünler",
+    label: "Products",
     path: "/products",
   },
   {
-    label: "Marketlerim",
+    label: "My Markets",
     path: "/markets",
     permission: "view:markets",
   },
   {
-    label: "Organizasyonlar",
+    label: "Organizations",
     path: "/organization",
     permission: "view:organizations",
   },
   {
-    label: "Siparislerim",
+    label: "My Orders",
     path: "/orders",
     permission: "view:my-orders",
   },
   {
-    label: "Basvurular",
+    label: "Applies",
     path: "/appliesOrganization",
     permission: "view:applies",
   },

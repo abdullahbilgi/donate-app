@@ -7,11 +7,12 @@ import Button from "../ui/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import { TbCategoryFilled } from "react-icons/tb";
 import { MdDateRange } from "react-icons/md";
 import { BsBoxes } from "react-icons/bs";
 import { IoPricetagsOutline } from "react-icons/io5";
 import { LiaDonateSolid } from "react-icons/lia";
-import { FaRegImage } from "react-icons/fa6";
+import { FaRegImage, FaShop } from "react-icons/fa6";
 import { BsChatLeftText } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
@@ -104,22 +105,21 @@ const AddProductForm = ({
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute p-20 text-center text-gray-200">
             <h1 className="text-4xl font-bold mb-10">
-              Seninle Büyüyen Bir İyilik Hareketi
+              A Growing Movement of Kindness with You
             </h1>
             <p className="text-xl font-medium  tracking-wider leading-relaxed mb-13">
-              Tarihi yaklaşan ürünlerini veya tüketemeyecegin ürünlerini
-              paylaşarak hem ihtiyacı olanlara destek ol, hem de israfı önle.
-              Seninle birlikte bu zinciri büyütelim. Her yeni ürün, her
-              paylaşım, her katkı bizi biraz daha büyütüyor.
-              <strong>Sen de bu topluluğun bir parçası ol.</strong> Bugün bir
-              paylaşım senden, yarın binlerce iyilik hepimizden.
+              Support those in need and help prevent waste by sharing products
+              that are nearing their expiration date or that you can’t consume.
+              Let’s grow this chain together. Every new item, every act of
+              sharing, every contribution helps us grow a little more. Be a part
+              of this community. A single contribution from you today can lead
+              to thousands of acts of kindness tomorrow.
             </p>
             <p className="text-xl font-medium  tracking-wider leading-relaxed">
-              LastBite'i daha yakından tanımak ister misiniz? Biz, ihtiyaç
-              sahipleriyle fazla ürünleri buluşturarak israfı önlemeyi ve
-              toplumsal dayanışmayı büyütmeyi hedefliyoruz. Misyonumuz,
-              değerlerimiz ve diger tüm sürecler hakkında daha fazla bilgi almak
-              için lütfen Hakkımızda sayfamıza göz atın!
+              Would you like to learn more about LastBite? We aim to prevent
+              waste and strengthen social solidarity by connecting surplus
+              products with people in need. To learn more about our mission,
+              values, and everything we do, please visit our About Us page!
             </p>
           </div>
 
@@ -150,7 +150,7 @@ const AddProductForm = ({
               className="w-4 h-4 focus:ring-teal-800 focus:ring-2"
             />
             <label htmlFor="donate" className="font-semibold text-lg">
-              Donate yapmak istiyorum
+              I’d like to help by donating
             </label>
           </div>
           <Form
@@ -160,7 +160,8 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <MdDriveFileRenameOutline className="w-5 h-5" /> Ürün adi *
+                  <MdDriveFileRenameOutline className="w-5 h-5" /> Product Name
+                  *
                 </>
               }
               errors={errors?.name?.message}
@@ -186,7 +187,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <BsBoxes /> Ürün Adeti *
+                  <BsBoxes /> Product Quantity *
                 </>
               }
               errors={errors?.quantity?.message}
@@ -213,7 +214,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <MdDateRange /> ÜT(Üretim Tarihi) *
+                  <MdDateRange /> Production Date *
                 </>
               }
             >
@@ -229,7 +230,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <MdDateRange /> STT(Son Tüketim Tarihi) *
+                  <MdDateRange /> Expiration Date *
                 </>
               }
             >
@@ -248,7 +249,7 @@ const AddProductForm = ({
                 <FormRow
                   labelText={
                     <>
-                      <IoPricetagsOutline /> Ürün Normal Fiyati *
+                      <IoPricetagsOutline /> Regular Price *
                     </>
                   }
                   errors={errors?.price?.message}
@@ -267,7 +268,7 @@ const AddProductForm = ({
                 <FormRow
                   labelText={
                     <>
-                      <LiaDonateSolid /> Indirimli Fiyat *
+                      <LiaDonateSolid /> Discounted Price *
                     </>
                   }
                   errors={errors?.discountedPrice?.message}
@@ -296,7 +297,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <FaRegImage /> Ürün Kategorisi
+                  <TbCategoryFilled /> Category *
                 </>
               }
             >
@@ -307,7 +308,7 @@ const AddProductForm = ({
                   setValueAs: (v) => (v === "" ? undefined : Number(v)),
                 })}
               >
-                <option value="">Kategori Sec</option>
+                <option value="">Choose a Category</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -319,7 +320,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <FaRegImage /> Ürün Resmi
+                  <FaRegImage /> Product Image
                 </>
               }
             >
@@ -330,7 +331,7 @@ const AddProductForm = ({
               <FormRow
                 labelText={
                   <>
-                    <MdDateRange /> Son Bagis Tarihi*
+                    <MdDateRange /> Last Donation Date *
                   </>
                 }
               >
@@ -349,7 +350,7 @@ const AddProductForm = ({
               <FormRow
                 labelText={
                   <>
-                    <BsChatLeftText /> Market
+                    <FaShop /> Market
                   </>
                 }
               >
@@ -360,7 +361,7 @@ const AddProductForm = ({
                     setValueAs: (v) => (v === "" ? "" : Number(v)),
                   })}
                 >
-                  <option value="">Market Sec</option>
+                  <option value="">Choose a Market</option>
                   {marketsArr.map((market) => (
                     <option key={market.id} value={market.id}>
                       {market.name}
@@ -373,7 +374,7 @@ const AddProductForm = ({
             <FormRow
               labelText={
                 <>
-                  <BsChatLeftText /> Ürün Bilgisi
+                  <BsChatLeftText /> Product Details *
                 </>
               }
               className="col-span-2"
@@ -400,11 +401,11 @@ const AddProductForm = ({
                   className="w-4 h-4 focus:ring-teal-800 focus:ring-2"
                 />
                 <label htmlFor="accept">
-                  Ürünün tüketime uygun olduğunu onaylıyorum. *
+                  I confirm that the product is suitable for consumption *
                 </label>
               </div>
               <Button variation="submit" disabled={notAccepted}>
-                Ürünü Paylaş
+                Post Product
               </Button>
             </div>
           </Form>
