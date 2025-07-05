@@ -9,6 +9,7 @@ import {
 } from "../store/ProductStore/Products/thunks";
 import Button from "../ui/Button";
 import { hasPermission } from "../utils/permissionUtils";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -88,6 +89,7 @@ const Products = () => {
               donateProducts={donateProducts}
             />
           </div>
+
           <div className="xl:col-span-9 flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <p className="grow text-lg font-semibold text-gray-600">

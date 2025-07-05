@@ -8,6 +8,11 @@ import { logout } from "../store/Auth/Login/thunks";
 import { MdLogout } from "react-icons/md";
 import { hasPermission } from "../utils/permissionUtils";
 import { ROUTES } from "../Routes/HeaderLinks";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { IoBagCheck } from "react-icons/io5";
+import { LoginSignupNotification } from "../Toast-Notification/LoginSignupNotification";
+import { FaUserMinus } from "react-icons/fa6";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,9 +22,22 @@ const Header = () => {
 
   const { role } = useAppSelector((state) => state.Auth);
   const dispatch = useAppDispatch();
-  const logoutHandler = async () => {
-    await dispatch(logout());
-    navigate("/login");
+  const logoutHandler = () => {
+    toast.loading("Loading");
+    dispatch(logout())
+      .then(() => {
+        toast.dismiss();
+        toast.custom((t) => (
+          <LoginSignupNotification
+            title="Logout"
+            text="See you soon!"
+            icon={<FaUserMinus className="w-5 h-5 text-red-800" />}
+            t={t}
+          />
+        ));
+        navigate("/login");
+      })
+      .catch((error) => toast.error(error));
   };
 
   return (

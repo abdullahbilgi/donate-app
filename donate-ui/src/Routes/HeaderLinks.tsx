@@ -24,6 +24,7 @@ export const ROUTES: {
     path: "/organization",
     permission: "view:organizations",
   },
+
   {
     label: "My Orders",
     path: "/orders",

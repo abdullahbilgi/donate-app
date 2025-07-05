@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "./store";
 import { getMe } from "./store/Auth/Login/thunks";
 import ApplyOrganization from "./pages/ApplyOrganization";
 import AppliesOrganization from "./pages/AppliesOrganization";
-import Organization from "./pages/Organizations";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -34,98 +34,101 @@ function App() {
 
   if (!ready) return <div>Yükleniyor...</div>; // İlk yükleme sırasında beklet
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route index element={<Navigate replace to="/home" />} />
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/addProduct"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
-                <AddProductForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
-                <Products />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/markets"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
-                <Markets />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/orders"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
-                <Orders />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/productsByMarket/:id"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
-                <ProductsByMarket />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/soldProductByMarket/:id"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
-                <SoldProductByMarket />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/applyOrganization"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
-                <ApplyOrganization />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/appliesOrganization"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN"]}>
-                <AppliesOrganization />
-              </ProtectedRoute>
-            }
-          />
+    <>
+      <Toaster position="top-right" />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate replace to="/home" />} />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/addProduct"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                  <AddProductForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/markets"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                  <Markets />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER", "BENEFACTOR"]}>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/productsByMarket/:id"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                  <ProductsByMarket />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/soldProductByMarket/:id"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                  <SoldProductByMarket />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/applyOrganization"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "USER"]}>
+                  <ApplyOrganization />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/appliesOrganization"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN"]}>
+                  <AppliesOrganization />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/organization"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN"]}>
-                <AppliesOrganization />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
+            <Route
+              path="/organization"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN"]}>
+                  <AppliesOrganization />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
 
-        <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

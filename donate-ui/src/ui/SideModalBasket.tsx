@@ -6,6 +6,9 @@ import Button from "./Button";
 import { useAppSelector } from "../store";
 import Modal from "./Modal";
 import { CreateOrderModalContent } from "./CreateOrderModalContent";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { IoBagCheck } from "react-icons/io5";
+
 interface SideModalBasketProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,7 +30,9 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
         onClose();
       }
     }
+    // toast.custom(
 
+    // );
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
@@ -38,6 +43,7 @@ const SideModalBasket: React.FC<SideModalBasketProps> = ({
     isOpen && (
       <>
         <div className="fixed inset-0 bg-black opacity-35 z-40"></div>
+
         <div
           className="bg-white fixed top-0 right-0 w-100 h-svh z-50 py-6 px-2"
           ref={ref}

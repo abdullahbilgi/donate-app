@@ -9,6 +9,10 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { login } from "../store/Auth/Login/thunks";
 import { getCartById } from "../store/CartStore/GetCartById/thunks";
 import { setToken, setupInterceptors } from "../api/interceptors";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { IoBagCheck } from "react-icons/io5";
+import { FaUserCheck } from "react-icons/fa6";
 
 type FormValues = {
   userName: string;
@@ -24,9 +28,19 @@ const Login = () => {
   const navigate = useNavigate();
 
   async function onSubmit(data: FormValues) {
+    toast.loading("Loading");
     const resultAction = await dispatch(login(data));
 
     if (login.fulfilled.match(resultAction)) {
+      toast.dismiss();
+      toast.custom((t) => (
+        <SuccesNotafication
+          title="Login Successful"
+          text="Welcome back!"
+          icon={<FaUserCheck className="w-7 h-7 text-green-800" />}
+          t={t}
+        />
+      ));
       const token = resultAction.payload.access_token;
       setToken(token);
       setupInterceptors(); // burada çağır, çünkü token artık var
@@ -35,6 +49,7 @@ const Login = () => {
       navigate("/");
     } else {
       console.error("Login failed", resultAction);
+      toast.error("Error");
     }
   }
   return (
@@ -60,7 +75,7 @@ const Login = () => {
           />
         </FormRow>
 
-        <Button onClick={() => console.log("login")}>Sign Up</Button>
+        <Button>Sign Up</Button>
 
         <p className="font-normal">
           Dont have any account?{" "}

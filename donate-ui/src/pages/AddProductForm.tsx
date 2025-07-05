@@ -79,6 +79,7 @@ const AddProductForm = ({
       lastDonatedDate: `${!donate ? data.lastDonatedDate + "T10:00:00" : ""}`,
       price: !donate ? Number(data.price.toFixed(1)) : Number(0.0),
       productStatus: `${!donate ? "REAL" : "DONATE"}`,
+      marketId: marketId ? marketId : data.marketId,
     };
 
     //productStatus, lastDonatedDate

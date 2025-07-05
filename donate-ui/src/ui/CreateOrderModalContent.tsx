@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../store";
 import { createOrder } from "../store/Order/thunks";
 import Button from "./Button";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import toast from "react-hot-toast";
+import { IoBagCheck } from "react-icons/io5";
 
 export const CreateOrderModalContent = ({
   onClose,
@@ -14,12 +17,25 @@ export const CreateOrderModalContent = ({
   const { loading, error } = useAppSelector((state) => state.Order);
 
   const approveOrder = () => {
-    dispatch(createOrder(userId));
-
     if (!loading && onCloseModal && onClose) {
-      onCloseModal();
       onClose();
+      dispatch(createOrder(userId))
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => (
+            <SuccesNotafication
+              title="Order Confirmed"
+              text="Your order was placed successfully. Thank You"
+              icon={<IoBagCheck className="w-5 h-5 text-green-800" />}
+              t={t}
+            />
+          ));
+        })
+        .catch((error) => toast.error(error));
+
+      onCloseModal();
     }
+    toast.loading("Loading");
   };
 
   return (
