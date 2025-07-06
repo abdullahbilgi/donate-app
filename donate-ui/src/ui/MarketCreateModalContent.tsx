@@ -9,6 +9,10 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { createMarket } from "../store/MarketStore/Market/thunks";
 import MarketMap from "./MarketMap";
 import { applyOrganization } from "../store/Organization/ApplyOrganization/thunks";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { BsBuildingFillCheck, BsShop } from "react-icons/bs";
+import { getMyApply } from "../store/Organization/GetMyApply/thunks";
 
 export interface Address {
   country: string;
@@ -89,9 +93,41 @@ const MarketCreateModalContent = ({
     console.log(sendObject);
 
     if (type && type === "organization") {
-      dispatch(applyOrganization({ ...sendObject, userId }));
+      toast.loading("Submitting application...");
+      dispatch(applyOrganization({ ...sendObject, userId }))
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => {
+            return (
+              <SuccesNotafication
+                title="Application created"
+                text="It is no awaiting admin approval"
+                t={t}
+                icon={
+                  <BsBuildingFillCheck className="w-6 h-6 text-green-600" />
+                }
+              />
+            );
+          });
+        })
+        .catch((error) => toast.error(error));
+
+      dispatch(getMyApply());
     } else {
-      dispatch(createMarket(sendObject));
+      toast.loading("Creating market...");
+      dispatch(createMarket(sendObject)).then(() => {
+        toast.dismiss();
+        toast.custom((t) => {
+          return (
+            <SuccesNotafication
+              title="Market created"
+              text="You can check it on the Markets page."
+              t={t}
+              icon={<BsShop className="w-6 h-6 text-green-600" />}
+            />
+          );
+        });
+      });
     }
 
     if (!loading && !error && onCloseModal && type !== "organization") {

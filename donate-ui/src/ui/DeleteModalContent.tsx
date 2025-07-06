@@ -1,12 +1,15 @@
+import toast from "react-hot-toast";
 import { useAppDispatch } from "../store";
 import { deleteMarket } from "../store/MarketStore/Market/thunks";
 import Button from "./Button";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface InfoProps {
   name: string;
   type: string;
   onCloseModal?: () => void;
-  deleteDispatch?: () => void;
+  deleteDispatch?: () => Promise<any>;
   loading: boolean;
   error: null | string;
 }
@@ -21,7 +24,21 @@ const DeleteModalContent: React.FC<InfoProps> = ({
 }) => {
   const onDeleteMarket = () => {
     if (deleteDispatch) {
-      deleteDispatch();
+      deleteDispatch()
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => {
+            return (
+              <SuccesNotafication
+                title="Successfully deleted"
+                text=""
+                t={t}
+                icon={<FaTrashAlt className="w-6 h-6 text-red-600" />}
+              />
+            );
+          });
+        })
+        .catch((error) => toast.error(error));
     }
 
     if (!loading && onCloseModal && error) {

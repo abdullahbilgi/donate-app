@@ -11,6 +11,7 @@ import getSoldProductByMarket from "./ProductStore/GetSoldProductByMarket/reduce
 import applyOrganizationReducer from "./Organization/ApplyOrganization/reducers";
 import acceptReceptOrganizationReducer from "./Organization/AcceptRejectApplies/reducers";
 import organizationReducer from "./Organization/reducers";
+import myApplyReducer from "./Organization/GetMyApply/reducers";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
     ApplyOrganizations: applyOrganizationReducer,
     AcceptRejectOrganization: acceptReceptOrganizationReducer,
     Organization: organizationReducer,
+    MyApply: myApplyReducer,
   },
 });
 

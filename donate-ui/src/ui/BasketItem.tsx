@@ -1,9 +1,11 @@
-import { IoClose } from "react-icons/io5";
+import { IoBagRemove, IoClose } from "react-icons/io5";
 import QuantityInput from "./QuantityInput";
 
 import { deleteProduct } from "../store/ProductStore/Products/thunks";
 import { useAppDispatch } from "../store";
 import { removeItemFromCart } from "../store/CartStore/Cart/thunks";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
 
 interface BasketItemProps {
   itemId: any;
@@ -27,7 +29,22 @@ const BasketItem: React.FC<BasketItemProps> = ({
 
   const cartId = Number(localStorage.getItem("cartId"));
   function handleDelete() {
-    dispatch(removeItemFromCart({ productId: itemId, cartId }));
+    toast.loading("Removing product from cart...");
+    dispatch(removeItemFromCart({ productId: itemId, cartId }))
+      .then(() => {
+        toast.dismiss();
+        toast.custom((t) => {
+          return (
+            <SuccesNotafication
+              title="Product removed from cart"
+              text=""
+              t={t}
+              icon={<IoBagRemove className="w-6 h-6 text-red-600" />}
+            />
+          );
+        });
+      })
+      .catch((error) => toast.error(error));
   }
 
   return (

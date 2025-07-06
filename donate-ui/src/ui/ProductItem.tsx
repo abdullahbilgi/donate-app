@@ -5,6 +5,9 @@ import { useState } from "react";
 import { addProductToCart } from "../store/CartStore/Cart/thunks";
 import { useAppDispatch, useAppSelector } from "../store";
 import QuantityInput from "./QuantityInput";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { BsBasketFill } from "react-icons/bs";
 
 interface ProductItemProps {
   id: number;
@@ -29,12 +32,25 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
   const addToCartHandler = () => {
     if (userId !== null) {
+      toast.loading("Adding Product");
       dispatch(
         addProductToCart({
           productId: id,
           productQuantity: 1,
         })
-      );
+      )
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => (
+            <SuccesNotafication
+              title="Product added to cart"
+              text=""
+              icon={<BsBasketFill className="w-7 h-7 text-green-800" />}
+              t={t}
+            />
+          ));
+        })
+        .catch((error) => toast.error(error));
     } else {
       console.log("Please first login!!");
       // burada belki bir modal gösterilebilir

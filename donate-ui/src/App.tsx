@@ -35,7 +35,7 @@ function App() {
   if (!ready) return <div>Yükleniyor...</div>; // İlk yükleme sırasında beklet
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>

@@ -1,4 +1,4 @@
-import { FaArrowDown } from "react-icons/fa";
+import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
@@ -19,6 +19,8 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { getCategory } from "../store/Category/thunks";
 import { createProduct } from "../store/ProductStore/Products/thunks";
 import { getMarketByUser } from "../store/MarketStore/Market/thunks";
+import toast from "react-hot-toast";
+import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
 
 interface Inputs {
   name: string;
@@ -84,11 +86,40 @@ const AddProductForm = ({
 
     //productStatus, lastDonatedDate
     if (!donate) {
-      console.log(productData);
-      dispatch(createProduct(productData));
+      toast.loading("Adding product...");
+      dispatch(createProduct(productData))
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => {
+            return (
+              <SuccesNotafication
+                title="Product added successfully"
+                text=""
+                t={t}
+                icon={<FaCheckCircle className="w-6 h-6 text-green-600" />}
+              />
+            );
+          });
+        })
+        .catch((error) => toast.error(error));
     } else {
-      console.log(productData);
-      dispatch(createProduct(productData));
+      toast.loading("Adding product...");
+
+      dispatch(createProduct(productData))
+        .then(() => {
+          toast.dismiss();
+          toast.custom((t) => {
+            return (
+              <SuccesNotafication
+                title="Product added successfully"
+                text=""
+                t={t}
+                icon={<FaCheckCircle className="w-6 h-6 text-green-600" />}
+              />
+            );
+          });
+        })
+        .catch((error) => toast.error(error));
     }
 
     if (!loading && onCloseModal) {

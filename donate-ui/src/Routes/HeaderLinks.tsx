@@ -31,6 +31,11 @@ export const ROUTES: {
     permission: "view:my-orders",
   },
   {
+    label: "Organization Apply",
+    path: "/applyOrganization",
+    permission: "apply:organization",
+  },
+  {
     label: "Applies",
     path: "/appliesOrganization",
     permission: "view:applies",

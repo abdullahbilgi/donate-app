@@ -10,6 +10,7 @@ export const rolePermissions = {
     "view:applies",
     "view:markets",
     "create:organization",
+    "apply:organization",
   ],
   BENEFACTOR: ["view:donateProducts", "view:my-orders"],
   USER: [
@@ -18,6 +19,7 @@ export const rolePermissions = {
     "view:products",
     "view:my-orders",
     "view:markets",
+    "apply:organization",
     "create:organization",
   ],
 } as const;
