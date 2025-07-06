@@ -79,7 +79,7 @@ function Window({ children, name }: WindowProps) {
         className="fixed p-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-lg bg-nature1"
       >
         <button
-          className="absolute top-4 right-6 p-1 border-none hover:bg-buttonHover transition-all"
+          className="absolute top-4 right-6 p-1 border-none hover:bg-buttonHover transition-all cursor-pointer"
           onClick={close}
         >
           <HiMiniXMark size={28} />

@@ -4,9 +4,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getMyApply } from "../store/Organization/GetMyApply/thunks";
 import { rejectedApply } from "../store/Organization/AcceptRejectApplies/thunks";
-import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
-import { FaTrashAlt } from "react-icons/fa";
 import Modal from "../ui/Modal";
 import DeleteModalContent from "../ui/DeleteModalContent";
 
@@ -29,7 +26,9 @@ const ApplyOrganization = () => {
         </div>
       </div>
       <div className="w-3/5 p-10">
-        {Apply ? (
+        {loading ? (
+          <div className="animate-spin rounded-full h-10 w-10 border-3 border-green-900 mx-auto" />
+        ) : Apply ? (
           <>
             <div className="bg-blue-100 p-5 mb-5">
               <p className="font-semibold text-blue-900">

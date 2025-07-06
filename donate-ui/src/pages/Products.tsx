@@ -103,7 +103,11 @@ const Products = () => {
                 products out of {totalElements}
               </p>
             </div>
-            <ProductList products={showResults} />
+            {loading ? (
+              <div className="animate-spin rounded-full h-12 w-12 border-3 border-green-900 mx-auto" />
+            ) : (
+              <ProductList products={showResults} />
+            )}
           </div>
         </div>
         <div className="flex gap-4 justify-center">

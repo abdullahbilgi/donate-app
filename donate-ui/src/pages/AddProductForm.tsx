@@ -53,6 +53,7 @@ const AddProductForm = ({
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm<Inputs>();
 
   const userId = localStorage.getItem("userId");
@@ -102,6 +103,7 @@ const AddProductForm = ({
           });
         })
         .catch((error) => toast.error(error));
+      reset();
     } else {
       toast.loading("Adding product...");
 
@@ -120,6 +122,8 @@ const AddProductForm = ({
           });
         })
         .catch((error) => toast.error(error));
+
+      reset();
     }
 
     if (!loading && onCloseModal) {
@@ -161,10 +165,15 @@ const AddProductForm = ({
         </div>
       )}
 
+      {loading && (
+        <div className="animate-spin rounded-full h-10 w-10 border-3 border-green-900 mx-auto absolute z-10" />
+      )}
       <div
         className={`${
           type !== "modal" ? "py-15" : ""
-        }  flex items-center justify-center`}
+        }  flex items-center justify-center relative ${
+          loading ? "opacity-30 pointer-events-none" : ""
+        }`}
       >
         <div
           className={`${

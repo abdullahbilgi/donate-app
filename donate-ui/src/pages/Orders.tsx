@@ -61,7 +61,7 @@ export const Orders = () => {
           )}
 
           {loading ? (
-            "loading"
+            <div className="animate-spin rounded-full h-10 w-10 border-3 border-green-900 mx-auto" />
           ) : (
             <table className="bordered group dataTable w-full text-sm align-middle whitespace-nowrap no-footer">
               <thead className="border-b border-slate-200 dark:border-zink-500">
