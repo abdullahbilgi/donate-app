@@ -28,28 +28,36 @@ const Login = () => {
   const navigate = useNavigate();
 
   async function onSubmit(data: FormValues) {
-    toast.loading("Loading");
-    const resultAction = await dispatch(login(data));
+    const toastId = toast.loading("Loading...");
 
-    if (login.fulfilled.match(resultAction)) {
-      toast.dismiss();
-      toast.custom((t) => (
-        <SuccesNotafication
-          title="Login Successful"
-          text="Welcome back!"
-          icon={<FaUserCheck className="w-7 h-7 text-green-800" />}
-          t={t}
-        />
-      ));
-      const token = resultAction.payload.access_token;
-      setToken(token);
-      setupInterceptors(); // burada çağır, çünkü token artık var
-      await dispatch(getCartById(resultAction.payload.userId));
+    try {
+      const resultAction = await dispatch(login(data));
 
-      navigate("/");
-    } else {
-      console.error("Login failed", resultAction);
-      toast.error("Error");
+      if (login.fulfilled.match(resultAction)) {
+        toast.dismiss(toastId);
+        toast.custom((t) => (
+          <SuccesNotafication
+            title="Login Successful"
+            text="Welcome back!"
+            icon={<FaUserCheck className="w-7 h-7 text-green-800" />}
+            t={t}
+          />
+        ));
+        const token = resultAction.payload.access_token;
+        setToken(token);
+        setupInterceptors(); // burada çağır, çünkü token artık var
+        await dispatch(getCartById(resultAction.payload.userId));
+
+        navigate("/");
+      } else {
+        console.error("Login failed", resultAction);
+        toast.dismiss(toastId);
+        toast.error("Error");
+      }
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error("Unexpected error");
+      console.error(error);
     }
   }
   return (
