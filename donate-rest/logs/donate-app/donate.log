@@ -125,3 +125,11 @@
 2025-09-10 16:53:53 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest
 2025-09-10 16:54:08 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
 2025-09-10 16:54:21 INFO   [saveAndMap]   c.p.d.s.MarketServiceImpl : eraytest3 Created market: Market(id=27, name=samsun, createdDate=2025-09-10T16:54:21.972070, lastModifiedDate=2025-09-10T16:54:21.972070, taxNumber=3434, status=PENDING, isActive=true, user=com.project.donate.model.User@42690d9f, address=Address(id=52, name=Gökçe, Tekkeköy, Samsun, Black Sea Region, 55320, Turkey, createdDate=2025-09-10T16:54:21.957697, lastModifiedDate=2025-09-10T16:54:21.958347, latitude=41.17766263153415, longitude=36.496649227881605, zipCode=55320, isActive=true, region=Region(id=749, name=TEKKEKÖY, createdDate=2025-05-12T16:41:37.716824, lastModifiedDate=2025-05-12T16:41:37.716824, city=City(id=55, name=SAMSUN, createdDate=2025-05-12T16:41:37.165639, lastModifiedDate=2025-05-12T16:41:37.165639))), products=[])
+2025-09-10 17:06:41 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 8156 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-10 17:06:41 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-10 17:06:41 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-10 17:06:48 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-10 17:06:50 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 9.444 seconds (process running for 11.327)
+2025-09-10 17:07:27 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
+2025-09-10 17:09:23 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
+2025-09-10 17:11:06 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
