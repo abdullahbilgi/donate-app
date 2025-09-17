@@ -133,3 +133,13 @@
 2025-09-10 17:07:27 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
 2025-09-10 17:09:23 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
 2025-09-10 17:11:06 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : eraytest3 - looked market with id: 27
+2025-09-11 14:48:03 INFO   [updateAllProductStatus]   c.p.d.s.ProductServiceImpl : Product statuses updated after 00:01:00
+2025-09-17 11:37:03 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 14056 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-17 11:37:03 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-17 11:37:03 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-17 11:37:14 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-17 11:37:19 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 16.372 seconds (process running for 19.107)
+2025-09-17 11:37:49 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-17 11:38:33 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-17 14:22:25 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-17 14:22:42 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3

@@ -6,8 +6,8 @@ import { searchProduct } from "../store/ProductStore/Products/thunks";
 
 interface ProductFilterProps {
   searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  setDonateProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchTerm: (searchTerm: string) => void;
+  setDonateProducts: (donateProducts: boolean) => void;
   donateProducts: boolean;
 }
 
@@ -39,22 +39,11 @@ const ProductFilter = ({
           </div>
 
           <FilterElements title="Price">
-            <FilterElementsContent labelText="All" inputId="priceAll" />
             <FilterElementsContent
               labelText="Donate"
               inputId="donate"
               onClick={() => setDonateProducts(!donateProducts)}
             />
-          </FilterElements>
-
-          <FilterElements title="Category">
-            <FilterElementsContent labelText="All" inputId="priceAll" />
-            <FilterElementsContent labelText="Icecek" inputId="icecek" />
-            <FilterElementsContent
-              labelText="Süt Ürünleri"
-              inputId="sütürünleri"
-            />
-            <FilterElementsContent labelText="Et - Tavuk" inputId="et" />
           </FilterElements>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import ProductFilter from "../ui/ProductFilter";
 import ProductList from "../ui/ProductsList";
@@ -9,12 +9,10 @@ import {
 } from "../store/ProductStore/Products/thunks";
 import Button from "../ui/Button";
 import { hasPermission } from "../utils/permissionUtils";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
 
 const Products = () => {
   const dispatch = useAppDispatch();
 
-  // normal product ve searchin loading vs ayir
   const {
     productsArr,
     searchProducts,
@@ -26,9 +24,32 @@ const Products = () => {
   } = useAppSelector((state: any) => state.Product);
   const { role, token, isLogged } = useAppSelector((state) => state.Auth);
 
+  const canViewProducts = useMemo(
+    () => hasPermission(role, "view:products"),
+    [role]
+  );
+  const canViewDonated = useMemo(
+    () => hasPermission(role, "view:donateProducts"),
+    [role]
+  );
+
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const [donateProducts, setDonateProducts] = useState(false);
+
+  const handlePageClick = useCallback((index: number) => {
+    setPageNumber(index);
+  }, []);
+
+  const handleToggleDonate = useCallback((donateProducts: any) => {
+    setDonateProducts(!donateProducts);
+    setPageNumber(0);
+  }, []);
+
+  const handleSearchTerm = useCallback((searchTerm: string) => {
+    setSearchTerm(searchTerm);
+    setPageNumber(0);
+  }, []);
 
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -50,20 +71,15 @@ const Products = () => {
 
   console.log(donateProducts);
   useEffect(() => {
-    if (
-      debouncedSearchTerm.trim() !== "" &&
-      hasPermission(role, "view:products")
-    ) {
+    console.log("a");
+    if (debouncedSearchTerm.trim() !== "" && canViewProducts) {
       dispatch(searchProduct(debouncedSearchTerm));
     } else {
       {
-        if (
-          hasPermission(role, "view:donateProducts") &&
-          !hasPermission(role, "view:products")
-        ) {
+        if (canViewDonated && !canViewProducts) {
           // Bu sadece BENEFACTOR için geçerli: sadece bağış ürünlerini görebilir
           dispatch(getAllDonatedProducts({ page: pageNumber }));
-        } else if (hasPermission(role, "view:products")) {
+        } else if (canViewProducts) {
           // USER burada olacak: donateProducts kontrolüne göre yönlendir
           if (donateProducts) {
             dispatch(getAllDonatedProducts({ page: pageNumber }));
@@ -73,10 +89,21 @@ const Products = () => {
         }
       }
     }
-  }, [dispatch, pageNumber, size, debouncedSearchTerm, donateProducts, role]);
+  }, [
+    pageNumber,
+    debouncedSearchTerm,
+    donateProducts,
+    canViewProducts,
+    canViewDonated,
+  ]);
 
-  const showResults = searchTerm ? searchProducts : productsArr;
+  console.log(debouncedSearchTerm);
+  const showResults = useMemo(
+    () => (debouncedSearchTerm ? searchProducts : productsArr),
+    [debouncedSearchTerm, searchProducts, productsArr]
+  );
 
+  console.log(showResults);
   return (
     <div className="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.8)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
       <div className="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto my-16 flex flex-col gap-5">
@@ -84,8 +111,8 @@ const Products = () => {
           <div className="xl:col-span-3">
             <ProductFilter
               searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              setDonateProducts={setDonateProducts}
+              setSearchTerm={handleSearchTerm}
+              setDonateProducts={handleToggleDonate}
               donateProducts={donateProducts}
             />
           </div>
@@ -115,7 +142,7 @@ const Products = () => {
             return (
               <Button
                 variation="pagination"
-                onClick={() => setPageNumber(index)}
+                onClick={() => handlePageClick(index)}
                 disabled={index === pageNumber}
               >
                 {index + 1}
