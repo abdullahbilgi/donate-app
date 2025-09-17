@@ -143,3 +143,4 @@
 2025-09-17 11:38:33 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
 2025-09-17 14:22:25 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
 2025-09-17 14:22:42 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-17 16:08:06 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3

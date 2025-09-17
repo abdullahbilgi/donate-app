@@ -42,7 +42,7 @@ const Products = () => {
   }, []);
 
   const handleToggleDonate = useCallback((donateProducts: any) => {
-    setDonateProducts(!donateProducts);
+    setDonateProducts(donateProducts);
     setPageNumber(0);
   }, []);
 
@@ -68,6 +68,42 @@ const Products = () => {
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const activeTags = useMemo(() => {
+    const tags: {
+      key: string;
+      label: string;
+      className: string;
+      onRemove: () => void;
+    }[] = [];
+
+    if (donateProducts) {
+      tags.push({
+        key: "donate",
+        label: "Donate products",
+        className:
+          "bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500/90 dark:hover:bg-emerald-500",
+        onRemove: () => handleToggleDonate(false),
+      });
+    }
+
+    if (debouncedSearchTerm.trim()) {
+      tags.push({
+        key: "q",
+        label: `Search "${debouncedSearchTerm}"`,
+        className:
+          "bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500/90 dark:hover:bg-sky-500",
+        onRemove: () => handleSearchTerm(""),
+      });
+    }
+
+    return tags;
+  }, [
+    donateProducts,
+    handleToggleDonate,
+    debouncedSearchTerm,
+    handleSearchTerm,
+  ]);
 
   console.log(donateProducts);
   useEffect(() => {
@@ -103,7 +139,7 @@ const Products = () => {
     [debouncedSearchTerm, searchProducts, productsArr]
   );
 
-  console.log(showResults);
+  console.log(donateProducts);
   return (
     <div className="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.8)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
       <div className="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto my-16 flex flex-col gap-5">
@@ -117,11 +153,12 @@ const Products = () => {
             />
           </div>
 
+          {/* Since the same totalElements and totalPages values ​​come from the API, for example, even if there are 5 products, 4 pages are displayed when the search is made. */}
           <div className="xl:col-span-9 flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="grow text-lg font-semibold text-gray-600">
+            <div className="flex flex-wrap items-center gap-2 px-4">
+              <p className="grow text-md font-semibold text-gray-600">
                 Showing{" "}
-                <b className="text-xl text-gray-700">
+                <b className="text-lg text-gray-700">
                   {size * pageNumber} -{" "}
                   {size * pageNumber + size >= totalElements
                     ? totalElements
@@ -129,6 +166,22 @@ const Products = () => {
                 </b>{" "}
                 products out of {totalElements}
               </p>
+              <div>
+                {activeTags.length === 0
+                  ? ""
+                  : activeTags.map((t) => (
+                      <button
+                        key={t.key}
+                        onClick={t.onRemove}
+                        className={`${t.className} inline-flex items-center gap-1 rounded-full border px-3 mr-2 py-1 text-sm transition`}
+                      >
+                        {t.label}
+                        {/* İkon istersen: */}
+                        {/* <X className="w-3.5 h-3.5" aria-hidden /> */}
+                        <span aria-hidden>×</span>
+                      </button>
+                    ))}
+              </div>
             </div>
             {loading ? (
               <div className="animate-spin rounded-full h-12 w-12 border-3 border-green-900 mx-auto" />
