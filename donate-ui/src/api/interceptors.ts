@@ -28,12 +28,10 @@ export const setupInterceptors = () => {
     axiosPrivate.interceptors.response.eject(responseInterceptorId);
   }
 
-  console.log("1", token);
   requestInterceptorId = axiosPrivate.interceptors.request.use(
     (config) => {
       //const token = store.getState().Auth.token;
 
-      console.log(token);
       if (!config.headers["Authorization"] && token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }
@@ -56,7 +54,6 @@ export const setupInterceptors = () => {
         !originalRequest._retry &&
         !isRefreshing
       ) {
-        console.log("refrese girdi");
         originalRequest._retry = true;
         isRefreshing = true;
 
@@ -69,8 +66,6 @@ export const setupInterceptors = () => {
           }
 
           const newToken = res.payload?.access_token;
-
-          console.log(newToken);
 
           if (newToken) {
             setToken(newToken);

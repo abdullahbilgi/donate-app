@@ -18,12 +18,14 @@ interface CreateProductRequest {
 
 type GetAllProductsArgs = {
   page?: number;
+  sort?: string;
 };
 
 export const getAllProducts = createAsyncThunk<any, GetAllProductsArgs>(
   "getAllProducts",
-  async function ({ page = 0 }) {
-    const res = await axiosPrivate.get(`/products?page=${page}`);
+  async function ({ page = 0, sort }) {
+    console.log(`/products?page=${page}&sort=${sort}`);
+    const res = await axiosPrivate.get(`/products?page=${page}&sort=${sort}`);
 
     return res.data;
   }

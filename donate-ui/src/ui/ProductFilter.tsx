@@ -1,10 +1,12 @@
-import { useId } from "react";
+import { ArrowDown01, ArrowUp01, PackageSearch, X } from "lucide-react";
 
 type Props = {
   searchTerm: string;
   setSearchTerm: (v: string) => void;
   donateProducts: boolean;
   setDonateProducts: (v: boolean) => void;
+  sort: "asc" | "desc";
+  setSort: (s: "asc" | "desc") => void;
   className?: string;
 };
 
@@ -13,18 +15,18 @@ export default function ProductFilter({
   setSearchTerm,
   donateProducts,
   setDonateProducts,
+  sort,
+  setSort,
   className,
 }: Props) {
-  const searchId = useId();
-
   const clearAll = () => {
     setSearchTerm("");
     setDonateProducts(false);
   };
 
   return (
-    <aside className={className ?? "sticky top-24"}>
-      <div className="rounded-2xl border bg-white p-4 md:p-5 shadow-sm">
+    <aside className={className ?? "sticky top-8"}>
+      <div className="rounded-2xl border border-gray-200 bg-white p-4 md:p-5 shadow-sm mb-5">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-base font-semibold text-gray-800">Filters</h3>
           <button
@@ -36,18 +38,14 @@ export default function ProductFilter({
           </button>
         </div>
 
-        <label
-          htmlFor={searchId}
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Search
         </label>
         <div className="relative mb-5">
           <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">
-            🔎
+            <PackageSearch className="w-5 h-5" />
           </span>
           <input
-            id={searchId}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search product"
@@ -58,12 +56,55 @@ export default function ProductFilter({
             <button
               type="button"
               onClick={() => setSearchTerm("")}
-              className="absolute inset-y-0 right-2 my-auto h-7 w-7 rounded-md text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-2 my-auto h-7 w-7 rounded-md text-gray-400 hover:text-gray-600 cursor-pointer"
               aria-label="Clear search"
             >
-              ×
+              <X />
             </button>
           )}
+        </div>
+
+        {/* Sort by price */}
+        <div className="mb-5">
+          <span className="block text-sm font-medium text-gray-700 mb-1">
+            Sort by price
+          </span>
+
+          <div
+            role="group"
+            aria-label="Sort by price"
+            className="grid grid-cols-2 gap-2"
+          >
+            <button
+              type="button"
+              onClick={() => setSort("asc")}
+              aria-pressed={sort === "asc"}
+              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition
+        ${
+          sort === "asc"
+            ? "bg-gray-900 text-white border-gray-900 shadow-sm"
+            : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-white hover:border-gray-400"
+        }`}
+            >
+              <ArrowUp01 className="h-4 w-4" />
+              Low → High
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSort("desc")}
+              aria-pressed={sort === "desc"}
+              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition
+        ${
+          sort === "desc"
+            ? "bg-gray-900 text-white border-gray-900 shadow-sm"
+            : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-white hover:border-gray-400"
+        }`}
+            >
+              <ArrowDown01 className="h-4 w-4" />
+              High → Low
+            </button>
+          </div>
         </div>
 
         <div className="mb-1">

@@ -144,3 +144,62 @@
 2025-09-17 14:22:25 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
 2025-09-17 14:22:42 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
 2025-09-17 16:08:06 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-18 13:19:16 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 8400 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-18 13:19:16 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-18 13:19:16 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-18 13:19:26 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-18 13:19:45 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 21572 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-18 13:19:45 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-18 13:19:45 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-18 13:19:50 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-18 13:19:52 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 8.174 seconds (process running for 9.522)
+2025-09-18 13:20:29 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-18 13:20:46 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-18 15:20:11 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-18 15:26:52 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-18 15:26:57 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-18 15:27:04 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-18 15:48:05 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-18 15:48:12 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 75
+2025-09-18 15:48:15 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 53
+2025-09-18 15:48:16 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 53
+2025-09-18 15:48:33 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 49
+2025-09-18 15:48:35 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 50
+2025-09-18 15:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 71
+2025-09-18 15:48:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 70
+2025-09-18 15:48:43 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 69
+2025-09-18 15:48:45 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 54
+2025-09-18 15:48:48 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-18 15:48:49 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:48:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 73
+2025-09-18 15:49:24 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-18 15:49:25 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-18 15:49:30 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 71
+2025-09-18 15:49:33 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:49:34 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:54:46 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:54:47 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:54:48 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-18 15:54:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 71
+2025-09-18 15:54:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 71
+2025-09-18 16:03:44 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-18 16:03:53 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-18 16:03:54 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-18 16:03:55 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-18 17:10:09 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-18 17:10:09 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-18 17:10:19 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-18 17:28:17 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 2684 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-18 17:28:17 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-18 17:28:17 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-18 17:28:23 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-18 17:28:26 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 8.893 seconds (process running for 10.169)
+2025-09-18 18:03:27 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 22336 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-18 18:03:27 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-18 18:03:27 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-18 18:03:33 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-18 18:03:35 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 8.333 seconds (process running for 9.429)
+2025-09-18 20:18:57 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 00:01:00 INFO   [updateAllProductStatus]   c.p.d.s.ProductServiceImpl : Product statuses updated after 00:01:00
+2025-09-19 00:54:04 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 02:46:09 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3

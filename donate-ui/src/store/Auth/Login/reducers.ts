@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getMe, login, logout, refreshToken } from "./thunks";
-import { setToken, setupInterceptors } from "../../../api/interceptors";
 import { Role } from "../../../permissions/permissions";
 
 interface LoginState {
@@ -69,8 +68,6 @@ const authReducer = createSlice({
       });
 
     builder.addCase(getMe.fulfilled, (state: any, action: any) => {
-      console.log("login: ", action.payload?.access_token);
-
       console.log(action.payload);
       state.loading = false;
       state.userId = action.payload.userId;
@@ -117,8 +114,6 @@ const authReducer = createSlice({
         state.loading = true;
       })
       .addCase(refreshToken.fulfilled, (state: any, action: any) => {
-        console.log("refresh: ", action.payload?.access_token);
-        console.log("refresh: ", action.payload?.refresh_token);
         state.loading = false;
         state.error = "";
 

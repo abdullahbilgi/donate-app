@@ -6,6 +6,7 @@ export const rolePermissions = {
     "delete:donations",
     "view:users",
     "create:product",
+    "edit:product",
     "view:organizations",
     "view:applies",
     "view:markets",

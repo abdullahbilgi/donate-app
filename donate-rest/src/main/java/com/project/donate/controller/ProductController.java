@@ -30,7 +30,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<ProductDocument>> getAllProducts(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable)
     {
         return ResponseEntity.ok(productService.getAllProductsPageable(pageable));
     }
@@ -38,14 +38,14 @@ public class ProductController {
 
     @GetMapping("/donated")
     public ResponseEntity<Page<ProductDocument>> getAllDonatedProducts(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable)
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable)
     {
         return ResponseEntity.ok(productService.getDonatedProducts(pageable));
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCategory(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -54,7 +54,7 @@ public class ProductController {
 
     @GetMapping("/city/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCity(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -64,7 +64,7 @@ public class ProductController {
 
     @GetMapping("/region/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByRegion(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {
@@ -73,7 +73,7 @@ public class ProductController {
 
     @GetMapping("/market/{id}")
     public ResponseEntity<Page<ProductResponse>> getProductsByMarket(
-            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 12, direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable Long id
     )
     {

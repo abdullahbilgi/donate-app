@@ -10,7 +10,6 @@ interface ProductItem {
   discount: number;
   quantity: number;
   description: string;
-  productStatus: "DISCOUNT" | "NORMAL" | string;
   category: {
     id: number;
     name: string;
