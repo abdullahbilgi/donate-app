@@ -203,3 +203,30 @@
 2025-09-19 00:01:00 INFO   [updateAllProductStatus]   c.p.d.s.ProductServiceImpl : Product statuses updated after 00:01:00
 2025-09-19 00:54:04 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
 2025-09-19 02:46:09 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 14:45:27 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 14460 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-19 14:45:27 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-19 14:45:27 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-19 14:45:36 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-19 14:51:59 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 8476 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-19 14:51:59 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-19 14:51:59 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-19 14:52:51 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 20272 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-19 14:52:52 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-19 14:52:52 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-19 14:53:03 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-19 14:53:46 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 7156 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-19 14:53:46 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-19 14:53:46 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-19 14:53:53 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-19 14:53:56 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 11.219 seconds (process running for 12.742)
+2025-09-19 14:55:24 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-19 17:57:59 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 17:57:59 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 17:58:00 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-19 20:29:51 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-20 15:03:25 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 20988 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-20 15:03:25 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-20 15:03:25 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-20 15:03:38 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-20 15:03:44 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 20.357 seconds (process running for 23.659)
+2025-09-20 15:04:34 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3

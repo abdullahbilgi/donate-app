@@ -24,8 +24,12 @@ type GetAllProductsArgs = {
 export const getAllProducts = createAsyncThunk<any, GetAllProductsArgs>(
   "getAllProducts",
   async function ({ page = 0, sort }) {
+    let sortParam = "";
+    if (sort) {
+      sortParam = `&sort=${sort}`;
+    }
     console.log(`/products?page=${page}&sort=${sort}`);
-    const res = await axiosPrivate.get(`/products?page=${page}&sort=${sort}`);
+    const res = await axiosPrivate.get(`/products?page=${page}${sortParam}`);
 
     return res.data;
   }

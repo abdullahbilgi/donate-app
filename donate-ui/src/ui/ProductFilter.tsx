@@ -5,8 +5,13 @@ type Props = {
   setSearchTerm: (v: string) => void;
   donateProducts: boolean;
   setDonateProducts: (v: boolean) => void;
-  sort: "asc" | "desc";
-  setSort: (s: "asc" | "desc") => void;
+  sort: null | {
+    field: "discountedPrice";
+    sortKey: "asc" | "desc";
+  };
+  setSort: (
+    s: { field: "discountedPrice"; sortKey: "asc" | "desc" } | null
+  ) => void;
   className?: string;
 };
 
@@ -77,11 +82,17 @@ export default function ProductFilter({
           >
             <button
               type="button"
-              onClick={() => setSort("asc")}
-              aria-pressed={sort === "asc"}
-              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition
+              onClick={() =>
+                setSort(
+                  sort?.sortKey !== "asc"
+                    ? { field: "discountedPrice", sortKey: "asc" }
+                    : null
+                )
+              }
+              aria-pressed={sort?.sortKey === "asc"}
+              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition cursor-pointer
         ${
-          sort === "asc"
+          sort?.sortKey === "asc"
             ? "bg-gray-900 text-white border-gray-900 shadow-sm"
             : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-white hover:border-gray-400"
         }`}
@@ -92,11 +103,17 @@ export default function ProductFilter({
 
             <button
               type="button"
-              onClick={() => setSort("desc")}
-              aria-pressed={sort === "desc"}
-              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition
+              onClick={() =>
+                setSort(
+                  sort?.sortKey !== "desc"
+                    ? { field: "discountedPrice", sortKey: "desc" }
+                    : null
+                )
+              }
+              aria-pressed={sort?.sortKey === "desc"}
+              className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition cursor-pointer
         ${
-          sort === "desc"
+          sort?.sortKey === "desc"
             ? "bg-gray-900 text-white border-gray-900 shadow-sm"
             : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-white hover:border-gray-400"
         }`}
