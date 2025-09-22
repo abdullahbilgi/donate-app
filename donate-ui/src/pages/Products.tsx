@@ -9,7 +9,8 @@ import {
 } from "../store/ProductStore/Products/thunks";
 import Button from "../ui/Button";
 import { hasPermission } from "../utils/permissionUtils";
-import { X } from "lucide-react";
+import { Box, X } from "lucide-react";
+import { useSmoothLoader } from "../hooks/useSmoothLoader";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,11 @@ const Products = () => {
     totalElements,
   } = useAppSelector((state: any) => state.Product);
   const { role, token, isLogged } = useAppSelector((state) => state.Auth);
+
+  const showLoader = useSmoothLoader(loading, {
+    showAfter: 200,
+    minVisible: 400,
+  });
 
   const canViewProducts = useMemo(
     () => hasPermission(role, "view:products"),
@@ -171,7 +177,7 @@ const Products = () => {
 
   console.log(showResults);
   return (
-    <div className="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.8)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
+    <div className="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.8)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)] ">
       <div className="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto my-16 flex flex-col gap-5">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-5">
           <div className="xl:col-span-3">
@@ -218,10 +224,23 @@ const Products = () => {
                     ))}
               </div>
             </div>
-            {loading ? (
-              <div className="animate-spin rounded-full h-12 w-12 border-3 border-green-900 mx-auto" />
+            {showLoader ? (
+              <div className="absolute inset-0 grid place-items-center bg-white/60 backdrop-blur-sm">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="rounded-2xl p-4 shadow-lg bg-white">
+                    {/* 360° dönen kutu ikonu */}
+                    <Box
+                      className="animate-[spin_1.1s_linear_infinite]"
+                      style={{ width: size, height: size }}
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Loading...</p>
+                </div>
+              </div>
             ) : (
-              <ProductList products={showResults} />
+              <>
+                <ProductList products={showResults} />
+              </>
             )}
           </div>
         </div>

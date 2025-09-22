@@ -15,12 +15,12 @@ const AppLayout = () => {
 
   return (
     <div
-      className="grid grid-rows-[auto_1fr] min-h-svh font-poppins"
+      className="grid grid-rows-[auto_1fr] min-h-svh font-poppins "
       style={{ backgroundColor: "#f1f5f9" }}
     >
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 h-screen overflow-y-auto [scrollbar-gutter:stable]">
         <Outlet />
       </main>
     </div>

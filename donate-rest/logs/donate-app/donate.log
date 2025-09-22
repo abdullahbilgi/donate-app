@@ -230,3 +230,26 @@
 2025-09-20 15:03:38 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
 2025-09-20 15:03:44 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 20.357 seconds (process running for 23.659)
 2025-09-20 15:04:34 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-20 16:51:51 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-20 16:51:59 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-21 19:02:20 INFO   [updateAllProductStatus]   c.p.d.s.ProductServiceImpl : Product statuses updated after 00:01:00
+2025-09-22 21:52:56 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 12900 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-22 21:52:56 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-22 21:52:56 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-22 21:53:05 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-22 21:53:09 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 12.609 seconds (process running for 14.442)
+2025-09-22 21:55:29 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-22 23:37:34 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
