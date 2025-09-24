@@ -20,7 +20,7 @@ import { getCategory } from "../store/Category/thunks";
 import { createProduct } from "../store/ProductStore/Products/thunks";
 import { getMarketByUser } from "../store/MarketStore/Market/thunks";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 
 interface Inputs {
   name: string;
@@ -93,9 +93,8 @@ const AddProductForm = ({
           toast.dismiss();
           toast.custom((t) => {
             return (
-              <SuccesNotafication
+              <ToastCard
                 title="Product added successfully"
-                text=""
                 t={t}
                 icon={<FaCheckCircle className="w-6 h-6 text-green-600" />}
               />
@@ -112,9 +111,8 @@ const AddProductForm = ({
           toast.dismiss();
           toast.custom((t) => {
             return (
-              <SuccesNotafication
+              <ToastCard
                 title="Product added successfully"
-                text=""
                 t={t}
                 icon={<FaCheckCircle className="w-6 h-6 text-green-600" />}
               />

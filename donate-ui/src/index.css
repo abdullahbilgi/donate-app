@@ -1,2 +1,40 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
+
+@keyframes toast-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes toast-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+@keyframes toast-bar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+.animate-toast-in {
+  animation: toast-in 0.22s ease-out both;
+}
+.animate-toast-out {
+  animation: toast-out 0.18s ease-in both;
+}
+.animate-toast-bar {
+  animation: toast-bar var(--toast-duration, 4000ms) linear forwards;
+}

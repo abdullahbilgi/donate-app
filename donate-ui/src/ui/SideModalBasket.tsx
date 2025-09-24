@@ -6,7 +6,7 @@ import Button from "./Button";
 import { useAppSelector } from "../store";
 import Modal from "./Modal";
 import { CreateOrderModalContent } from "./CreateOrderModalContent";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+
 import { IoBagCheck } from "react-icons/io5";
 
 interface SideModalBasketProps {

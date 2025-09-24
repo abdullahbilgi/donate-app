@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         mainButton: "#12345",
       },
+      spacing: {
+        header: "26px",
+      },
     },
   },
   plugins: [],

@@ -10,7 +10,7 @@ import { login } from "../store/Auth/Login/thunks";
 import { getCartById } from "../store/CartStore/GetCartById/thunks";
 import { setToken, setupInterceptors } from "../api/interceptors";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import { IoBagCheck } from "react-icons/io5";
 import { FaUserCheck } from "react-icons/fa6";
 
@@ -36,9 +36,9 @@ const Login = () => {
       if (login.fulfilled.match(resultAction)) {
         toast.dismiss(toastId);
         toast.custom((t) => (
-          <SuccesNotafication
+          <ToastCard
             title="Login Successful"
-            text="Welcome back!"
+            description="Welcome back!"
             icon={<FaUserCheck className="w-7 h-7 text-green-800" />}
             t={t}
           />

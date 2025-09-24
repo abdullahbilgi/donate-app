@@ -5,7 +5,7 @@ import { deleteProduct } from "../store/ProductStore/Products/thunks";
 import { useAppDispatch } from "../store";
 import { removeItemFromCart } from "../store/CartStore/Cart/thunks";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 
 interface BasketItemProps {
   itemId: any;
@@ -35,9 +35,8 @@ const BasketItem: React.FC<BasketItemProps> = ({
         toast.dismiss();
         toast.custom((t) => {
           return (
-            <SuccesNotafication
+            <ToastCard
               title="Product removed from cart"
-              text=""
               t={t}
               icon={<IoBagRemove className="w-6 h-6 text-red-600" />}
             />

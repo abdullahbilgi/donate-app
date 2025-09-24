@@ -11,6 +11,7 @@ import Button from "../ui/Button";
 import { hasPermission } from "../utils/permissionUtils";
 import { Box, X } from "lucide-react";
 import { useSmoothLoader } from "../hooks/useSmoothLoader";
+import LoadingOverlay from "../ui/LoadingOverlay";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -25,11 +26,6 @@ const Products = () => {
     totalElements,
   } = useAppSelector((state: any) => state.Product);
   const { role, token, isLogged } = useAppSelector((state) => state.Auth);
-
-  const showLoader = useSmoothLoader(loading, {
-    showAfter: 200,
-    minVisible: 400,
-  });
 
   const canViewProducts = useMemo(
     () => hasPermission(role, "view:products"),
@@ -135,7 +131,6 @@ const Products = () => {
     handleSortByPrice,
   ]);
 
-  console.log(donateProducts);
   useEffect(() => {
     console.log("a");
     if (debouncedSearchTerm.trim() !== "" && canViewProducts) {
@@ -176,6 +171,7 @@ const Products = () => {
   );
 
   console.log(showResults);
+  console.log(loading);
   return (
     <div className="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.8)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)] ">
       <div className="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto my-16 flex flex-col gap-5">
@@ -191,71 +187,59 @@ const Products = () => {
             />
           </div>
 
-          {/* Since the same totalElements and totalPages values ​​come from the API, for example, even if there are 5 products, 4 pages are displayed when the search is made. */}
-          <div className="xl:col-span-9 flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-2 px-4">
-              <p className="grow text-md font-semibold text-gray-600">
-                Showing{" "}
-                <b className="text-lg text-gray-700">
-                  {size * pageNumber} -{" "}
-                  {size * pageNumber + size >= totalElements
-                    ? totalElements
-                    : size * pageNumber + size}
-                </b>{" "}
-                products out of {totalElements}
-              </p>
-              <div>
-                {activeTags.length === 0
-                  ? ""
-                  : activeTags.map((t) => (
-                      <div
-                        key={t.key}
-                        className={`${t.className} inline-flex items-center gap-2 border transition px-3 py-1 rounded-lg font-medium text-white mr-2`}
-                      >
-                        <p>{t.label}</p>
-
-                        <button
-                          onClick={t.onRemove}
-                          className="hover:opacity-90 font-semibold cursor-pointer"
+          {loading ? (
+            <LoadingOverlay label="Products Loading..." icon={Box} />
+          ) : (
+            // Since the same totalElements and totalPages values ​​come from the API, for example, even if there are 5 products, 4 pages are displayed when the search is made.
+            <div className="xl:col-span-9 flex flex-col gap-4">
+              <div className="flex flex-wrap items-center gap-2 px-4">
+                <p className="grow text-md font-semibold text-gray-600">
+                  Showing{" "}
+                  <b className="text-lg text-gray-700">
+                    {size * pageNumber} -{" "}
+                    {size * pageNumber + size >= totalElements
+                      ? totalElements
+                      : size * pageNumber + size}
+                  </b>{" "}
+                  products out of {totalElements}
+                </p>
+                <div>
+                  {activeTags.length === 0
+                    ? ""
+                    : activeTags.map((t) => (
+                        <div
+                          key={t.key}
+                          className={`${t.className} inline-flex items-center gap-2 border transition px-3 py-1 rounded-lg font-medium text-white mr-2`}
                         >
-                          <X className="w-4 h-4" aria-hidden />
-                        </button>
-                      </div>
-                    ))}
-              </div>
-            </div>
-            {showLoader ? (
-              <div className="absolute inset-0 grid place-items-center bg-white/60 backdrop-blur-sm">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="rounded-2xl p-4 shadow-lg bg-white">
-                    {/* 360° dönen kutu ikonu */}
-                    <Box
-                      className="animate-[spin_1.1s_linear_infinite]"
-                      style={{ width: size, height: size }}
-                    />
-                  </div>
-                  <p className="text-sm text-gray-600">Loading...</p>
+                          <p>{t.label}</p>
+
+                          <button
+                            onClick={t.onRemove}
+                            className="hover:opacity-90 font-semibold cursor-pointer"
+                          >
+                            <X className="w-4 h-4" aria-hidden />
+                          </button>
+                        </div>
+                      ))}
                 </div>
               </div>
-            ) : (
-              <>
-                <ProductList products={showResults} />
-              </>
-            )}
-          </div>
-        </div>
-        <div className="flex gap-4 justify-center">
-          {Array.from({ length: totalPages }, (_, index) => {
-            return (
-              <Button
-                variation="pagination"
-                onClick={() => handlePageClick(index)}
-                disabled={index === pageNumber}
-              >
-                {index + 1}
-              </Button>
-            );
-          })}
+
+              <ProductList products={showResults} />
+              <div className="flex gap-4 justify-center">
+                {Array.from({ length: totalPages }, (_, index) => {
+                  return (
+                    <Button
+                      variation="pagination"
+                      onClick={() => handlePageClick(index)}
+                      disabled={index === pageNumber}
+                    >
+                      {index + 1}
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

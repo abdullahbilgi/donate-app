@@ -9,8 +9,6 @@ import { MdLogout } from "react-icons/md";
 import { hasPermission } from "../utils/permissionUtils";
 import { ROUTES } from "../Routes/HeaderLinks";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
-import { IoBagCheck } from "react-icons/io5";
 import { LoginSignupNotification } from "../Toast-Notification/LoginSignupNotification";
 import { FaUserMinus } from "react-icons/fa6";
 
@@ -53,7 +51,7 @@ const Header = () => {
             className="w-15 h-15"
           />
           <Link to="/">
-            <h1 className="text-2xl font-semibold ">LastBite</h1>
+            <h1 className="text-2xl font-semibold">LastBite</h1>
           </Link>
         </div>
         <div className="flex gap-12 items-center font-semibold ">

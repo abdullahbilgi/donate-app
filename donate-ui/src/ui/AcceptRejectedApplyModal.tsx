@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../store";
 import { createOrder } from "../store/Order/thunks";
 import Button from "./Button";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import { IoBagRemove } from "react-icons/io5";
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -31,9 +31,8 @@ export const AcceptRejectedApplyModal = ({
         toast.dismiss();
         toast.custom((t) => {
           return (
-            <SuccesNotafication
+            <ToastCard
               title="Action completed successfully"
-              text=""
               t={t}
               icon={<FaCheckCircle className="w-6 h-6 text-gray-600" />}
             />

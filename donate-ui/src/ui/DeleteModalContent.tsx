@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "../store";
 import { deleteMarket } from "../store/MarketStore/Market/thunks";
 import Button from "./Button";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import { FaTrashAlt } from "react-icons/fa";
 
 interface InfoProps {
@@ -29,9 +29,8 @@ const DeleteModalContent: React.FC<InfoProps> = ({
           toast.dismiss();
           toast.custom((t) => {
             return (
-              <SuccesNotafication
+              <ToastCard
                 title="Successfully deleted"
-                text=""
                 t={t}
                 icon={<FaTrashAlt className="w-6 h-6 text-red-600" />}
               />

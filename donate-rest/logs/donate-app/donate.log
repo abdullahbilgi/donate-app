@@ -253,3 +253,112 @@
 2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
 2025-09-22 23:37:33 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
 2025-09-22 23:37:34 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-23 00:01:00 INFO   [updateAllProductStatus]   c.p.d.s.ProductServiceImpl : Product statuses updated after 00:01:00
+2025-09-23 00:06:54 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-23 00:06:58 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-24 13:39:33 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 18236 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-24 13:39:33 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-24 13:39:33 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-24 13:39:42 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-24 13:39:45 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 12.681 seconds (process running for 14.916)
+2025-09-24 13:41:20 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-24 14:46:32 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 14:46:34 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 14:46:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 14:46:41 INFO   [generateCartPdf]   c.p.d.u.PdfGeneratorService : eraytest3 generated PDF of cart detail id: 80
+2025-09-24 14:46:41 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: eray@example3.com
+2025-09-24 14:46:43 ERROR  [consume]   c.p.d.m.MailConsumer : Failed to send mail to eray@example3.com: Authentication failed
+2025-09-24 14:48:38 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:41 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:42 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:44 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:44 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:45 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:45 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:45 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:47 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:48 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:49 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:49 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:48:51 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 74
+2025-09-24 14:49:36 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 73
+2025-09-24 14:49:53 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 72
+2025-09-24 14:50:32 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 71
+2025-09-24 14:50:38 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 70
+2025-09-24 14:50:44 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 55
+2025-09-24 14:50:45 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 69
+2025-09-24 14:50:47 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 52
+2025-09-24 14:50:48 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 54
+2025-09-24 14:50:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 51
+2025-09-24 14:50:51 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 48
+2025-09-24 14:51:32 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest
+2025-09-24 14:51:59 INFO   [login]   c.p.d.a.AuthService : Login Successfully - lm10
+2025-09-24 14:52:54 INFO   [saveAndMap]   c.p.d.s.MarketServiceImpl : lm10 Created market: Market(id=28, name=Ordu Market, createdDate=2025-09-24T14:52:54.257766, lastModifiedDate=2025-09-24T14:52:54.257766, taxNumber=2552, status=PENDING, isActive=true, user=com.project.donate.model.User@5db05f38, address=Address(id=53, name=Karaağaç Mahallesi, Altınordu, Ordu, Black Sea Region, 52210, Turkey, createdDate=2025-09-24T14:52:54.241195, lastModifiedDate=2025-09-24T14:52:54.241195, latitude=40.85423970783564, longitude=37.831765841326956, zipCode=52210, isActive=true, region=Region(id=691, name=ALTINORDU, createdDate=2025-05-12T16:41:37.684315, lastModifiedDate=2025-05-12T16:41:37.684315, city=City(id=52, name=ORDU, createdDate=2025-05-12T16:41:37.161639, lastModifiedDate=2025-05-12T16:41:37.161639))), products=[])
+2025-09-24 14:55:25 INFO   [getMarketEntityById]   c.p.d.s.MarketServiceImpl : lm10 - looked market with id: 28
+2025-09-24 14:56:04 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:05 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:05 ERROR  [lambda$getCartEntityById$1]   c.p.d.s.CartServiceImpl : lm10 Address not found id: 0
+2025-09-24 14:56:05 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:05 ERROR  [lambda$getCartEntityById$1]   c.p.d.s.CartServiceImpl : lm10 Address not found id: 0
+2025-09-24 14:56:05 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:05 ERROR  [lambda$getCartEntityById$1]   c.p.d.s.CartServiceImpl : lm10 Address not found id: 0
+2025-09-24 14:56:06 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:06 ERROR  [lambda$getCartEntityById$1]   c.p.d.s.CartServiceImpl : lm10 Address not found id: 0
+2025-09-24 14:56:10 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:10 ERROR  [lambda$getCartEntityById$1]   c.p.d.s.CartServiceImpl : lm10 Address not found id: 0
+2025-09-24 14:56:17 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:17 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:18 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:25 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 76
+2025-09-24 14:56:25 INFO   [generateCartPdf]   c.p.d.u.PdfGeneratorService : lm10 generated PDF of cart detail id: 82
+2025-09-24 14:56:25 INFO   [consume]   c.p.d.m.MailConsumer : Received mail request for: eray@example71.com
+2025-09-24 14:56:26 ERROR  [consume]   c.p.d.m.MailConsumer : Failed to send mail to eray@example71.com: Authentication failed
+2025-09-24 16:39:26 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - lm10
+2025-09-24 17:01:26 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : lm10 - looked product with id: 56
+2025-09-24 19:32:20 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - lm10
+2025-09-24 19:32:25 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - lm10
+2025-09-24 19:32:35 INFO   [login]   c.p.d.a.AuthService : Login Successfully - eraytest3
+2025-09-24 19:40:45 INFO   [logStarting]   c.p.d.DonateApplication : Starting DonateApplication using Java 21.0.5 with PID 19224 (C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest\target\classes started by Eray in C:\Users\Eray\OneDrive\Masaüstü\lastbite\donate-rest)
+2025-09-24 19:40:45 DEBUG  [logStarting]   c.p.d.DonateApplication : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-24 19:40:45 INFO   [logStartupProfileInfo]   c.p.d.DonateApplication : No active profile set, falling back to 1 default profile: "default"
+2025-09-24 19:40:53 DEBUG  [init]   c.p.d.J.JWTAuthenticationFilter : Filter 'JWTAuthenticationFilter' configured for use
+2025-09-24 19:40:56 INFO   [logStarted]   c.p.d.DonateApplication : Started DonateApplication in 12.072 seconds (process running for 14.019)
+2025-09-24 20:26:47 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 20:26:50 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:26:51 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:30:09 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-24 20:30:20 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:30:22 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:30:25 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:30:27 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:30:33 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-24 20:31:35 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 20:32:30 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-24 20:33:01 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 20:39:38 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 20:39:38 WARN   [validateAndDecreaseStock]   c.p.d.s.CartServiceImpl : Not enough stock for product id: 35 (requested: 1, available: 0)
+2025-09-24 20:39:54 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 34
+2025-09-24 20:40:49 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 20:40:49 WARN   [validateAndDecreaseStock]   c.p.d.s.CartServiceImpl : Not enough stock for product id: 35 (requested: 1, available: 0)
+2025-09-24 20:45:58 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 20:45:58 WARN   [validateAndDecreaseStock]   c.p.d.s.CartServiceImpl : Not enough stock for product id: 35 (requested: 1, available: 0)
+2025-09-24 20:47:40 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 20:47:40 WARN   [validateAndDecreaseStock]   c.p.d.s.CartServiceImpl : Not enough stock for product id: 35 (requested: 1, available: 0)
+2025-09-24 20:47:49 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 20:47:49 WARN   [validateAndDecreaseStock]   c.p.d.s.CartServiceImpl : Not enough stock for product id: 35 (requested: 1, available: 0)
+2025-09-24 20:54:37 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38
+2025-09-24 21:05:08 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 37
+2025-09-24 21:06:06 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 33
+2025-09-24 21:06:15 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 35
+2025-09-24 21:06:43 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 59
+2025-09-24 21:12:53 INFO   [refreshToken]   c.p.d.a.AuthService : Refreshed Token - eraytest3
+2025-09-24 21:24:01 INFO   [getProductEntityById]   c.p.d.s.ProductServiceImpl : eraytest3 - looked product with id: 38

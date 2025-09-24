@@ -6,9 +6,10 @@ import { addProductToCart } from "../store/CartStore/Cart/thunks";
 import { useAppDispatch, useAppSelector } from "../store";
 import QuantityInput from "./QuantityInput";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import { BsBasketFill } from "react-icons/bs";
 import { hasPermission } from "../utils/permissionUtils";
+import { ExpiryBadge } from "./ExpiryBadge";
 
 interface ProductItemProps {
   id: number;
@@ -16,6 +17,7 @@ interface ProductItemProps {
   label: string;
   normalPrice: number;
   discountPrice: number;
+  expiryDate: string;
 }
 const ProductItem: React.FC<ProductItemProps> = ({
   id,
@@ -23,6 +25,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   label,
   normalPrice,
   discountPrice,
+  expiryDate,
 }) => {
   const [dropdown, setDropdown] = useState(false);
   const dispatch = useAppDispatch();
@@ -43,11 +46,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
         .then(() => {
           toast.dismiss();
           toast.custom((t) => (
-            <SuccesNotafication
+            <ToastCard
               title="Product added to cart"
-              text=""
               icon={<BsBasketFill className="w-7 h-7 text-green-800" />}
               t={t}
+              description="test tststerdf"
             />
           ));
         })
@@ -62,21 +65,21 @@ const ProductItem: React.FC<ProductItemProps> = ({
     <div className="py-4 shadow-md shadow-slate-200 border-0 mb-5 border-transparent md:group-[.gridView]:flex relative bg-gray-50 rounded-md">
       <div className="relative group-[.gridView]:static p-6 group-[.gridView]:p-5">
         <div className="group-[.gridView]:p-3 group-[.gridView]:bg-slate-100 group-[.gridView]:inline-block rounded-md ">
-          <Link to={"/home"}>
-            <img
-              src="/public/images/donation.jpg"
-              className="group-[.gridView]:h-16"
-              alt="ürün1"
-            />
-          </Link>
+          <img
+            src="/public/images/donation.jpg"
+            className="group-[.gridView]:h-16"
+            alt="ürün1"
+          />
         </div>
       </div>
       <div className="p-5 !pt-0 md:group-[.gridView]:flex group-[.gridView]:!p-5 group-[.gridView]:gap-3 group-[.gridView]:grow">
         <div className="group-[.gridView]:grow">
-          <h6 className="mb-1 truncate transition-all duration-200 ease-linear text-md hover:text-custom-500">
-            <Link to={"/home"}>{label}</Link>
-          </h6>
-          <div className="flex items-center justify-between mt-4">
+          <div>
+            <h6 className="mb-1 truncate transition-all duration-200 ease-linear text-md hover:text-custom-500 line-clamp-2">
+              {label}
+            </h6>
+          </div>
+          <div className="mt-4">
             <h5 className=" text-xl font-medium">
               ₺{discountPrice}{" "}
               <small className="font-medium line-through text-slate-500 dark:text-zink-200">
@@ -84,15 +87,18 @@ const ProductItem: React.FC<ProductItemProps> = ({
               </small>
             </h5>
 
-            {discountPrice === 0 ? (
-              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-inset ring-emerald-700/30 dark:bg-emerald-500 dark:ring-emerald-400/30">
-                Free
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 rounded-md bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-inset ring-amber-700/30">
-                {`${(normalPrice - discountPrice).toFixed(2)}₺`} Save
-              </span>
-            )}
+            <div className="flex justify-between items-center">
+              {discountPrice === 0 ? (
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-inset ring-emerald-700/30">
+                  Free
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-md bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm ring-1 ring-inset ring-amber-700/30">
+                  {`${(normalPrice - discountPrice).toFixed(2)}₺`} Save
+                </span>
+              )}
+              <p>{<ExpiryBadge date={expiryDate} />}</p>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 mt-4 group-[.gridView]:mt-0 group-[.gridView]:self-end">

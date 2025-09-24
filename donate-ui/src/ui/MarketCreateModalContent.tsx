@@ -10,7 +10,7 @@ import { createMarket } from "../store/MarketStore/Market/thunks";
 import MarketMap from "./MarketMap";
 import { applyOrganization } from "../store/Organization/ApplyOrganization/thunks";
 import toast from "react-hot-toast";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import { BsBuildingFillCheck, BsShop } from "react-icons/bs";
 import { getMyApply } from "../store/Organization/GetMyApply/thunks";
 
@@ -99,9 +99,9 @@ const MarketCreateModalContent = ({
           toast.dismiss();
           toast.custom((t) => {
             return (
-              <SuccesNotafication
+              <ToastCard
                 title="Application created"
-                text="It is no awaiting admin approval"
+                description="It is no awaiting admin approval"
                 t={t}
                 icon={
                   <BsBuildingFillCheck className="w-6 h-6 text-green-600" />
@@ -119,9 +119,9 @@ const MarketCreateModalContent = ({
         toast.dismiss();
         toast.custom((t) => {
           return (
-            <SuccesNotafication
+            <ToastCard
               title="Market created"
-              text="You can check it on the Markets page."
+              description="You can check it on the Markets page."
               t={t}
               icon={<BsShop className="w-6 h-6 text-green-600" />}
             />

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../store";
 import { createOrder } from "../store/Order/thunks";
 import Button from "./Button";
-import { SuccesNotafication } from "../Toast-Notification/SuccesNotification";
+import { ToastCard } from "../Toast-Notification/ToastCard";
 import toast from "react-hot-toast";
 import { IoBagCheck } from "react-icons/io5";
 
@@ -23,9 +23,9 @@ export const CreateOrderModalContent = ({
         .then(() => {
           toast.dismiss();
           toast.custom((t) => (
-            <SuccesNotafication
+            <ToastCard
               title="Order Confirmed"
-              text="Your order was placed successfully. Thank You"
+              description="Your order was placed successfully. Thank You"
               icon={<IoBagCheck className="w-5 h-5 text-green-800" />}
               t={t}
             />

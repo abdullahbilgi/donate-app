@@ -38,6 +38,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
               label={item.name}
               normalPrice={item.price}
               discountPrice={item.discountedPrice}
+              expiryDate={item.expiryDate}
             />
           );
         })}
